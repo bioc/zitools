@@ -1,40 +1,15 @@
 library("usethis")
 library("devtools")
+library("roxygen2")
 
 
-#git repository
-use_git(message = "Initial commit")
-?use_git
-
-
-#extract matrix from a given object - either phyloseq object or RangedSummarizedExperiment
-getmtx <- function(x, y) {
-  if(missing(y)) {
-    if (class(x) == "phyloseq") {
-      df <- data.frame(otu_table(x))
-    }
-    else {
-      if (class(x) == "RangedSummarizedExperiment") {
-        df <- data.frame(assays(x)$y)
-      }
-    }
-  }
-  return(df)
-}
-#given matrix - reshape it into long format as input for zeroinflation model, df_wide = given matrix, feature = rows, sample = columns, feature = "OTU", "Gene", "Species", etc
-reshape_zi <- function(df_wide, feature = "") {
-  zi_long <- data.frame(df_wide) %>%
+#given matrix - reshape it into long format as input for zeroinflation model, df_wide = given matrix, feature = rows, sample = columns, feature = "OTU", "gene", "species", etc
+reshape_zi <- function(mtx, feature = "") {
+  zi_long <- data.frame(mtx) %>%
     rownames_to_column(var = feature)%>%
-    gather(key = "sample", value = "count", 1:ncol(df_wide)+1)
+    gather(key = "sample", value = "count", 1:ncol(mtx)+1)
   return(zi_long)
 }
-
-#fit zero inflation model - zeroinfl() function of the pscl package
-pscl::zeroinfl(formula, data, subset, na.action, weights, offset,
-               dist = c("poisson", "negbin", "geometric"),
-               link = c("logit", "probit", "cloglog", "cauchit", "log"),
-               control = zeroinfl.control(...),
-               model = TRUE, y = TRUE, x = FALSE)
 
 #draw structural zeros with a given probability (p_str_zero) compare if
 #predicted zero = zero count –> set to NA, repeat until NA >= sum(p_str_zero) –> TRUE replace excess of NA with zero (random sampling)
@@ -66,27 +41,73 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
   return(zi_replaced)
 }
 
-#function to calculate weights (zinbwave), given phyloseq object
-calcWeights <- function(x, y, ...) {
-  ps_se <- phyloseq_to_deseq2(x, y)
-  zinbwave <- zinbwave(Y = ps_se, observationalWeights = TRUE,
-                       BPPARAM = BiocParallel::SerialParam(), ...)
-  weigths <- assay(zinbwave, "weights")
-  return(weights)
+#function to calculate weights - formula: w=(1-pi)*fnb/fzinb
+calcWeights <- function(zi_input, zi, feature) {
+  df<-data.frame(zi_input, pstr0 = predict(zi, type = "zero"))
+  df <- mutate(df, pstr0 = case_when( count != 0~0, TRUE ~ pstr0))
+  f_nb<- dnbinom(x = zi_input$count, size =zi[["theta"]], mu = predict(zi, type = "count"), log = FALSE )
+  f_zinb <- dzinegbin(x = zi_input$count, size = zi[["theta"]], munb = predict(zi, type = "count"), pstr0 = df$pstr0, log = FALSE)
+  df$f_nb <- f_nb
+  df$f_zinb <- f_zinb
+  df$weights <- c(((1-df$pstr0)*df$f_nb)/df$f_zinb)
+  df$"1-pi" <- c(1-df$pstr0)
+  df_wide <- df %>%
+    select(c(feature, "sample", "weights"))%>%
+    spread(key="sample", value = "weights")%>%
+    column_to_rownames(var=feature)%>%
+    as.matrix(.)
+  return(df_wide)
 }
 
-#zi_main <- function(df_wide, feature,  formula,  dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"))
-zi_main <- function(df_wide, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"),ps, group)
+#zi_main function - generic function: default method for class(object)=matrix, further methods for phyloseq and summarized experiment objects defined
+zi_main <- function(input, ...) UseMethod("zi_main")
+
+zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
 {
-  zi_input <- reshape_zi(df_wide, feature)
+  zi_input <- reshape_zi(input, feature)
   zi <- zeroinfl(formula, data = zi_input, dist = dist,
                  link = link)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
     spread(key = "sample", value = "count") %>%
-    column_to_rownames(var = feature)
-  weights <- calcWeights(ps, group)
-  result <- zi(df_wide, zi, zi_prediction_wide, weights)
+    column_to_rownames(var = feature)%>%
+    as.matrix()
+  weights <- calcWeights(zi_input, zi, feature)
+  result <- zi(input, zi, zi_prediction_wide, weights)
+  return(result)
+}
+
+zi_main.phyloseq <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+{
+  matrix <- as.matrix(otu_table(input))
+  zi_input <- reshape_zi(matrix, feature)
+  zi <- zeroinfl(formula, data = zi_input, dist = dist,
+                 link = link)
+  zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
+  zi_prediction_wide <- zi_prediction_long %>%
+    spread(key = "sample", value = "count") %>%
+    column_to_rownames(var = feature)%>%
+    as.matrix()
+  weights <- calcWeights(zi_input, zi, feature)
+  result <- zi(input, zi, zi_prediction_wide, weights)
+  return(result)
+}
+
+zi_main.SummarizedExperiment <- function(input,  feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+{
+  matrix <- as.matrix(assays(input)$counts)
+  zi_input <- reshape_zi(matrix, feature)
+  zi <- zeroinfl(formula, data = zi_input, dist = dist,
+                 link = link)
+  zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
+  zi_prediction_wide <- zi_prediction_long %>%
+    spread(key = "sample", value = "count") %>%
+    column_to_rownames(var = feature)%>%
+    as.matrix()
+  assays(input)$counts_str0 <- zi_prediction_wide
+  weights <- calcWeights(zi_input, zi, feature)
+  assays(input)$weights <- weights
+  result <- zi(input, zi, zi_prediction_wide, weights)
   return(result)
 }
 
