@@ -9,3 +9,16 @@ boxplot.zi <- function(result_zi, log1p, ...)
     boxplot(result_zi$ziOutput)
   }
 }
+
+#heatmap function
+heatmap <- function(input, ...) {
+  UseMethod("heatmap")
+}
+
+heatmap.zi <- function(result_zi, ...) {
+  df <- as.data.frame(result_zi$ziOutput)
+  df <- df %>%
+    filter_all(any_vars(!is.na(.)))
+  mtx <- as.matrix(df)
+  stats::heatmap(mtx, ...)
+}
