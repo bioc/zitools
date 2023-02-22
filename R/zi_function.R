@@ -59,57 +59,73 @@ calcWeights <- function(zi_input, zi, feature) {
   return(df_wide)
 }
 
-#zi_main function - generic function: default method for class(object)=matrix, further methods for phyloseq and summarized experiment objects defined
-zi_main <- function(input, ...) UseMethod("zi_main")
-
-zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+#subset matrix function - subset the matrix into groups of roughly 5000 datapoints per block
+subset_mtx <- function(mtx)
 {
+  a <- round(nrow(mtx)*ncol(mtx)/5000) # number of blocks
+  if (a == 0) {a <- 1}
+  b <- ceiling(nrow(mtx)/a) #number of rows for each block
+  index <- rep(c(1:a),each=b) #index for subsetted groups
+  index <- index[1:nrow(mtx)]
+  df <- as.data.frame(mtx)
+  df$index <- index
+  list_subset <- split(df, index) # split df based on index
+  list_subset <- lapply(list_subset, function(x) x[!(names(x) %in% c("index"))]) # remove index
+  return(list_subset)}
+
+#zi core function
+zi_core <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+{
+  matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)
   zi <- zeroinfl(formula, data = zi_input, dist = dist,
-                 link = link)
+                 link = link, ...)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
     spread(key = "sample", value = "count") %>%
     column_to_rownames(var = feature)%>%
     as.matrix()
   weights <- calcWeights(zi_input, zi, feature)
-  result <- zi(input, zi, zi_prediction_wide, weights)
+  result <- list(ziInput = matrix, ziModel = zi, ziOutput = zi_prediction_wide, weights = weights)
   return(result)
 }
 
+#zi_main function - generic function: default method for class(object)=matrix, further methods for phyloseq and summarized experiment objects defined
+zi_main <- function(object, ...) UseMethod("zi_main")
+
+zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+{
+  input <- as.matrix(input)
+  list_subset <- subset_mtx(input)
+  list_core <- list()
+  for(i in 1:length(list_subset)){
+    list_core[[i]] <- zi_core(list_subset[[i]], feature = feature, formula = formula, dist = dist, link = link, ...)
+  }
+  ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
+  ziModel <- lapply(list_core, '[[', "ziModel")
+  ziOutput <- do.call(rbind, lapply(list_core, '[[', "ziOutput"))
+  weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
+  result <- zi(ziInput, ziModel, ziOutput, weights)
+  return(result)
+}
+
+?rbind
 zi_main.phyloseq <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
 {
   matrix <- as.matrix(otu_table(input))
-  zi_input <- reshape_zi(matrix, feature)
-  zi <- zeroinfl(formula, data = zi_input, dist = dist,
-                 link = link)
-  zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
-  zi_prediction_wide <- zi_prediction_long %>%
-    spread(key = "sample", value = "count") %>%
-    column_to_rownames(var = feature)%>%
-    as.matrix()
-  weights <- calcWeights(zi_input, zi, feature)
-  result <- zi(input, zi, zi_prediction_wide, weights)
+  zi_result <- zi_main(matrix, feature = feature, formula = formula, dist = dist, link = link, ...)
+  result <- zi(input, zi_result$ziModel, zi_result$ziOutput, zi_result$weights)
   return(result)
 }
 
 zi_main.SummarizedExperiment <- function(input,  feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
 {
   matrix <- as.matrix(assays(input)$counts)
-  zi_input <- reshape_zi(matrix, feature)
-  zi <- zeroinfl(formula, data = zi_input, dist = dist,
-                 link = link)
-  zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
-  zi_prediction_wide <- zi_prediction_long %>%
-    spread(key = "sample", value = "count") %>%
-    column_to_rownames(var = feature)%>%
-    as.matrix()
-  assays(input)$counts_str0 <- zi_prediction_wide
-  weights <- calcWeights(zi_input, zi, feature)
-  assays(input)$weights <- weights
-  result <- zi(input, zi, zi_prediction_wide, weights)
+  zi_result <- zi_main(matrix, feature = feature, formula = formula, dist = dist, link = link, ...)
+  assays(input)$counts_str0 <- zi_result$ziOutput
+  assays(input)$weights <- zi_result$weights
+  result <- zi(input, zi_result$ziModel, zi_result$ziOutput, zi_result$weights)
   return(result)
 }
-
 
 
