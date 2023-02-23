@@ -90,13 +90,24 @@ zi_core <- function(input, feature = "",  formula, dist = c("poisson", "negbin",
   return(result)
 }
 
+preprocess_mtx <- function(mtx){
+  mtx <- mtx[rowSums(mtx[]) >0, ]
+  seed <- .Random.seed
+  set.seed(seed)
+  random_rows<-sample(nrow(mtx))
+  mtx <- mtx[random_rows,]
+  .Random.seed <- seed
+  return(mtx)
+}
+
 #zi_main function - generic function: default method for class(object)=matrix, further methods for phyloseq and summarized experiment objects defined
 zi_main <- function(object, ...) UseMethod("zi_main")
 
-zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), zeroRows.rm = FALSE,  ...)
 {
-  input <- as.matrix(input)
-  list_subset <- subset_mtx(input)
+  mtx <- as.matrix(input)
+  mtx_new <- preprocess_mtx(mtx)
+  list_subset <- subset_mtx(mtx_new)
   list_core <- list()
   for(i in 1:length(list_subset)){
     list_core[[i]] <- zi_core(list_subset[[i]], feature = feature, formula = formula, dist = dist, link = link, ...)
@@ -105,14 +116,21 @@ zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "
   ziModel <- lapply(list_core, '[[', "ziModel")
   ziOutput <- do.call(rbind, lapply(list_core, '[[', "ziOutput"))
   weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
-  result <- zi(ziInput, ziModel, ziOutput, weights)
+  if (zeroRows.rm == FALSE) {
+    ziOutput <- rbind(ziOutput, mtx[rowSums(mtx[]) == 0, ])
+    zero_weights <- mtx[rowSums(mtx[]) == 0, ]
+    zero_weights[]<- 1
+    weights <- rbind(weights, zero_weights) }
+  ziOutput <- ziOutput[order(match(rownames(ziOutput), row.names(mtx))), , drop = FALSE]
+  weights <- weights[order(match(rownames(weights), rownames(mtx))), , drop = FALSE]
+  result <- zi(input, ziModel, ziOutput, weights)
   return(result)
 }
 
-?rbind
 zi_main.phyloseq <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
 {
   matrix <- as.matrix(otu_table(input))
+  class(matrix) <- "matrix"
   zi_result <- zi_main(matrix, feature = feature, formula = formula, dist = dist, link = link, ...)
   result <- zi(input, zi_result$ziModel, zi_result$ziOutput, zi_result$weights)
   return(result)
@@ -122,10 +140,9 @@ zi_main.SummarizedExperiment <- function(input,  feature = "",  formula, dist = 
 {
   matrix <- as.matrix(assays(input)$counts)
   zi_result <- zi_main(matrix, feature = feature, formula = formula, dist = dist, link = link, ...)
-  assays(input)$counts_str0 <- zi_result$ziOutput
-  assays(input)$weights <- zi_result$weights
+  #assays(input)$counts_str0 <- zi_result$ziOutput
+  #assays(input)$weights <- zi_result$weights
   result <- zi(input, zi_result$ziModel, zi_result$ziOutput, zi_result$weights)
   return(result)
 }
-
 
