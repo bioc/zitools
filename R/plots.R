@@ -1,12 +1,12 @@
 #plots
 # new boxplot method for class(zi)
-boxplot.zi <- function(result_zi, log1p, ...)
+boxplot.Zi <- function(result_zi, log1p =FALSE, ...)
 {
   if (log1p == TRUE) {
-    boxplot(log1p(result_zi$ziOutput), ...)
+    boxplot(log1p(result_zi@output), ...)
   }
   if (log1p == FALSE) {
-    boxplot(result_zi$ziOutput)
+    boxplot(result_zi@output)
   }
 }
 
@@ -15,8 +15,8 @@ heatmap <- function(input, ...) {
   UseMethod("heatmap")
 }
 
-heatmap.zi <- function(result_zi, ...) {
-  df <- as.data.frame(result_zi$ziOutput)
+heatmap.Zi <- function(result_zi, ...) {
+  df <- as.data.frame(result_zi@output)
   df <- df %>%
     filter_all(any_vars(!is.na(.)))
   mtx <- as.matrix(df)

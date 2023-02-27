@@ -1,6 +1,17 @@
-library("usethis")
-library("devtools")
-library("roxygen2")
+#'zi_main function
+#'
+#'The zi_main function uses a matrix, phyloseq object or summarized experiment
+#'object to fit a zero inflation model. Predicted structural zeros are replaced
+#'with NA and weights are calculated using the following function:
+#'w =
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 
 
 #given matrix - reshape it into long format as input for zeroinflation model, df_wide = given matrix, feature = rows, sample = columns, feature = "OTU", "gene", "species", etc
@@ -101,48 +112,121 @@ preprocess_mtx <- function(mtx){
 }
 
 #zi_main function - generic function: default method for class(object)=matrix, further methods for phyloseq and summarized experiment objects defined
-zi_main <- function(object, ...) UseMethod("zi_main")
-
-zi_main.default <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), zeroRows.rm = FALSE,  ...)
+setGeneric("ziMain", function(input,
+                              feature = "",
+                              formula,
+                              dist = c("poisson", "negbin", "geometric"),
+                              link = c("logit", "probit", "cloglog", "cauchit", "log"),
+                              zeroRows.rm = FALSE,
+                              ...)
 {
   mtx <- as.matrix(input)
-  mtx_new <- preprocess_mtx(mtx)
-  list_subset <- subset_mtx(mtx_new)
+  mtx_new <- mtx[rowSums(mtx[]) > 0,] #remove rows that contain only 0
+  mtx_random <- preprocess_mtx(mtx)
+  list_subset <- subset_mtx(mtx_random)
   list_core <- list()
-  for(i in 1:length(list_subset)){
-    list_core[[i]] <- zi_core(list_subset[[i]], feature = feature, formula = formula, dist = dist, link = link, ...)
+  for (i in 1:length(list_subset)) {
+    list_core[[i]] <-
+      zi_core(
+        list_subset[[i]],
+        feature = feature,
+        formula = formula,
+        dist = dist,
+        link = link,
+        ...
+      )
   }
   ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
   ziModel <- lapply(list_core, '[[', "ziModel")
   ziOutput <- do.call(rbind, lapply(list_core, '[[', "ziOutput"))
   weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
   if (zeroRows.rm == FALSE) {
-    ziOutput <- rbind(ziOutput, mtx[rowSums(mtx[]) == 0, ])
-    zero_weights <- mtx[rowSums(mtx[]) == 0, ]
-    zero_weights[]<- 1
-    weights <- rbind(weights, zero_weights) }
-  ziOutput <- ziOutput[order(match(rownames(ziOutput), row.names(mtx))), , drop = FALSE]
-  weights <- weights[order(match(rownames(weights), rownames(mtx))), , drop = FALSE]
-  result <- zi(input, ziModel, ziOutput, weights)
+    mtx_new <- mtx
+    ziOutput <- rbind(ziOutput, mtx[rowSums(mtx[]) == 0,])
+    zero_weights <- mtx[rowSums(mtx[]) == 0,]
+    zero_weights[] <- 1
+    weights <- rbind(weights, zero_weights)
+  }
+  ziOutput <-
+    ziOutput[order(match(rownames(ziOutput), row.names(mtx))), , drop = FALSE]
+  weights <-
+    weights[order(match(rownames(weights), row.names(mtx))), , drop = FALSE]
+  result <- new(
+    Class = "Zi",
+    design = input,
+    inputmatrix = mtx_new,
+    model = ziModel,
+    output = ziOutput,
+    weights = weights
+  )
   return(result)
-}
+})
 
-zi_main.phyloseq <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
-{
-  matrix <- as.matrix(otu_table(input))
-  class(matrix) <- "matrix"
-  zi_result <- zi_main(matrix, feature = feature, formula = formula, dist = dist, link = link, ...)
-  result <- zi(input, zi_result$ziModel, zi_result$ziOutput, zi_result$weights)
-  return(result)
-}
+setMethod(
+  "ziMain",
+  signature = c("phyloseq"),
+  definition = function(input,
+                        feature = "",
+                        formula,
+                        dist = c("poisson", "negbin", "geometric"),
+                        link = c("logit", "probit", "cloglog", "cauchit", "log"),
+                        zeroRows.rm = FALSE,
+                        ...) {
+    matrix <- as.matrix(otu_table(input))
+    class(matrix) <- "matrix"
+    zi_result <-
+      ziMain(
+        matrix,
+        feature = feature,
+        formula = formula,
+        dist = dist,
+        link = link,
+        zeroRows.rm = zeroRows.rm,
+        ...
+      )
+    result <- new(
+      Class = "Zi",
+      design = input,
+      inputmatrix = zi_result@inputmatrix,
+      model = zi_result@model,
+      output = zi_result@output,
+      weights = zi_result@weights
+    )
+    return(result)
+  }
+)
 
-zi_main.SummarizedExperiment <- function(input,  feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
-{
-  matrix <- as.matrix(assays(input)$counts)
-  zi_result <- zi_main(matrix, feature = feature, formula = formula, dist = dist, link = link, ...)
-  #assays(input)$counts_str0 <- zi_result$ziOutput
-  #assays(input)$weights <- zi_result$weights
-  result <- zi(input, zi_result$ziModel, zi_result$ziOutput, zi_result$weights)
-  return(result)
-}
-
+setMethod(
+  "ziMain",
+  signature = c("SummarizedExperiment"),
+  definition = function(input,
+                        feature = "",
+                        formula,
+                        dist = c("poisson", "negbin", "geometric"),
+                        link = c("logit", "probit", "cloglog", "cauchit", "log"),
+                        zeroRows.rm = FALSE,
+                        ...) {
+    matrix <- as.matrix(assays(input)$counts)
+    zi_result <-
+      ziMain(
+        matrix,
+        feature = feature,
+        formula = formula,
+        dist = dist,
+        link = link,
+        zeroRows.rm = zeroRows.rm,
+        ...
+      )
+    #assays(input)$counts_str0 <- zi_result$ziOutput
+    #assays(input)$weights <- zi_result$weights
+    result <- new(
+      Class = "Zi",
+      design = input,
+      inputmatrix = zi_result@inputmatrix,
+      model = zi_result@model,
+      output = zi_result@output,
+      weights = zi_result@weights
+    )
+    return(result)
+  }
+)
