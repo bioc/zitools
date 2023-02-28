@@ -171,4 +171,54 @@ setMethod("colVars", "Zi", function(x) {
   )
 })
 
+#weighted mean, Sd and Var
+setMethod("weighted.mean", "Zi", function(x, w, ...) {
+  mean <- weighted.mean(x@inputmatrix, w = w * x@weights)
+  return(mean)
+})
+
+setMethod("rowWeightedMeans", "Zi", function(x, w, ...) {
+  mapply(weighted.mean,
+         as.data.frame(t(x@inputmatrix)),
+         as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
+})
+
+setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
+  mapply(
+    weighted.mean,
+    as.data.frame(x@inputmatrix),
+    as.data.frame(x@weights) * w, USE.NAMES = TRUE)
+})
+
+setMethod("weightedSd", "Zi", function(x, w, ...) {
+  sqrt(weightedVar(x=x,w=w,...))
+})
+setMethod("rowWeightedSds", "Zi", function(x, w, ...) {
+  mapply(weightedSd,
+         as.data.frame(t(x@inputmatrix)),
+         as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
+})
+setMethod("colWeightedSds", "Zi", function(x, w, ...) {
+  mapply(
+    weightedSd,
+    as.data.frame(x@inputmatrix),
+    as.data.frame(x@weights * w, USE.NAMES = TRUE)
+  )
+})
+
+setMethod("weightedVar", "Zi", function(x, w, ...) {
+  weightedVar(x = x@inputmatrix,
+              w = w * x@weights)
+})
+setMethod("rowWeightedVars", "Zi", function(x, w, ...) {
+  mapply(weightedVar,
+         as.data.frame(t(x@inputmatrix)),
+         as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
+})
+setMethod("colWeightedVars", "Zi", function(x, w, ...) {
+  mapply(
+    weightedVar,
+    as.data.frame(x@inputmatrix),
+    as.data.frame(x@weights * w, USE.NAMES = TRUE))
+})
 
