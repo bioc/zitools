@@ -116,11 +116,19 @@ setGeneric("ziMain", function(input,
                               feature = "",
                               formula,
                               dist = c("poisson", "negbin", "geometric"),
-                              link = c("logit", "probit", "cloglog", "cauchit", "log"),
+                              link = c("logit", "probit", "cloglog", "cauchit",                                  "log"),
                               zeroRows.rm = FALSE,
                               ...)
 {
   mtx <- as.matrix(input)
+  if(is.null(rownames(mtx))) {
+    rownames(mtx) <- c(1:nrow(mtx))
+  }
+  if(is.null(colnames(mtx))) {
+    colnames(mtx) <- c(1:ncol(mtx))
+  }
+  rownames <- rownames(mtx)
+  colnames <- colnames(mtx)
   mtx_new <- mtx[rowSums(mtx[]) > 0,] #remove rows that contain only 0
   mtx_random <- preprocess_mtx(mtx)
   list_subset <- subset_mtx(mtx_random)
@@ -147,10 +155,25 @@ setGeneric("ziMain", function(input,
     zero_weights[] <- 1
     weights <- rbind(weights, zero_weights)
   }
-  ziOutput <-
-    ziOutput[order(match(rownames(ziOutput), row.names(mtx))), , drop = FALSE]
-  weights <-
-    weights[order(match(rownames(weights), row.names(mtx))), , drop = FALSE]
+  if(zeroRows.rm == TRUE) {
+    rownames <- rownames(mtx_new)
+    colnames <- colnames(mtx_new)
+  }
+  mtx_new <- mtx_new[rownames,colnames]
+  mode(mtx_new) <- "integer"
+  #mtx_new <- mtx_new[order(match(rownames(mtx_new), row.names(mtx))), ]
+  ziOutput <- ziOutput[rownames,colnames]
+  mode(ziOutput) <- "integer"
+  #ziOutput <-
+  #ziOutput[order(match(rownames(ziOutput), row.names(mtx))), , drop = FALSE]
+  #ziOutput <-
+  #ziOutput[,order(match(colnames(ziOutput), colnames(mtx))), drop = FALSE]
+  weights <- weights[rownames,colnames]
+  #mode(weights) <- "integer"
+  #weights <-
+  #weights[order(match(rownames(weights), row.names(mtx))), , drop = FALSE]
+  #weights <-
+  #weights[,order(match(colnames(weights), colnames(mtx))), drop = FALSE]
   result <- new(
     Class = "Zi",
     design = input,
@@ -173,7 +196,7 @@ setMethod(
                         zeroRows.rm = FALSE,
                         ...) {
     matrix <- as.matrix(otu_table(input))
-    class(matrix) <- "matrix"
+    suppressWarnings(class(matrix) <- "matrix")
     zi_result <-
       ziMain(
         matrix,
