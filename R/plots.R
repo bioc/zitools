@@ -18,7 +18,8 @@ heatmap <- function(input, ...) {
 heatmap.Zi <- function(result_zi, ...) {
   df <- as.data.frame(result_zi@output)
   df <- df %>%
-    filter_all(any_vars(!is.na(.)))
+    filter_all(any_vars(!is.na(.)))%>%
+    filter_all(any_vars(. != 0))
   mtx <- as.matrix(df)
   stats::heatmap(mtx, ...)
 }
