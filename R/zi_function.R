@@ -1,4 +1,4 @@
-#'zi_main function
+#'@name ziMain function
 #'
 #'The zi_main function uses a matrix, phyloseq object or summarized experiment
 #'object to fit a zero inflation model. Predicted structural zeros are replaced
@@ -16,9 +16,9 @@
 
 #given matrix - reshape it into long format as input for zeroinflation model, df_wide = given matrix, feature = rows, sample = columns, feature = "OTU", "gene", "species", etc
 reshape_zi <- function(mtx, feature = "") {
-  zi_long <- data.frame(mtx) %>%
+  zi_long <- as.data.frame(mtx) %>%
     rownames_to_column(var = feature)%>%
-    gather(key = "sample", value = "count", 1:ncol(mtx)+1)
+    tidyr::gather(key = "sample", value = "count", 1:ncol(mtx)+1)
   return(zi_long)
 }
 
@@ -110,8 +110,42 @@ preprocess_mtx <- function(mtx){
   .Random.seed <- seed
   return(mtx)
 }
+#'@name ziMain
+#'
+#'@title  ziMain function
+#'
+#'
+#'
+#'@param input matrix (rows = features, columns = samples), phyloseq object,
+#'SummarizedExperiment
+#'@param feature "gene", "OTU", "phylum", etc.
+#'@param formula  formula to fit the model response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU
+#'@param dist = distribution, either poisson, negative binomial = negbin or geometric
+#'@param link = link function, either logit, probit, cloglog, cauchit
+#'@param zeroRows.rm = logical, TRUE if rows that only contain zeros should be removed
+#'or not (they are removed to fit a zero inflated model and will be added afterwards
+#'count matrix per default = 0 and weights = 1)
+#'
+#'
+#'@description The ziMain function uses a matrix, phyloseq, or SummarizedExperiment
+#'object, extracts the count matrix to fit a zero inflation model to the data.
+#'The matrix is divided into blocks of around 5000 count values to improve run time.
+#'Predicted probabilities given that a zero in the count matrix  is a
+#'structural zero are used to draw structural zeros and replace them with NA. Further,
+#'weights for all zero counts are calculated given the following formula:
+#'w=...
+#'
+#'
+#'@returns S4 list with slots for the input object, the extracted count matrix if
+#'the input is not a matrix, the results of the fitted zero inflation model, a
+#'matrix where the predicted structural zeros are replaced with NA, a matrix
+#'containing the calculated weights
+#'
+#'@export
+#'@example
+#'
+#'
 
-#zi_main function - generic function: default method for class(object)=matrix, further methods for phyloseq and summarized experiment objects defined
 setGeneric("ziMain", function(input,
                               feature = "",
                               formula,
@@ -253,3 +287,5 @@ setMethod(
     return(result)
   }
 )
+
+
