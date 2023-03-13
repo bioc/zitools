@@ -10,10 +10,9 @@
 #'and stored as NA values
 #'@slot weights matrix. A matrix containing weights for zero counts
 #'
+#'@exportClass Zi
 #'
 #'
-#'
-# setClass for Zi object
 setClass(
   Class = "Zi",
   slots = list(
