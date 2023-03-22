@@ -330,22 +330,10 @@ setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
     as.data.frame(x@weights) * w, USE.NAMES = TRUE)
 })
 
-#'@name weightedSd
-#'@title Weighted Standard Deviation
-#'
-#'@param x An Object of class "Zi", input matrix will be used to calculate the
-#'meam taking structural zero weights into account
-#'@param w a numerical vector of weight the same length as x giving the weights
-#'to use for elements of x
-#'@param ...
-#'
-#'@description compute a weighted standard deviation
-#'@returns value
-#'@example
 
-setMethod("weightedSd", "Zi", function(x, w, ...) {
-  sqrt(weightedVar(x=x,w=w,...))
-})
+#setMethod("weightedSd", "Zi", function(x, w, ...) {
+ # sqrt(weightedVar(x=x,w=w,...))
+#})
 
 #'@name rowWeightedSds
 #'@title Calculates the weighted mean for each row (column) of a matrix-like object
@@ -385,8 +373,10 @@ setMethod("colWeightedSds", "Zi", function(x, w, ...) {
 #'@returns a numeric scalar
 #'@example
 
+#setGeneric("weightedVar")
+
 setMethod("weightedVar", "Zi", function(x, w, ...) {
-  weightedVar(x = x@inputmatrix,
+  matrixStats::weightedVar(x = x@inputmatrix,
               w = w * x@weights)
 })
 
@@ -402,5 +392,26 @@ setMethod("colWeightedVars", "Zi", function(x, w, ...) {
     as.data.frame(x@weights * w, USE.NAMES = TRUE))
 })
 
-?ZiMain
-
+#'@name t()
+#'@title Matrix Transpose
+#'
+#'@export
+#'
+setMethod(
+  "t",
+  signature = "Zi",
+  definition = function(x) {
+    countmatrix <- t(x@countmatrix)
+    output <- t(x@output)
+    weights <- t(x@weights)
+    result <- new(
+      Class = "Zi",
+      datafile = x@datafile,
+      countmatrix = countmatrix,
+      ZINBModel = x@ZINBModel,
+      output = output,
+      weights = weights
+    )
+    return(result)
+  }
+)

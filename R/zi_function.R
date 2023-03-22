@@ -4,7 +4,7 @@
 #'
 #'
 #'
-#'@param input matrix (rows = features, columns = samples), phyloseq object or
+#'@param datafile matrix (rows = features, columns = samples), phyloseq object or
 #'SummarizedExperiment object
 #'@param feature "gene", "OTU", "phylum", etc.
 #'@param formula  formula to fit the model response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU
@@ -34,7 +34,7 @@
 #'
 #'
 
-setGeneric("ziMain", function(input,
+setGeneric("ziMain", function(datafile,
                               feature = "",
                               formula,
                               dist = c("poisson", "negbin", "geometric"),
@@ -42,7 +42,7 @@ setGeneric("ziMain", function(input,
                               zeroRows.rm = FALSE,
                               ...)
 {
-  mtx <- as.matrix(input)
+  mtx <- as.matrix(datafile)
   if(is.null(rownames(mtx))) {
     rownames(mtx) <- c(1:nrow(mtx))
   }
@@ -83,24 +83,14 @@ setGeneric("ziMain", function(input,
   }
   mtx_new <- mtx_new[rownames,colnames]
   mode(mtx_new) <- "integer"
-  #mtx_new <- mtx_new[order(match(rownames(mtx_new), row.names(mtx))), ]
   ziOutput <- ziOutput[rownames,colnames]
   mode(ziOutput) <- "integer"
-  #ziOutput <-
-  #ziOutput[order(match(rownames(ziOutput), row.names(mtx))), , drop = FALSE]
-  #ziOutput <-
-  #ziOutput[,order(match(colnames(ziOutput), colnames(mtx))), drop = FALSE]
   weights <- weights[rownames,colnames]
-  #mode(weights) <- "integer"
-  #weights <-
-  #weights[order(match(rownames(weights), row.names(mtx))), , drop = FALSE]
-  #weights <-
-  #weights[,order(match(colnames(weights), colnames(mtx))), drop = FALSE]
   result <- new(
     Class = "Zi",
-    design = input,
-    inputmatrix = mtx_new,
-    model = ziModel,
+    datafile = datafile,
+    countmatrix = mtx_new,
+    ZiModel = ziModel,
     output = ziOutput,
     weights = weights
   )
@@ -110,14 +100,14 @@ setGeneric("ziMain", function(input,
 setMethod(
   "ziMain",
   signature = c("phyloseq"),
-  definition = function(input,
+  definition = function(datafile,
                         feature = "",
                         formula,
                         dist = c("poisson", "negbin", "geometric"),
                         link = c("logit", "probit", "cloglog", "cauchit", "log"),
                         zeroRows.rm = FALSE,
                         ...) {
-    matrix <- as.matrix(otu_table(input))
+    matrix <- as.matrix(otu_table(datafile))
     suppressWarnings(class(matrix) <- "matrix")
     zi_result <-
       ziMain(
@@ -131,9 +121,9 @@ setMethod(
       )
     result <- new(
       Class = "Zi",
-      design = input,
-      inputmatrix = zi_result@inputmatrix,
-      model = zi_result@model,
+      datafile = datafile,
+      countmatrix = zi_result@countmatrix,
+      ZiModel = zi_result@ZiModel,
       output = zi_result@output,
       weights = zi_result@weights
     )
@@ -144,14 +134,14 @@ setMethod(
 setMethod(
   "ziMain",
   signature = c("SummarizedExperiment"),
-  definition = function(input,
+  definition = function(datafile,
                         feature = "",
                         formula,
                         dist = c("poisson", "negbin", "geometric"),
                         link = c("logit", "probit", "cloglog", "cauchit", "log"),
                         zeroRows.rm = FALSE,
                         ...) {
-    matrix <- as.matrix(assays(input)$counts)
+    matrix <- as.matrix(assays(datafile)$counts)
     zi_result <-
       ziMain(
         matrix,
@@ -162,13 +152,11 @@ setMethod(
         zeroRows.rm = zeroRows.rm,
         ...
       )
-    #assays(input)$counts_str0 <- zi_result$ziOutput
-    #assays(input)$weights <- zi_result$weights
     result <- new(
       Class = "Zi",
-      design = input,
-      inputmatrix = zi_result@inputmatrix,
-      model = zi_result@model,
+      datafile = datafile,
+      countmatrix = zi_result@countmatrix,
+      ZiModel = zi_result@ZiModel,
       output = zi_result@output,
       weights = zi_result@weights
     )

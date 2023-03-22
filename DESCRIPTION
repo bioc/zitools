@@ -14,7 +14,8 @@ Imports: phyloseq,
           pscl, 
           tidyverse,
           ggplot2,
-          zinbwave
+          zinbwave,
+          MatrixGenerics
 Suggests: 
     boot,
     naniar,

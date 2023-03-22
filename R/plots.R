@@ -2,25 +2,20 @@
 #'
 #'@title Box Plots
 #'
-#'@param ZiObject ZiObject, result of the ziMain function
+#'@param x ZiObject, result of the ziMain function
 #'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
 #'place
 #'@param ... see boxplot documentation
-#'
-#'@description produce box-and-whisker plot(s) of the given (grouped) values.
-#'boxplot.Zi uses the output matrix (drawn structural zeros) to produce box-and
-#'whisker plots
-#'
-#'@returns boxplot
+#'@export
 #'@example
 
-boxplot.Zi <- function(result_zi, log1p =FALSE, ...)
+boxplot.Zi <- function(x, log1p =FALSE, ...)
 {
   if (log1p == TRUE) {
-    boxplot(log1p(result_zi@output), ...)
+    boxplot(log1p(x@output), ...)
   }
   if (log1p == FALSE) {
-    boxplot(result_zi@output)
+    boxplot(x@output)
   }
 }
 
@@ -37,51 +32,66 @@ boxplot.Zi <- function(result_zi, log1p =FALSE, ...)
 #'
 #'
 #'
-
-heatmap <- function(input, ...) {
+?heatmap
+heatmap <- function(x, ...) {
   UseMethod("heatmap")
 }
 
-heatmap.Zi <- function(result_zi, ...) {
-  df <- as.data.frame(result_zi@output)
+heatmap.Zi <- function(x, ...) {
+  df <- as.data.frame(x@output)
   df <- df %>%
     filter_all(any_vars(!is.na(.)))%>%
     filter_all(any_vars(. != 0))
   mtx <- as.matrix(df)
   stats::heatmap(mtx, ...)
 }
+
+#'@name MissingValueHeatmap
+#'@title Missing Value Heatmap
+#'@description
+#'
+#'@param ZiObject ZiObject, result of the ziMain function
+#'
+#'@returns heatmap
+#'
+#'
+#'
+MissingValueHeatmap <- function(ZiObject) {
+  mtx <- ZiObject@output
+  # Sort matrix according to number of missing values
+  mtx.heatmap <- mtx[order(-rowSums(is.na(mtx))), ]
+  stats::heatmap(mtx.heatmap,Rowv=NA,Colv=NA,labRow=FALSE,
+                 na.rm=T,col=RColorBrewer::brewer.pal(n = 9, name = "Blues"),
+                 scale = "none", margins = c(11,0), cexCol=1)
+}
 #'@name weightedCor
 #'
 #'@title weighted Correlation
 #'
-#'@description Calculate the weighted pearson correlation coefficients of a
-#'Zi object. The inputmatrix is used to calculate column wise correlations taking
-#'the weights matrix of the Zi object into account.
+#'@description calculate the weighted pearson correlation coefficients of a
+#'matrix x (and y) taking a weight matrix for x (and y) into account
 #'
-#'@param x Zi Object
-#'@param y another Zi Object (same dimension as x)
+#'@param x matrix
+#'@param wx weight matrix (same dimension as x)
+#'@param y matrix
+#'@param wy weight matrix (same dimension as y)
 #'@param na.rm If TRUE (default), missing values are excluded
-#'@param transpose If TRUE, rowwise correlations are calculated, default = FALSE
 #'
 #'@returns a matrix of weighted pearson correlation coefficients
-#'@export
-#'@example
 #'
+#'@example
+#'mtx <- matrix(runif(1000,0,1000), 10, 100)
+#'w <- matrix(runif(1000, 0.01,1), 10, 100)
+#'msb.WeightedCor(x = mtx, wx = w)
 #'
 
-weightedCor <- function(x, y = NULL, na.rm=TRUE, transpose = FALSE, ...) {
+setGeneric("weightedCor", function(x, wx, y = NULL, wy = NULL, na.rm=TRUE, ...) {
   my_vector <- numeric()
-  wx <- x@weights
-  x <- x@inputmatrix
   if (is.null(y)) {
     y <- x
-    wy <- wx
   }
-  if(transpose == TRUE) {
-    x <- t(x)
-    wx <- t(wx)
-    y <- t(y)
-    wy <- t(wy)
+  if(is.null(wy)) {
+    wy <- wx
   }
   colnames <- colnames(x)
   rownames <- colnames(y)
@@ -105,4 +115,17 @@ weightedCor <- function(x, y = NULL, na.rm=TRUE, transpose = FALSE, ...) {
   colnames(mtx) <- colnames
   rownames(mtx) <- rownames
   return(mtx)
-}
+})
+
+
+setMethod("weightedCor", signature = "Zi", definition = function(x, y = NULL, na.rm=TRUE, transpose = FALSE, ...) {
+  my_vector <- numeric()
+  wx <- x@weights
+  cx <- x@countmatrix
+  if (is.null(y)) {
+    y <- cx
+    wy <- wx
+  }
+  mtx <- weightedCor(x = cx, wx = wx, y=y, wy =wy, na.rm=na.rm, ...)
+  return(mtx)
+})
