@@ -146,7 +146,13 @@ setMethod("colQuantiles", "Zi", function(x,
     drop = drop
   )
 })
-
+setMethod("rowMeans", "Zi", function(x) {
+  rowmean <-
+    mapply(weighted.mean,
+           as.data.frame(t(x@countmatrix)),
+           as.data.frame(t(x@weights), USE.NAMES = TRUE))
+  return(rowmean)
+})
 
 #'@name mean
 #'@title Arithmetic Mean
@@ -162,7 +168,7 @@ setMethod("colQuantiles", "Zi", function(x,
 #'
 
 mean.Zi <- function(zi_result, ...) {
-  x <- zi_result@inputmatrix
+  x <- zi_result@countmatrix
   w <- zi_result@weights
   mean <- weighted.mean(x, w, ...)
   return(mean)
@@ -184,7 +190,7 @@ setMethod("colMeans", "Zi", function(x) {
   colmean <-
     mapply(
       weighted.mean,
-      as.data.frame(x@inputmatrix),
+      as.data.frame(x@countmatrix),
       as.data.frame(x@weights, USE.NAMES = TRUE)
     )
   return(colmean)
@@ -193,10 +199,11 @@ setMethod("colMeans", "Zi", function(x) {
 setMethod("rowMeans", "Zi", function(x) {
   rowmean <-
     mapply(weighted.mean,
-           as.data.frame(t(x@inputmatrix)),
+           as.data.frame(t(x@countmatrix)),
            as.data.frame(t(x@weights), USE.NAMES = TRUE))
   return(rowmean)
 })
+
 
 #'@name sd
 #'@title Standard Deviation
@@ -211,7 +218,7 @@ setMethod("rowMeans", "Zi", function(x) {
 #'@example
 
 setMethod("sd", "Zi", function(x) {
-  sd <- matrixStats::weightedSd(x = x@inputmatrix,
+  sd <- matrixStats::weightedSd(x = x@countmatrix,
                                 w = x@weights)
   return(sd)
 })
@@ -229,13 +236,13 @@ setMethod("sd", "Zi", function(x) {
 
 setMethod("rowSds", "Zi", function(x) {
   mapply(weightedSd,
-         as.data.frame(t(x@inputmatrix)),
+         as.data.frame(t(x@countmatrix)),
          as.data.frame(t(x@weights), USE.NAMES = TRUE))
 })
 setMethod("colSds", "Zi", function(x) {
   mapply(
     weightedSd,
-    as.data.frame(x@inputmatrix),
+    as.data.frame(x@countmatrix),
     as.data.frame(x@weights, USE.NAMES = TRUE)
   )
 })
@@ -253,7 +260,7 @@ setMethod("colSds", "Zi", function(x) {
 #'@example
 
 setMethod("var", "Zi", function(x) {
-  var <- matrixStats::weightedVar(x = x@inputmatrix,
+  var <- matrixStats::weightedVar(x = x@countmatrix,
                                   w = x@weights)
   return(var)
 })
@@ -271,13 +278,13 @@ setMethod("var", "Zi", function(x) {
 
 setMethod("rowVars", "Zi", function(x) {
   mapply(weightedVar,
-         as.data.frame(t(x@inputmatrix)),
+         as.data.frame(t(x@countmatrix)),
          as.data.frame(t(x@weights), USE.NAMES = TRUE))
 })
 setMethod("colVars", "Zi", function(x) {
   mapply(
     weightedVar,
-    as.data.frame(x@inputmatrix),
+    as.data.frame(x@countmatrix),
     as.data.frame(x@weights, USE.NAMES = TRUE)
   )
 })
@@ -298,11 +305,10 @@ setMethod("colVars", "Zi", function(x) {
 
 
 setMethod("weighted.mean", "Zi", function(x, w, ...) {
-  mean <- weighted.mean(x@inputmatrix, w = w * x@weights)
+  mean <- weighted.mean(x@countmatrix, w = w * x@weights)
   return(mean)
 })
 
-?rowWeightedMeans
 
 #'@name rowWeightedMeans
 #'@title Calculates the weighted mean for each row (column) of a matrix-like object
@@ -319,14 +325,14 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 #'
 setMethod("rowWeightedMeans", "Zi", function(x, w, ...) {
   mapply(weighted.mean,
-         as.data.frame(t(x@inputmatrix)),
+         as.data.frame(t(x@countmatrix)),
          as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
 })
 
 setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
   mapply(
     weighted.mean,
-    as.data.frame(x@inputmatrix),
+    as.data.frame(x@countmatrix),
     as.data.frame(x@weights) * w, USE.NAMES = TRUE)
 })
 
@@ -349,13 +355,13 @@ setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
 #'@example
 setMethod("rowWeightedSds", "Zi", function(x, w, ...) {
   mapply(weightedSd,
-         as.data.frame(t(x@inputmatrix)),
+         as.data.frame(t(x@countmatrix)),
          as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
 })
 setMethod("colWeightedSds", "Zi", function(x, w, ...) {
   mapply(
     weightedSd,
-    as.data.frame(x@inputmatrix),
+    as.data.frame(x@countmatrix),
     as.data.frame(x@weights * w, USE.NAMES = TRUE)
   )
 })
@@ -373,22 +379,23 @@ setMethod("colWeightedSds", "Zi", function(x, w, ...) {
 #'@returns a numeric scalar
 #'@example
 
-#setGeneric("weightedVar")
+setGeneric("weightedVar", function(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL,
+                                   ...) standardGeneric("weightedVar"))
 
 setMethod("weightedVar", "Zi", function(x, w, ...) {
-  matrixStats::weightedVar(x = x@inputmatrix,
+  matrixStats::weightedVar(x = x@countmatrix,
               w = w * x@weights)
 })
 
 setMethod("rowWeightedVars", "Zi", function(x, w, ...) {
   mapply(weightedVar,
-         as.data.frame(t(x@inputmatrix)),
+         as.data.frame(t(x@countmatrix)),
          as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
 })
 setMethod("colWeightedVars", "Zi", function(x, w, ...) {
   mapply(
     weightedVar,
-    as.data.frame(x@inputmatrix),
+    as.data.frame(x@countmatrix),
     as.data.frame(x@weights * w, USE.NAMES = TRUE))
 })
 

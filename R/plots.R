@@ -64,61 +64,20 @@ MissingValueHeatmap <- function(ZiObject) {
                  na.rm=T,col=RColorBrewer::brewer.pal(n = 9, name = "Blues"),
                  scale = "none", margins = c(11,0), cexCol=1)
 }
-#'@name weightedCor
-#'
-#'@title weighted Correlation
-#'
-#'@description calculate the weighted pearson correlation coefficients of a
-#'matrix x (and y) taking a weight matrix for x (and y) into account
-#'
-#'@param x matrix
-#'@param wx weight matrix (same dimension as x)
-#'@param y matrix
-#'@param wy weight matrix (same dimension as y)
-#'@param na.rm If TRUE (default), missing values are excluded
-#'
-#'@returns a matrix of weighted pearson correlation coefficients
-#'
-#'@example
-#'mtx <- matrix(runif(1000,0,1000), 10, 100)
-#'w <- matrix(runif(1000, 0.01,1), 10, 100)
-#'msb.WeightedCor(x = mtx, wx = w)
-#'
 
-setGeneric("weightedCor", function(x, wx, y = NULL, wy = NULL, na.rm=TRUE, ...) {
-  my_vector <- numeric()
-  if (is.null(y)) {
-    y <- x
-  }
-  if(is.null(wy)) {
-    wy <- wx
-  }
-  colnames <- colnames(x)
-  rownames <- colnames(y)
-  for (a in 1:ncol(x)) {
-    for (b in 1:ncol(x)) {
-      col_a <- x[,a]
-      col_b <- y[,b]
-      weights_a <- wx[,a]
-      weights_b <- wy[,b]
-      mean_a <- sum(weights_a*col_a, na.rm = na.rm)/(sum(weights_a, na.rm=na.rm))
-      mean_b <- sum(weights_b*col_b, na.rm = na.rm)/(sum(weights_b, na.rm = na.rm))
-      var_a <- sum(weights_a*(col_a-mean_a)^2, na.rm = na.rm)/(sum(weights_a, na.rm = na.rm)-1)
-      var_b <- sum(weights_b*(col_b-mean_b)^2, na.rm = na.rm)/(sum(weights_b, na.rm = na.rm)-1)
-      cov <-
-        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b), na.rm = na.rm) / sqrt( (sum(weights_a, na.rm = na.rm)-1) * (sum(weights_b, na.rm = na.rm)-1))
-      cor <- cov / sqrt(var_a * var_b)
-      my_vector <- c(my_vector, cor)
-    }
-  }
-  mtx <- matrix(my_vector, ncol(x))
-  colnames(mtx) <- colnames
-  rownames(mtx) <- rownames
-  return(mtx)
-})
+#'@name cor
+#'@title Calculate weighted Pearson Correlation coeffiecients
+#'
+#'@description calculate the weighted pearson correlation coefficients of a count matrix
+#'of an Zi object taking weights for structural zeros into account
+#'
+#'@param x Zi-class object
 
+setGeneric("cor", function(x, y = NULL, use = "everything",
+                           method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
+?cor
 
-setMethod("weightedCor", signature = "Zi", definition = function(x, y = NULL, na.rm=TRUE, transpose = FALSE, ...) {
+setMethod("cor", "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
   my_vector <- numeric()
   wx <- x@weights
   cx <- x@countmatrix
@@ -126,6 +85,28 @@ setMethod("weightedCor", signature = "Zi", definition = function(x, y = NULL, na
     y <- cx
     wy <- wx
   }
-  mtx <- weightedCor(x = cx, wx = wx, y=y, wy =wy, na.rm=na.rm, ...)
+  colnames <- colnames(cx)
+  rownames <- colnames(y)
+  for (a in 1:ncol(cx)) {
+    for (b in 1:ncol(cx)) {
+      col_a <- cx[,a]
+      col_b <- y[,b]
+      weights_a <- wx[,a]
+      weights_b <- wy[,b]
+      mean_a <- sum(weights_a*col_a)/(sum(weights_a))
+      mean_b <- sum(weights_b*col_b)/(sum(weights_b))
+      var_a <- sum(weights_a*(col_a-mean_a)^2)/(sum(weights_a)-1)
+      var_b <- sum(weights_b*(col_b-mean_b)^2)/(sum(weights_b)-1)
+      cov <-
+        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b)) / sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
+      cor <- cov / sqrt(var_a * var_b)
+      my_vector <- c(my_vector, cor)
+    }
+  }
+  mtx <- matrix(my_vector, ncol(cx))
+  colnames(mtx) <- colnames
+  rownames(mtx) <- rownames
+  print(message("Currently implemented only for Pearson Correlation"))
   return(mtx)
 })
+

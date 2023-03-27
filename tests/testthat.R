@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(zeroinflationpackage)
+library(zitools)
 
-test_check("zeroinflationpackage")
+test_check("zitools")

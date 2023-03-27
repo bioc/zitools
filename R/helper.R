@@ -18,10 +18,9 @@ setClass(
   slots = list(
     datafile = "ANY",
     countmatrix = "matrix",
-    ZINBModel = "list",
+    ZiModel = "list",
     output = "matrix",
-    weights = "matrix"
-  )
+    weights = "matrix")
 )
 
 #'@name ps_replace
@@ -73,7 +72,7 @@ zi2OutputMatrix <- function(ZiObject) {
 #'
 #'
 #'
-zi2inputMatrix <- function(ZiObject) {
+zi2countmatrix <- function(ZiObject) {
   ZiObject@countmatrix
 }
 
@@ -83,15 +82,12 @@ zi2inputMatrix <- function(ZiObject) {
 #'@param ZiObject result of the ZiMain function
 #'@description acces the tax table of an Zi object if the datafile slot is a phyloseq
 #'object
+#'@importFrom phyloseq tax_table
 #'@returns tax_table
-#'
 #'@export
 #'
-#'
-#'
-
 setMethod("tax_table", signature = "Zi", function(object){
-  tax_table <- phyloseq::tax_table(object@datafile)
+  tax_table <- tax_table(object@datafile)
   return(tax_table)
 })
 
@@ -100,12 +96,10 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'@param ZiObject result of the ZiMain function
 #'@description acces the sample data of an Zi object if the datafile slot is a phyloseq
 #'object
+#'@importFrom phyloseq sample_data
 #'@returns sample_data
 #'
 #'@export
-#'
-#'
-#'
 #'
 setMethod("sample_data", signature = "Zi", function(object){
   sample_data <- sample_data(object@datafile)
@@ -118,6 +112,7 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'@description acces the otu table  of an Zi object if the datafile slot is a phyloseq
 #'object
 #'@returns otu_table
+#'@importFrom phyloseq otu_table
 #'
 #'@export
 #'
@@ -133,6 +128,7 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'@description acces the phy tree  of an Zi object if the datafile slot is a phyloseq
 #'object
 #'@returns phy_tree
+#'@importFrom phyloseq phy_tree
 #'
 #'@export
 #'
@@ -148,6 +144,7 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 #'@description access the rowData of an Zi object if the datafile is an SummarizedExperiment
 #'object
 #'@returns DFrame
+#'@importFrom SummarizedExperiment rowData
 #'
 #'@export
 #'
@@ -164,6 +161,7 @@ setMethod("rowData", signature = "Zi", function(x, ...){
 #'@param ZiObject result of the ZiMain function
 #'@description access the assays of an Zi object if the datafile is an SummarizedExperiment
 #'object
+#'@importFrom SummarizedExperiment assays
 #'@returns list
 #'@export
 #'
@@ -177,6 +175,7 @@ setMethod("assays", signature = "Zi", function(x, ...){
 #'@param ZiObject result of the ZiMain function
 #'@description access the metadata of an Zi object if the datafile is an SummarizedExperiment
 #'object
+#'@importFrom SummarizedExperiment metadata
 #'@returns list
 #'@export
 #'
@@ -190,6 +189,7 @@ setMethod("metadata", signature = "Zi", function(x, ...){
 #'@param ZiObject result of the ZiMain function
 #'@description access the colData of an Zi object if the datafile is an SummarizedExperiment
 #'object
+#'@importFrom SummarizedExperiment colData
 #'@returns DFrame
 #'
 #'@export

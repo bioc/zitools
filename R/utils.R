@@ -86,35 +86,57 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'@returns matrix of the calculated weights
 #'
 #'#function to calculate weights - formula: w=(1-pi)*fnb/fzinb
-calcWeights <- function(zi_input, zi, feature) {
-  df <- data.frame(zi_input, pstr0 = predict(zi, type = "zero"))
-  df <- mutate(df, pstr0 = case_when(count != 0 ~ 0, TRUE ~ pstr0))
-  f_nb <-
-    dnbinom(
-      x = zi_input$count,
-      size = zi[["theta"]],
-      mu = predict(zi, type = "count"),
-      log = FALSE
-    )
-  f_zinb <-
-    dzinegbin(
-      x = zi_input$count,
-      size = zi[["theta"]],
-      munb = predict(zi, type = "count"),
-      pstr0 = df$pstr0,
-      log = FALSE
-    )
-  df$f_nb <- f_nb
-  df$f_zinb <- f_zinb
-  df$weights <- c(((1 - df$pstr0) * df$f_nb) / df$f_zinb)
-  df$"1-pi" <- c(1 - df$pstr0)
-  df_wide <- df %>%
-    select(c(feature, "sample", "weights")) %>%
-    spread(key = "sample", value = "weights") %>%
-    column_to_rownames(var = feature) %>%
-    as.matrix(.)
-  return(df_wide)
-}
+calcWeights <-
+  function(zi_input,
+           zi,
+           feature,
+           dist = c("poisson", "negbin", "geometric")) {
+    df <- data.frame(zi_input, pstr0 = predict(zi, type = "zero"))
+    df <- mutate(df, pstr0 = case_when(count != 0 ~ 0, TRUE ~ pstr0))
+    if (dist == "poisson") {
+      f <-
+        dpois(
+          x = zi_input$count,
+          lambda = predict(zi, type = "count"),
+          log = FALSE
+        )
+      f_zi <-
+        dzipois(
+          x = zi_input$count,
+          lambda = predict(zi, type = "count"),
+          pstr0 = df$pstr0,
+          log = FALSE
+        )
+    }
+    if (dist == "negbin") {
+      f <-
+        dnbinom(
+          x = zi_input$count,
+          size = zi[["theta"]],
+          mu = predict(zi, type = "count"),
+          log = FALSE
+        )
+      f_zi <-
+        dzinegbin(
+          x = zi_input$count,
+          size = zi[["theta"]],
+          munb = predict(zi, type = "count"),
+          pstr0 = df$pstr0,
+          log = FALSE
+        )
+    }
+    df$f <- f
+    df$f_zi <- f_zi
+    df$weights <- c(((1 - df$pstr0) * df$f) / df$f_zi)
+    df$"1-pi" <- c(1 - df$pstr0)
+    df_wide <- df %>%
+      select(c(feature, "sample", "weights")) %>%
+      spread(key = "sample", value = "weights") %>%
+      column_to_rownames(var = feature) %>%
+      as.matrix(.)
+    return(df_wide)
+  }
+
 
 #'@name preprocess_mtx
 #'@title Preprocess Matrix
@@ -179,13 +201,13 @@ zi_core <- function(input, feature = "",  formula, dist = c("poisson", "negbin",
   matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)
   zi <- zeroinfl(formula, data = zi_input, dist = dist,
-                 link = link, ...)
+                 link = link,...)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
     spread(key = "sample", value = "count") %>%
     column_to_rownames(var = feature)%>%
     as.matrix()
-  weights <- calcWeights(zi_input, zi, feature)
+  weights <- calcWeights(zi_input, zi, feature, dist = dist)
   result <- list(ziInput = matrix, ziModel = zi, ziOutput = zi_prediction_wide, weights = weights)
   return(result)
 }

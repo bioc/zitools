@@ -16,6 +16,7 @@ Imports: phyloseq,
           ggplot2,
           zinbwave,
           MatrixGenerics
+          SummarizedExperiment
 Suggests: 
     boot,
     naniar,
