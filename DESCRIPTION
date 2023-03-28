@@ -15,8 +15,9 @@ Imports: phyloseq,
           tidyverse,
           ggplot2,
           zinbwave,
-          MatrixGenerics
-          SummarizedExperiment
+          MatrixGenerics,
+          SummarizedExperiment,
+          S4Vectors
 Suggests: 
     boot,
     naniar,

@@ -6,6 +6,7 @@
 #'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
 #'place
 #'@param ... see boxplot documentation
+#'@importFrom graphics boxplot
 #'@export
 #'@example
 

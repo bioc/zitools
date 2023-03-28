@@ -175,7 +175,7 @@ setMethod("assays", signature = "Zi", function(x, ...){
 #'@param ZiObject result of the ZiMain function
 #'@description access the metadata of an Zi object if the datafile is an SummarizedExperiment
 #'object
-#'@importFrom SummarizedExperiment metadata
+#'@importFrom S4Vectors metadata
 #'@returns list
 #'@export
 #'
