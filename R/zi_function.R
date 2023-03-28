@@ -1,6 +1,31 @@
+#'Class Zi
+#'
+#'Objects of this class store all the results of the ZiMain function to continue
+#'zero inflated data analysis
+#'@slot datafile a matrix, phyloseq or summarized experiment object.
+#'@slot countmatrix matrix. The design matrix, features as rows, samples as columns
+#'@slot ZiModel list. The result of fitting a zero inflated model using zeroinfl of
+#'the pscl package
+#'@slot output matrix. The matrix where predicted structural zeros are ommitted
+#'and stored as NA values
+#'@slot weights matrix. A matrix containing weights for zero counts
+#'
+#'@exportClass Zi
+#'
+#'
+setClass(
+  Class = "Zi",
+  slots = list(
+    datafile = "ANY",
+    countmatrix = "matrix",
+    ZiModel = "list",
+    output = "matrix",
+    weights = "matrix")
+)
+
 #'@name ziMain
 #'
-#'@title  ziMain function
+#'@title  ziMain
 #'
 #'
 #'

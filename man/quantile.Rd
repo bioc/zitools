@@ -5,7 +5,7 @@
 \alias{quantile.Zi}
 \title{Sample Quantiles}
 \usage{
-quantile.Zi(x, na.rm = TRUE, ...)
+\method{quantile}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
 \item{x}{An S4 object of class "Zi", NA matrix will be extracted using this function}

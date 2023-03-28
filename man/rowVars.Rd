@@ -2,9 +2,12 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowVars}
 \alias{rowVars}
+\alias{colVars}
 \title{Row and Column Variances}
 \usage{
 \S4method{rowVars}{Zi}(x)
+
+\S4method{colVars}{Zi}(x)
 }
 \arguments{
 \item{x}{An Object of class "Zi", input matrix will be used to calculate the

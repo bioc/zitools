@@ -2,9 +2,20 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowWeightedMeans}
 \alias{rowWeightedMeans}
+\alias{colWeightedMeans}
 \title{Calculates the weighted mean for each row (column) of a matrix-like object}
 \usage{
 \S4method{rowWeightedMeans}{Zi}(
+  x,
+  w = NULL,
+  rows = NULL,
+  cols = NULL,
+  na.rm = FALSE,
+  ...,
+  useNames = NA
+)
+
+\S4method{colWeightedMeans}{Zi}(
   x,
   w = NULL,
   rows = NULL,

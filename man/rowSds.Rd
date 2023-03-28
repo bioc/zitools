@@ -2,9 +2,12 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowSds}
 \alias{rowSds}
+\alias{colSds}
 \title{Row and Column Standard Deviations}
 \usage{
 \S4method{rowSds}{Zi}(x)
+
+\S4method{colSds}{Zi}(x)
 }
 \arguments{
 \item{x}{An Object of class "Zi", input matrix will be used to calculate the

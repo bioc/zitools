@@ -1,11 +1,11 @@
 #'@name boxplot
-#'
-#'@title Box Plots
-#'
-#'@param x ZiObject, result of the ziMain function
+#'@title Create boxplots of a 'Zi'-class object
+#'@description Create boxplots of a 'Zi'-class object.
+#'@param x 'Zi'-class object
 #'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
 #'place
 #'@param ... see boxplot documentation
+#'@seealso \link[graphics]{boxplot}
 #'@importFrom graphics boxplot
 #'@export
 #'@example
@@ -20,24 +20,18 @@ boxplot.Zi <- function(x, log1p =FALSE, ...)
   }
 }
 
-#'@name heatmap
-#'@title Draw a Heat Map
-#'
-#'@param ziObject
-#'@description draw a heatmap of a given ziObject, heatmap.Zi uses the output
-#'matrix (drawn structural zeros) to produce a heatmap. NA values are white
-#'
-#'@returns heatmap
-#'
-#'@example
-#'
-#'
-#'
-?heatmap
 heatmap <- function(x, ...) {
   UseMethod("heatmap")
 }
 
+#'@name heatmap
+#'@title Draw a Heat Map
+#'@param x 'Zi'-class object
+#'@description draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the output
+#'matrix (drawn structural zeros) to produce a heatmap. NA values are white
+#'@returns heatmap
+#'@export
+#'@example
 heatmap.Zi <- function(x, ...) {
   df <- as.data.frame(x@output)
   df <- df %>%
@@ -68,17 +62,19 @@ MissingValueHeatmap <- function(ZiObject) {
 
 #'@name cor
 #'@title Calculate weighted Pearson Correlation coeffiecients
-#'
 #'@description calculate the weighted pearson correlation coefficients of a count matrix
 #'of an Zi object taking weights for structural zeros into account
-#'
 #'@param x Zi-class object
+#'@importFrom stats cor
+#'@export
+#'
+#'
 
 setGeneric("cor", function(x, y = NULL, use = "everything",
                            method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
-?cor
 
-setMethod("cor", "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
+
+setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
   my_vector <- numeric()
   wx <- x@weights
   cx <- x@countmatrix

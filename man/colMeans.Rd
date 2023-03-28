@@ -2,9 +2,12 @@
 % Please edit documentation in R/inherited_functions.R
 \name{colMeans}
 \alias{colMeans}
+\alias{rowMeans}
 \title{Row and Column Means}
 \usage{
 \S4method{colMeans}{Zi}(x)
+
+\S4method{rowMeans}{Zi}(x)
 }
 \arguments{
 \item{x}{An Object of class "Zi", input matrix will be used to calculate the

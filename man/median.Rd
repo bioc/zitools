@@ -5,7 +5,7 @@
 \alias{median.Zi}
 \title{Median Value}
 \usage{
-median.Zi(x, na.rm = TRUE, ...)
+\method{median}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
 \item{x}{An Object of class "Zi", NA matrix will be extracted using this function}

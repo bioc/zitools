@@ -2,9 +2,12 @@
 % Please edit documentation in R/inherited_functions.R
 \name{colMedians}
 \alias{colMedians}
+\alias{rowMedians}
 \title{Calculates the median for each row (column) of a matrix-like object}
 \usage{
 \S4method{colMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
+
+\S4method{rowMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
 }
 \arguments{
 \item{x}{An Object of class "Zi", NA matrix will be extracted using this function}

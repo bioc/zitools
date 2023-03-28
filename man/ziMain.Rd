@@ -2,7 +2,7 @@
 % Please edit documentation in R/zi_function.R
 \name{ziMain}
 \alias{ziMain}
-\title{ziMain function}
+\title{ziMain}
 \usage{
 ziMain(
   datafile,

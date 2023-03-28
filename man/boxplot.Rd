@@ -3,12 +3,12 @@
 \name{boxplot}
 \alias{boxplot}
 \alias{boxplot.Zi}
-\title{Box Plots}
+\title{Create boxplots of a 'Zi'-class object}
 \usage{
-boxplot.Zi(x, log1p = FALSE, ...)
+\method{boxplot}{Zi}(x, log1p = FALSE, ...)
 }
 \arguments{
-\item{x}{ZiObject, result of the ziMain function}
+\item{x}{'Zi'-class object}
 
 \item{log1p}{logical, default = FALSE, if TRUE log(1+p) transformation takes
 place}
@@ -16,5 +16,8 @@ place}
 \item{...}{see boxplot documentation}
 }
 \description{
-Box Plots
+Create boxplots of a 'Zi'-class object.
+}
+\seealso{
+\link[graphics]{boxplot}
 }

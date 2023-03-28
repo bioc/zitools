@@ -1,3 +1,4 @@
+#'@export
 #'@name median
 #'@title Median Value
 #'
@@ -7,7 +8,7 @@
 #'@description computes the median of the NA matrix of an S4 "Zi" class object
 #'
 #'@returns median value
-#'
+#'@importFrom stats median
 #'@example
 
 median.Zi <- function(x, na.rm = TRUE, ...)
@@ -17,6 +18,7 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 
 
 
+#'@export
 #'@name colMedians
 #'
 #'@title Calculates the median for each row (column) of a matrix-like object
@@ -35,6 +37,7 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 #'
 #'@return           returns a numeric vector of length N(K)
 #'
+#'@importFrom MatrixGenerics colMedians
 #'@examples
 #'
 setMethod("colMedians", "Zi" , function(x,
@@ -43,7 +46,7 @@ setMethod("colMedians", "Zi" , function(x,
                                         na.rm = TRUE,
                                         ...,
                                         useNames = NA) {
-  MatrixGenerics::colMedians(
+  colMedians(
     x = x@output,
     rows = rows,
     cols = cols,
@@ -53,13 +56,17 @@ setMethod("colMedians", "Zi" , function(x,
   )
 })
 
+#'@name rowMedians
+#'@export
+#'@rdname colMedians
+#'@importFrom MatrixGenerics rowMedians
 setMethod("rowMedians", "Zi", function(x,
                                        rows = NULL,
                                        cols = NULL,
                                        na.rm = TRUE,
                                        ...,
                                        useNames = NA) {
-  MatrixGenerics::rowMedians(
+  rowMedians(
     x = x@output,
     rows = rows,
     cols = cols,
@@ -69,6 +76,7 @@ setMethod("rowMedians", "Zi", function(x,
   )
 })
 
+#'@export
 #'@name quantile
 #'@title Sample Quantiles
 #'
@@ -78,12 +86,14 @@ setMethod("rowMedians", "Zi", function(x,
 #'@description computes the quantiles of the NA matrix of an S4 "Zi" class object
 #'
 #'@returns quantiles
-#'
+#'@importFrom stats quantile
 #'@example
+
 quantile.Zi <- function(x, na.rm = TRUE, ...) {
   quantile(x@output, na.rm = na.rm, ...)
 }
 
+#'@export
 #'@name rowQuantiles
 #'@title Calculates quantiles for each row (column) of a matrix-like object
 #'
@@ -100,6 +110,7 @@ quantile.Zi <- function(x, na.rm = TRUE, ...) {
 #'@param  drop      If TRUE a vector is returned if J == 1.
 #'
 #'@description  Calculates quantiles for each row (column) of a matrix-like object
+#'@importFrom MatrixGenerics rowQuantiles
 #'
 #'@example
 
@@ -112,7 +123,7 @@ setMethod("rowQuantiles", "Zi", function(x,
                                          ...,
                                          useNames = NA,
                                          drop = TRUE) {
-  MatrixGenerics::rowQuantiles(
+  rowQuantiles(
     x = x@output,
     rows = rows,
     cols = cols,
@@ -124,6 +135,11 @@ setMethod("rowQuantiles", "Zi", function(x,
     drop = drop
   )
 })
+
+#'@name colQuantiles
+#'@export
+#'@rdname rowQuantiles
+#'@importFrom MatrixGenerics colQuantiles
 
 setMethod("colQuantiles", "Zi", function(x,
                                          rows = NULL,
@@ -134,7 +150,7 @@ setMethod("colQuantiles", "Zi", function(x,
                                          ...,
                                          useNames = NA,
                                          drop = TRUE) {
-  MatrixGenerics::colQuantiles(
+  colQuantiles(
     x = x@output,
     rows = rows,
     cols = cols,
@@ -146,14 +162,9 @@ setMethod("colQuantiles", "Zi", function(x,
     drop = drop
   )
 })
-setMethod("rowMeans", "Zi", function(x) {
-  rowmean <-
-    mapply(weighted.mean,
-           as.data.frame(t(x@countmatrix)),
-           as.data.frame(t(x@weights), USE.NAMES = TRUE))
-  return(rowmean)
-})
 
+
+#'@export
 #'@name mean
 #'@title Arithmetic Mean
 #'@param x  An Object of class "Zi", input matrix will be used to calculate the
@@ -174,6 +185,7 @@ mean.Zi <- function(zi_result, ...) {
   return(mean)
 }
 
+#'@export
 #'@name colMeans
 #'@title Row and Column Means
 #'
@@ -196,6 +208,10 @@ setMethod("colMeans", "Zi", function(x) {
   return(colmean)
 })
 
+#'@name rowMeans
+#'@export
+#'@rdname colMeans
+#'
 setMethod("rowMeans", "Zi", function(x) {
   rowmean <-
     mapply(weighted.mean,
@@ -205,6 +221,7 @@ setMethod("rowMeans", "Zi", function(x) {
 })
 
 
+#'@export
 #'@name sd
 #'@title Standard Deviation
 #'@param x  An Object of class "Zi", input matrix will be used to calculate the
@@ -213,16 +230,17 @@ setMethod("rowMeans", "Zi", function(x) {
 #'
 #'@description  calculate the standard deviation of zero inflated data taking weights
 #'for structural zeros into account
-#'
+#'@importFrom matrixStats weightedSd
 #'@retuns value
 #'@example
 
 setMethod("sd", "Zi", function(x) {
-  sd <- matrixStats::weightedSd(x = x@countmatrix,
+  sd <- weightedSd(x = x@countmatrix,
                                 w = x@weights)
   return(sd)
 })
 
+#'@export
 #'@name rowSds
 #'@title Row and Column Standard Deviations
 #'
@@ -232,6 +250,8 @@ setMethod("sd", "Zi", function(x) {
 #'@description calculate row and column sds for matrix like objects
 #'
 #'@returns a vector of row/col length
+#'@importFrom matrixStats weightedSd
+#'@importFrom MatrixGenerics rowSds
 #'@example
 
 setMethod("rowSds", "Zi", function(x) {
@@ -239,6 +259,13 @@ setMethod("rowSds", "Zi", function(x) {
          as.data.frame(t(x@countmatrix)),
          as.data.frame(t(x@weights), USE.NAMES = TRUE))
 })
+
+#'@name colSds
+#'@export
+#'@rdname rowSds
+#'@importFrom matrixStats weightedSd
+#'@importFrom MatrixGenerics colSds
+#'
 setMethod("colSds", "Zi", function(x) {
   mapply(
     weightedSd,
@@ -247,6 +274,7 @@ setMethod("colSds", "Zi", function(x) {
   )
 })
 
+#'@export
 #'@name var
 #'@title Variance
 #'@param x  An Object of class "Zi", input matrix will be used to calculate the
@@ -257,14 +285,16 @@ setMethod("colSds", "Zi", function(x) {
 #'for structural zeros into account
 #'
 #'@retuns value
+#'@importFrom matrixStats weightedVar
 #'@example
 
 setMethod("var", "Zi", function(x) {
-  var <- matrixStats::weightedVar(x = x@countmatrix,
+  var <- weightedVar(x = x@countmatrix,
                                   w = x@weights)
   return(var)
 })
 
+#'@export
 #'@name rowVars
 #'@title Row and Column Variances
 #'
@@ -274,6 +304,8 @@ setMethod("var", "Zi", function(x) {
 #'@description calculate row and column variances  for matrix like objects
 #'
 #'@returns a vector of row/col length
+#'@importFrom matrixStats weightedVar
+#'@importFrom MatrixGenerics rowVars
 #'@example
 
 setMethod("rowVars", "Zi", function(x) {
@@ -281,6 +313,13 @@ setMethod("rowVars", "Zi", function(x) {
          as.data.frame(t(x@countmatrix)),
          as.data.frame(t(x@weights), USE.NAMES = TRUE))
 })
+
+#'@name colVars
+#'@export
+#'@rdname rowVars
+#'@importFrom matrixStats weightedVar
+#'@importFrom MatrixGenerics colVars
+
 setMethod("colVars", "Zi", function(x) {
   mapply(
     weightedVar,
@@ -290,6 +329,7 @@ setMethod("colVars", "Zi", function(x) {
 })
 
 
+#'@export
 #'@name weighted.mean
 #'@title Weighted Arithmetic Mean
 #'
@@ -301,6 +341,7 @@ setMethod("colVars", "Zi", function(x) {
 #'
 #'@description compute a weighted mean
 #'@returns value
+#'@importFrom stats weighted.mean
 #'@example
 
 
@@ -310,6 +351,7 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 })
 
 
+#'@export
 #'@name rowWeightedMeans
 #'@title Calculates the weighted mean for each row (column) of a matrix-like object
 #'
@@ -321,6 +363,8 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 #'
 #'@description Calculates the weighted mean for each row (column) of a matrix-like object.
 #'@returns a numeric vector of length N(K)
+#'@importFrom stats weighted.mean
+#'@importFrom MatrixGenerics rowWeightedMeans
 #'@example
 #'
 setMethod("rowWeightedMeans", "Zi", function(x, w, ...) {
@@ -328,6 +372,12 @@ setMethod("rowWeightedMeans", "Zi", function(x, w, ...) {
          as.data.frame(t(x@countmatrix)),
          as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
 })
+
+#'@name colWeightedMeans
+#'@export
+#'@rdname rowWeightedMeans
+#'@importFrom stats weighted.mean
+#'@importFrom MatrixGenerics colWeightedMeans
 
 setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
   mapply(
@@ -338,9 +388,10 @@ setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
 
 
 #setMethod("weightedSd", "Zi", function(x, w, ...) {
- # sqrt(weightedVar(x=x,w=w,...))
+  #sqrt(weightedVar(x=x,w=w,...))
 #})
 
+#'@export
 #'@name rowWeightedSds
 #'@title Calculates the weighted mean for each row (column) of a matrix-like object
 #'
@@ -352,12 +403,22 @@ setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
 #'
 #'@description Calculates the row weighted mean for each row (column) of a matrix-like object.
 #'@returns a numeric vector of length N(K)
+#'@importFrom matrixStats weightedSd
+#'@importFrom MatrixGenerics rowWeightedSds
 #'@example
+
 setMethod("rowWeightedSds", "Zi", function(x, w, ...) {
   mapply(weightedSd,
          as.data.frame(t(x@countmatrix)),
          as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
 })
+
+#'@name colWeightedSds
+#'@export
+#'@rdname rowWeightedSds
+#'@importFrom matrixStats weightedSd
+#'@importFrom MatrixGenerics colWeightedSds
+
 setMethod("colWeightedSds", "Zi", function(x, w, ...) {
   mapply(
     weightedSd,
@@ -366,6 +427,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, ...) {
   )
 })
 
+#'@export
 #'@name weightedVar
 #'@title Weighted Variance and weighted Standard Deviation
 #'
@@ -377,21 +439,44 @@ setMethod("colWeightedSds", "Zi", function(x, w, ...) {
 #'@description Computes a weighted variance / standard deviation of a numeric
 #'vector or across rows or columns of a matrix
 #'@returns a numeric scalar
+#'@importFrom matrixStats weightedVar
 #'@example
 
 setGeneric("weightedVar", function(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL,
                                    ...) standardGeneric("weightedVar"))
 
 setMethod("weightedVar", "Zi", function(x, w, ...) {
-  matrixStats::weightedVar(x = x@countmatrix,
+  weightedVar(x = x@countmatrix,
               w = w * x@weights)
 })
 
+#'@export
+#'@name rowWeightedVars
+#'@title Calculates the weighted variance for each row (column) of a matrix-like object
+#'
+#'@param x An Object of class "Zi", input matrix will be used to calculate the
+#'row weighted variances taking structural zero weights into account
+#'@param w a numerical vector of weight the same length as x giving the weights
+#'to use for elements of x
+#'@param ...
+#'
+#'@description Calculates the row weighted variances for each row (column) of a matrix-like object.
+#'@returns a numeric vector of length N(K)
+#'@importFrom matrixStats weightedVar
+#'@importFrom MatrixGenerics rowWeightedVars
+#'@example
 setMethod("rowWeightedVars", "Zi", function(x, w, ...) {
   mapply(weightedVar,
          as.data.frame(t(x@countmatrix)),
          as.data.frame((t(x@weights) * w), USE.NAMES = TRUE))
 })
+
+#'@name colWeightedVars
+#'@export
+#'@rdname rowWeightedVars
+#'@importFrom matrixStats weightedVar
+#'@importFrom MatrixGenerics colWeightedVars
+
 setMethod("colWeightedVars", "Zi", function(x, w, ...) {
   mapply(
     weightedVar,

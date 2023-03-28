@@ -2,9 +2,12 @@
 % Please edit documentation in R/helper.R
 \name{zi_to_deseq2}
 \alias{zi_to_deseq2}
-\title{Convert zi data to DESeq2 dds object}
+\title{Convert a 'Zi'-class object to a DESeq2 dds object}
+\usage{
+zi_to_deseq2(ZiObject, design, colData, ...)
+}
 \arguments{
-\item{zi}{Zi-class object}
+\item{ZiObject}{'Zi'-class object}
 
 \item{design}{A formula which specifies the design of the experiment, taking
 the form formula(~ x + y + z). That is, a formula with right-hand side only.
@@ -13,11 +16,12 @@ in the formula (e.g. z) for presenting results (fold changes, etc.) and plotting
 When considering your specification of experimental design, you will want to re-order the
 levels so that the NULL set is first.}
 
-\item{colData}{for matrix input: a DataFrame or data.frame with at least a single
-column. Rows of colData correspond to columns of countData}
+\item{colData}{if the datafile of the 'Zi'-class object is a matrix: a
+DataFrame or data.frame with at least a single column. Rows of colData
+correspond to columns of countData}
 }
 \description{
-Zi data is converted to a DESeqDataSet object, which can be used for
-DESeq2 Analysis. Both, weight and count matrices will be stored in assays of
-the DESeqDataSet
+A 'Zi'-class object is converted to a DESeqDataSet object, which
+can be used for DESeq2 analysis. Both, weight and count matrices will be
+stored in assays of the DESeqDataSet.
 }

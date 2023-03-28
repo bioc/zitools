@@ -2,9 +2,22 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowQuantiles}
 \alias{rowQuantiles}
+\alias{colQuantiles}
 \title{Calculates quantiles for each row (column) of a matrix-like object}
 \usage{
 \S4method{rowQuantiles}{Zi}(
+  x,
+  rows = NULL,
+  cols = NULL,
+  probs = seq(from = 0, to = 1, by = 0.25),
+  na.rm = TRUE,
+  type = 7L,
+  ...,
+  useNames = NA,
+  drop = TRUE
+)
+
+\S4method{colQuantiles}{Zi}(
   x,
   rows = NULL,
   cols = NULL,
