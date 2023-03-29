@@ -8,11 +8,13 @@
 #'@param feature character string characterizing the rows, e.g. gene, OTU
 #'
 #'@returns a dataframe (long format), 3 columns: count, sample, "feature"
+#'@importFrom tibble rownames_to_column
+#'@importFrom tidyr gather
 #'
 reshape_zi <- function(mtx, feature = "") {
   zi_long <- as.data.frame(mtx) %>%
     rownames_to_column(var = feature) %>%
-    tidyr::gather(key = "sample", value = "count", 1:ncol(mtx) + 1)
+    gather(key = "sample", value = "count", 1:ncol(mtx) + 1)
   return(zi_long)
 }
 
@@ -28,7 +30,13 @@ reshape_zi <- function(mtx, feature = "") {
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns a dataframe(long format), columns: count, sample, "feature",
-#'
+#'@importFrom pscl predict
+#'@importFrom dplyr bind_cols
+#'@importFrom dplyr mutate
+#'@importFrom stats rbinom
+#'@importFrom dplyr filter
+#'@importFrom dplyr sample_n
+#'@importFrom tidyr replace_na
 
 omit_str_zero <- function(zi, zi_input, feature = "") {
   zi_prediction <-
@@ -84,13 +92,24 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns matrix of the calculated weights
+#'@importFrom pscl predict
+#'@importFrom dplyr mutate
+#'@importFrom dplyr case_when
+#'@importFrom stats dpois
+#'@importFrom VGAM dzipois
+#'@importFrom stats dnbinom
+#'@importFrom VGAM dzinegbin
+#'@importFrom dplyr select
+#'@importFrom tidyr spread
+#'@importFrom tibble column_to_rownames
 #'
-#'#function to calculate weights - formula: w=(1-pi)*fnb/fzinb
+#'
+#function to calculate weights - formula: w=(1-pi)*fnb/fzinb
 calcWeights <-
   function(zi_input,
            zi,
            feature,
-           dist = c("poisson", "negbin", "geometric")) {
+           dist) {
     df <- data.frame(zi_input, pstr0 = predict(zi, type = "zero"))
     df <- mutate(df, pstr0 = case_when(count != 0 ~ 0, TRUE ~ pstr0))
     if (dist == "poisson") {
@@ -195,8 +214,11 @@ subset_mtx <- function(mtx)
 #'
 #'@returns list including the input matrix, the zero inflation model, the matrix
 #'where predicted structural zeros are replaced with NA, and the weight matrix
+#'@importFrom pscl zeroinfl
+#'@importFrom tidyr spread
+#'@importFrom tibble column_to_rownames
 #'
-zi_core <- function(input, feature = "",  formula, dist = c("poisson", "negbin", "geometric"), link = c("logit", "probit", "cloglog", "cauchit", "log"), ...)
+zi_core <- function(input, feature = "",  formula, dist, link, ...)
 {
   matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)

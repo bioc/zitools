@@ -20,7 +20,10 @@ Imports: phyloseq,
           S4Vectors, 
           stats, 
           VGAM, 
-          matrixStats
+          matrixStats, 
+          tidyr,
+          tibble,
+          dplyr
 Suggests: 
     boot,
     naniar,

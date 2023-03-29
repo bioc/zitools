@@ -2,7 +2,7 @@
 #'@name median
 #'@title Median Value
 #'
-#'@param x An Object of class "Zi", NA matrix will be extracted using this function
+#'@param x 'Zi'-class object, output matrix will be extracted using this function
 #'@param na.rm logical, default = TRUE, NAs are excluded
 #'
 #'@description computes the median of the NA matrix of an S4 "Zi" class object

@@ -2,11 +2,11 @@
 #'
 #'Objects of this class store all the results of the ZiMain function to continue
 #'zero inflated data analysis
-#'@slot datafile a matrix, phyloseq or summarized experiment object.
-#'@slot countmatrix matrix. The design matrix, features as rows, samples as columns
-#'@slot ZiModel list. The result of fitting a zero inflated model using zeroinfl of
-#'the pscl package
-#'@slot output matrix. The matrix where predicted structural zeros are ommitted
+#'@slot datafile a matrix, phyloseq or SummarizedExperiment object.
+#'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
+#'@slot ZiModel list. The result of fitting a zero inflated model using
+#'pscl::zeroinfl
+#'@slot output matrix. The matrix where predicted structural zeros are omitted
 #'and stored as NA values
 #'@slot weights matrix. A matrix containing weights for zero counts
 #'
@@ -26,13 +26,11 @@ setClass(
 #'@name ziMain
 #'
 #'@title  ziMain
-#'
-#'
-#'
-#'@param datafile matrix (rows = features, columns = samples), phyloseq object or
-#'SummarizedExperiment object
+#'@param datafile phyloseq object, SummarizedExperiment object, or matrix (
+#'rows=features, columns=samples)
 #'@param feature "gene", "OTU", "phylum", etc.
-#'@param formula  formula to fit the model response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU
+#'@param formula  formula to fit the zero inflated model
+#'response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU
 #'@param dist = distribution, either poisson, negative binomial = negbin or geometric
 #'@param link = link function, either logit, probit, cloglog, cauchit
 #'@param zeroRows.rm = logical, TRUE if rows that only contain zeros should be removed
@@ -55,15 +53,25 @@ setClass(
 #'containing the calculated weights
 #'
 #'@export
-#'@example
+#'@examples
+#'zero inflated matrix
+#'n <- 1000
+#'male <- sample(c(0,1), size = n, replace = TRUE)
+#'z <- rbinom(n = n, size = 1, prob = 0.3)
+#' mean(z == 0)
+#'y_sim <- ifelse(z == 0, 0,
+#'                rnbinom(n = n,
+#'                        mu = exp(1.3 + 1.5 * (male == 1)),
+#'                        size = 2))
+#'mtx <- matrix(y_sim, 100, 10)
 #'
 #'
 
 setGeneric("ziMain", function(datafile,
-                              feature = "",
-                              formula,
-                              dist = c("poisson", "negbin", "geometric"),
-                              link = c("logit", "probit", "cloglog", "cauchit",                                  "log"),
+                              feature = "feature",
+                              formula = count ~ sample + feature,
+                              dist = "negbin",
+                              link = "logit",
                               zeroRows.rm = FALSE,
                               ...)
 {
@@ -122,14 +130,17 @@ setGeneric("ziMain", function(datafile,
   return(result)
 })
 
+
+
+#'@importFrom phyloseq otu_table
 setMethod(
   "ziMain",
   signature = c("phyloseq"),
   definition = function(datafile,
-                        feature = "",
-                        formula,
-                        dist = c("poisson", "negbin", "geometric"),
-                        link = c("logit", "probit", "cloglog", "cauchit", "log"),
+                        feature = "feature",
+                        formula = count ~ sample + feature,
+                        dist = "negbin",
+                        link = "logit",
                         zeroRows.rm = FALSE,
                         ...) {
     matrix <- as.matrix(otu_table(datafile))
@@ -156,14 +167,15 @@ setMethod(
   }
 )
 
+#'@importFrom SummarizedExperiment assays
 setMethod(
   "ziMain",
   signature = c("SummarizedExperiment"),
   definition = function(datafile,
-                        feature = "",
-                        formula,
-                        dist = c("poisson", "negbin", "geometric"),
-                        link = c("logit", "probit", "cloglog", "cauchit", "log"),
+                        feature = "feature",
+                        formula = count ~ sample + feature,
+                        dist = "negbin",
+                        link = "logit",
                         zeroRows.rm = FALSE,
                         ...) {
     matrix <- as.matrix(assays(datafile)$counts)

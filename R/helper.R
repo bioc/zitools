@@ -4,6 +4,9 @@
 #'@description Replace the OTU table of a phyloseq object with an OTU table
 #'where predicted structural zeros are replaced with NA
 #'@returns a "phyloseq"-class object
+#'@importFrom phyloseq otu_table
+#'@importFrom phyloseq otu_table<-
+#'@importFrom phyloseq taxa_are_rows
 #'@example
 #'@export
 
@@ -193,6 +196,10 @@ setMethod("t", signature = "Zi", definition = function(x){
 #'@param colData if the datafile of the 'Zi'-class object is a matrix: a
 #'DataFrame or data.frame with at least a single column. Rows of colData
 #'correspond to columns of countData
+#'@importFrom phyloseq phyloseq_to_deseq2
+#'@importFrom DESeq2 DESeqDataSet
+#'@importFrom DESeq2 DESeqDataSetFromMatrix
+#'@importFrom SummarizedExperiment assays<-
 #'
 
 zi_to_deseq2 <- function(ZiObject, design, colData, ... ){

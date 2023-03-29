@@ -11,14 +11,14 @@ zero inflated data analysis
 \section{Slots}{
 
 \describe{
-\item{\code{datafile}}{a matrix, phyloseq or summarized experiment object.}
+\item{\code{datafile}}{a matrix, phyloseq or SummarizedExperiment object.}
 
-\item{\code{countmatrix}}{matrix. The design matrix, features as rows, samples as columns}
+\item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
 
-\item{\code{ZiModel}}{list. The result of fitting a zero inflated model using zeroinfl of
-the pscl package}
+\item{\code{ZiModel}}{list. The result of fitting a zero inflated model using
+pscl::zeroinfl}
 
-\item{\code{output}}{matrix. The matrix where predicted structural zeros are ommitted
+\item{\code{output}}{matrix. The matrix where predicted structural zeros are omitted
 and stored as NA values}
 
 \item{\code{weights}}{matrix. A matrix containing weights for zero counts}

@@ -6,15 +6,10 @@
 \usage{
 \S4method{cor}{Zi,ANY}(x, y = NULL, use = "everything", method = "pearson")
 
-cor(
-  x,
-  y = NULL,
-  use = "everything",
-  method = c("pearson", "kendall", "spearman")
-)
+\S4method{cor}{Zi,ANY}(x, y = NULL, use = "everything", method = "pearson")
 }
 \arguments{
-\item{x}{Zi-class object}
+\item{x}{'Zi'-class object}
 }
 \description{
 calculate the weighted pearson correlation coefficients of a count matrix

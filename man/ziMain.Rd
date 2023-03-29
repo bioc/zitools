@@ -6,21 +6,22 @@
 \usage{
 ziMain(
   datafile,
-  feature = "",
-  formula,
-  dist = c("poisson", "negbin", "geometric"),
-  link = c("logit", "probit", "cloglog", "cauchit", "log"),
+  feature = "feature",
+  formula = count ~ sample + feature,
+  dist = "negbin",
+  link = "logit",
   zeroRows.rm = FALSE,
   ...
 )
 }
 \arguments{
-\item{datafile}{matrix (rows = features, columns = samples), phyloseq object or
-SummarizedExperiment object}
+\item{datafile}{phyloseq object, SummarizedExperiment object, or matrix (
+rows=features, columns=samples)}
 
 \item{feature}{"gene", "OTU", "phylum", etc.}
 
-\item{formula}{formula to fit the model response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU}
+\item{formula}{formula to fit the zero inflated model
+response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU}
 
 \item{dist}{= distribution, either poisson, negative binomial = negbin or geometric}
 
@@ -44,4 +45,18 @@ Predicted probabilities given that a zero in the count matrix  is a
 structural zero are used to draw structural zeros and replace them with NA. Further,
 weights for all zero counts are calculated given the following formula:
 w=...
+}
+\examples{
+zero inflated matrix
+n <- 1000
+male <- sample(c(0,1), size = n, replace = TRUE)
+z <- rbinom(n = n, size = 1, prob = 0.3)
+mean(z == 0)
+y_sim <- ifelse(z == 0, 0,
+               rnbinom(n = n,
+                       mu = exp(1.3 + 1.5 * (male == 1)),
+                       size = 2))
+mtx <- matrix(y_sim, 100, 10)
+
+
 }

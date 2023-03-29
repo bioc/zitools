@@ -15,8 +15,6 @@ calcWeights(zi_input, zi, feature, dist = c("poisson", "negbin", "geometric"))
 }
 \value{
 matrix of the calculated weights
-
-#function to calculate weights - formula: w=(1-pi)*fnb/fzinb
 }
 \description{
 the posterior probability that a given count y arises from the

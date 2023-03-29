@@ -4,7 +4,7 @@
 \alias{var}
 \title{Variance}
 \usage{
-\S4method{var}{Zi,ANY}(x)
+\S4method{var}{Zi}(x)
 }
 \arguments{
 \item{x}{An Object of class "Zi", input matrix will be used to calculate the

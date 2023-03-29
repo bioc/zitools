@@ -8,7 +8,7 @@
 \method{median}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{An Object of class "Zi", NA matrix will be extracted using this function}
+\item{x}{'Zi'-class object, output matrix will be extracted using this function}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 }

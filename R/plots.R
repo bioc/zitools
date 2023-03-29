@@ -60,20 +60,19 @@ MissingValueHeatmap <- function(ZiObject) {
                  scale = "none", margins = c(11,0), cexCol=1)
 }
 
-#'@name cor
-#'@title Calculate weighted Pearson Correlation coeffiecients
-#'@description calculate the weighted pearson correlation coefficients of a count matrix
-#'of an Zi object taking weights for structural zeros into account
-#'@param x Zi-class object
-#'@importFrom stats cor
-#'@export
-#'
-#'
+
+
 
 setGeneric("cor", function(x, y = NULL, use = "everything",
                            method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
 
-
+#'@name cor
+#'@title Calculate weighted Pearson Correlation coeffiecients
+#'@description calculate the weighted pearson correlation coefficients of a count matrix
+#'of an Zi object taking weights for structural zeros into account
+#'@param x 'Zi'-class object
+#'@importFrom stats cor
+#'@export
 setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
   my_vector <- numeric()
   wx <- x@weights
