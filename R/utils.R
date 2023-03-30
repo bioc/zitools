@@ -10,7 +10,7 @@
 #'@returns a dataframe (long format), 3 columns: count, sample, "feature"
 #'@importFrom tibble rownames_to_column
 #'@importFrom tidyr gather
-#'
+#'@noRd
 reshape_zi <- function(mtx, feature = "") {
   zi_long <- as.data.frame(mtx) %>%
     rownames_to_column(var = feature) %>%
@@ -30,13 +30,14 @@ reshape_zi <- function(mtx, feature = "") {
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns a dataframe(long format), columns: count, sample, "feature",
-#'@importFrom pscl predict
+#'@import pscl
 #'@importFrom dplyr bind_cols
 #'@importFrom dplyr mutate
 #'@importFrom stats rbinom
 #'@importFrom dplyr filter
 #'@importFrom dplyr sample_n
 #'@importFrom tidyr replace_na
+#'@noRd
 
 omit_str_zero <- function(zi, zi_input, feature = "") {
   zi_prediction <-
@@ -92,7 +93,7 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns matrix of the calculated weights
-#'@importFrom pscl predict
+#'@import pscl
 #'@importFrom dplyr mutate
 #'@importFrom dplyr case_when
 #'@importFrom stats dpois
@@ -102,7 +103,7 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'@importFrom dplyr select
 #'@importFrom tidyr spread
 #'@importFrom tibble column_to_rownames
-#'
+#'@noRd
 #'
 #function to calculate weights - formula: w=(1-pi)*fnb/fzinb
 calcWeights <-
@@ -166,7 +167,7 @@ calcWeights <-
 #'
 #'@param mtx count matrix
 #'@returns randomly sorted matrix
-#'
+#'@noRd
 preprocess_mtx <- function(mtx) {
   mtx <- mtx[rowSums(mtx[]) > 0,]
   seed <- .Random.seed
@@ -186,7 +187,7 @@ preprocess_mtx <- function(mtx) {
 #'@param mtx matrix to be subsetted
 #'
 #'@returns list containing the subsets
-#'
+#'@noRd
 subset_mtx <- function(mtx)
 {
   a <- round(nrow(mtx)*ncol(mtx)/5000) # number of blocks
@@ -201,7 +202,7 @@ subset_mtx <- function(mtx)
   return(list_subset)}
 
 #'@name zi_core
-#'@title
+#'
 #'
 #'@description core function that is applied to the subsets of the count matrix
 #'
@@ -214,9 +215,10 @@ subset_mtx <- function(mtx)
 #'
 #'@returns list including the input matrix, the zero inflation model, the matrix
 #'where predicted structural zeros are replaced with NA, and the weight matrix
-#'@importFrom pscl zeroinfl
+#'@import pscl
 #'@importFrom tidyr spread
 #'@importFrom tibble column_to_rownames
+#'@noRd
 #'
 zi_core <- function(input, feature = "",  formula, dist, link, ...)
 {

@@ -23,7 +23,8 @@ Imports: phyloseq,
           matrixStats, 
           tidyr,
           tibble,
-          dplyr
+          dplyr,
+          DESeq2
 Suggests: 
     boot,
     naniar,

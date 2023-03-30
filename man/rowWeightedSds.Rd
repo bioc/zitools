@@ -40,3 +40,7 @@ a numeric vector of length N(K)
 \description{
 Calculates the row weighted mean for each row (column) of a matrix-like object.
 }
+\examples{
+rowWeightedSds(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
+colWeightedSds(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
+}

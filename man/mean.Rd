@@ -13,7 +13,14 @@
 \item{x}{An Object of class "Zi", input matrix will be used to calculate the
 mean taking structural zero weights into account}
 }
+\value{
+value
+}
 \description{
 calculate the arithmetic mean of zero inflated data taking weights
 for structural zeros into account
+}
+\examples{
+mean(Zi)
+
 }

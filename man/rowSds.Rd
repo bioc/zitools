@@ -19,3 +19,7 @@ a vector of row/col length
 \description{
 calculate row and column sds for matrix like objects
 }
+\examples{
+rowSds(Zi)
+colSds(Zi)
+}

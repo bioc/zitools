@@ -9,3 +9,7 @@
 \description{
 Matrix Transpose
 }
+\examples{
+t(Zi)
+
+}

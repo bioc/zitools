@@ -21,3 +21,7 @@ a numeric scalar
 Computes a weighted variance / standard deviation of a numeric
 vector or across rows or columns of a matrix
 }
+\examples{
+weight <- runif(length(Zi@countmatrix), 0.1, 1)
+weighted.mean(Zi, w= weight)
+}

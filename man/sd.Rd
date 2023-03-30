@@ -12,7 +12,13 @@ standard deviation taking structural zero weights into account}
 
 \item{...}{}
 }
+\value{
+value
+}
 \description{
 calculate the standard deviation of zero inflated data taking weights
 for structural zeros into account
+}
+\examples{
+sd(Zi)
 }

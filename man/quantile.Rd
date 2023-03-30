@@ -18,3 +18,6 @@ quantiles
 \description{
 computes the quantiles of the NA matrix of an S4 "Zi" class object
 }
+\examples{
+quantile(Zi)
+}

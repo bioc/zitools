@@ -7,7 +7,6 @@
 #'@importFrom phyloseq otu_table
 #'@importFrom phyloseq otu_table<-
 #'@importFrom phyloseq taxa_are_rows
-#'@example
 #'@export
 
 replace_phyloseq <- function(ZiObject)

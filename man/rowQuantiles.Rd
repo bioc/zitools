@@ -53,3 +53,7 @@ attributes of result are set.}
 \description{
 Calculates quantiles for each row (column) of a matrix-like object
 }
+\examples{
+rowQuantile(Zi)
+colQuantiles(Zi)
+}

@@ -13,10 +13,15 @@
 \item{log1p}{logical, default = FALSE, if TRUE log(1+p) transformation takes
 place}
 
-\item{...}{see boxplot documentation}
+\item{...}{see \link[graphics]{boxplot.default}}
 }
 \description{
 Create boxplots of a 'Zi'-class object.
+}
+\examples{
+boxplot(Zi, log1p = TRUE)
+
+
 }
 \seealso{
 \link[graphics]{boxplot}

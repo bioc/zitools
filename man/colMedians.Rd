@@ -3,14 +3,16 @@
 \name{colMedians}
 \alias{colMedians}
 \alias{rowMedians}
-\title{Calculates the median for each row (column) of a matrix-like object}
+\title{Calculates the median for each row (column) of the output matrix
+of a 'Zi'-class object}
 \usage{
 \S4method{colMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
 
 \S4method{rowMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
 }
 \arguments{
-\item{x}{An Object of class "Zi", NA matrix will be extracted using this function}
+\item{x}{'Zi'-class object, the output matrix will be extracted
+priot to calculating the median}
 
 \item{rows, }{A vector indicating the subset of rows (and/or columns) to operate}
 
@@ -18,18 +20,21 @@
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 
-\item{...}{Additional arguments passed to specific methods}
+\item{...}{\link[MatrixGenerics:rowMedians]{MatrixGenerics::rowMedians}}
 
 \item{useNames}{If NA, the default behavior of the function about naming support
 is remained. If FALSE, no naming support is done. Else if TRUE, names
 attributes of result are set.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      returns a numeric vector of length N(K)
-}\if{html}{\out{</div>}}
+returns a numeric vector of length N(K)
 }
 \description{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ Calculates the median for each row (column) of a matrix-like object.
-             Prior to calculating the median, the NA matrix is extracted
-}\if{html}{\out{</div>}}
+Calculates the median for each row (column) of the output matrix (NxK)
+of a 'Zi'-class object
+}
+\examples{
+colMedians(Zi)
+rowMedians(Zi)
+
 }

@@ -26,35 +26,51 @@ setClass(
 #'@name ziMain
 #'
 #'@title  ziMain
-#'@param datafile phyloseq object, SummarizedExperiment object, or matrix (
-#'rows=features, columns=samples)
-#'@param feature "gene", "OTU", "phylum", etc.
+#'@param datafile phyloseq object, SummarizedExperiment object, or matrix (rows
+#'=features, columns=samples)
+#'@param feature "feature", "gene", "OTU", "phylum", etc.
 #'@param formula  formula to fit the zero inflated model
-#'response ~ predictor1 + predictor2 + ..., default = count ~ sample+OTU
-#'@param dist = distribution, either poisson, negative binomial = negbin or geometric
-#'@param link = link function, either logit, probit, cloglog, cauchit
+#'y ~ x1 + x2 + ..., default = count ~ sample + feature.
+#'A different set of regressors can be specified using y ~ x1 +x2 + ...|z1 + z2 + ...
+#'where the first part describes the count data model and the second part
+#'describes the zero inflation model
+#'@param dist = distribution, either poisson, negative binomial ("negbin") or
+#'geometric
+#'@param link = link function, either "logit", "probit", "cloglog", "cauchit"
 #'@param zeroRows.rm = logical, TRUE if rows that only contain zeros should be removed
 #'or not (they are removed to fit a zero inflated model and will be added afterwards
 #'count matrix per default = 0 and weights = 1)
+#'@param ... additional parameters to describe the model, see \link[pscl]{zeroinfl}
 #'
+#'@description The input datafile of the ziMain function is either a phyloseq
+#'object, SummarizedExperiment object or count matrix. Initially, the count matrix
+#'of the phyloseq or SummarizedExperiment object is extracted and divided into
+#'blocks of around 5000 count values. ?Further?, a zero inflation model (either
+#'Poisson or negative binomial distribution) is fitted to the data. Using the
+#'fitted zero inflated model, probabilities given that a zero in the count matrix
+#'is a structural zero are predicted. Those probabilities are used to draw zeros
+#'from a binomial distribution and replace them with NA. Further, weights for
+#'all zero counts are calculated given the following formula:
+#'\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
+#'(Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
 #'
-#'@description The ziMain function uses a matrix, phyloseq, or SummarizedExperiment
-#'object, extracts the count matrix to fit a zero inflation model to the data.
-#'The matrix is divided into blocks of around 5000 count values to improve run time.
-#'Predicted probabilities given that a zero in the count matrix  is a
-#'structural zero are used to draw structural zeros and replace them with NA. Further,
-#'weights for all zero counts are calculated given the following formula:
-#'w=...
+#'The result of the ziMain function can be used to analyze zero inflated count data.
 #'
-#'
-#'@returns S4 list with slots for the input object, the extracted count matrix if
-#'the input is not a matrix, the results of the fitted zero inflation model, a
-#'matrix where the predicted structural zeros are replaced with NA, a matrix
-#'containing the calculated weights
-#'
+#'@returns 'Zi'-class object
+#'@slot datafile a matrix, phyloseq or SummarizedExperiment object.
+#'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
+#'@slot ZiModel list. The result of fitting a zero inflated model using
+#'pscl::zeroinfl
+#'@slot output matrix. The matrix where predicted structural zeros are omitted
+#'and stored as NA values
+#'@slot weights matrix. A matrix containing weights for zero counts
+#'@references
+#'Van den Berge, K., Perraudeau, F., Soneson, C. et al. Observation weights
+#'unlock bulk RNA-seq tools for zero inflation and single-cell applications.
+#'Genome Biol 19, 24 (2018). https://doi.org/10.1186/s13059-018-1406-4
 #'@export
 #'@examples
-#'zero inflated matrix
+#'simulate count matrix
 #'n <- 1000
 #'male <- sample(c(0,1), size = n, replace = TRUE)
 #'z <- rbinom(n = n, size = 1, prob = 0.3)
@@ -64,6 +80,8 @@ setClass(
 #'                        mu = exp(1.3 + 1.5 * (male == 1)),
 #'                        size = 2))
 #'mtx <- matrix(y_sim, 100, 10)
+#'ziMain function
+#'Zi <- ziMain(mtx)
 #'
 #'
 

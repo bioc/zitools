@@ -4,7 +4,7 @@
 \alias{var}
 \title{Variance}
 \usage{
-\S4method{var}{Zi}(x)
+\S4method{var}{Zi,ANY}(x)
 }
 \arguments{
 \item{x}{An Object of class "Zi", input matrix will be used to calculate the
@@ -12,7 +12,13 @@ variance taking structural zero weights into account}
 
 \item{...}{}
 }
+\value{
+value
+}
 \description{
 calculate the variance of zero inflated data taking weights
 for structural zeros into account
+}
+\examples{
+var(Zi)
 }

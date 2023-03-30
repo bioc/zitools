@@ -9,6 +9,8 @@
 }
 \arguments{
 \item{x}{'Zi'-class object}
+
+\item{...}{see \link[stats]{heatmap}}
 }
 \value{
 heatmap
@@ -16,4 +18,7 @@ heatmap
 \description{
 draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the output
 matrix (drawn structural zeros) to produce a heatmap. NA values are white
+}
+\examples{
+heatmap(Zi)
 }

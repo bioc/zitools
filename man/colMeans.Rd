@@ -19,3 +19,7 @@ a vector of row/col length
 \description{
 calculate row and column means for matrix like objects
 }
+\examples{
+colMeans(Zi)
+rowMeans(Zi)
+}

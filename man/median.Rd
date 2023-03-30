@@ -11,10 +11,15 @@
 \item{x}{'Zi'-class object, output matrix will be extracted using this function}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
+
+\item{...}{see \link[stats]{median.default}}
 }
 \value{
 median value
 }
 \description{
-computes the median of the NA matrix of an S4 "Zi" class object
+Computes the median of the output matrix of an 'Zi'-class object
+}
+\examples{
+median(Zi)
 }

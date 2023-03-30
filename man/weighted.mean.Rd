@@ -21,3 +21,7 @@ value
 \description{
 compute a weighted mean
 }
+\examples{
+weight <- runif(length(Zi@countmatrix), 0.1, 1)
+weighted.mean(Zi, w= weight)
+}

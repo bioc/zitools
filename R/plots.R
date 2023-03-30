@@ -4,11 +4,14 @@
 #'@param x 'Zi'-class object
 #'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
 #'place
-#'@param ... see boxplot documentation
+#'@param ... see \link[graphics]{boxplot.default}
 #'@seealso \link[graphics]{boxplot}
 #'@importFrom graphics boxplot
 #'@export
-#'@example
+#'@examples
+#'boxplot(Zi, log1p = TRUE)
+#'
+#'
 
 boxplot.Zi <- function(x, log1p =FALSE, ...)
 {
@@ -27,11 +30,16 @@ heatmap <- function(x, ...) {
 #'@name heatmap
 #'@title Draw a Heat Map
 #'@param x 'Zi'-class object
+#'@param ... see \link[stats]{heatmap}
 #'@description draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the output
 #'matrix (drawn structural zeros) to produce a heatmap. NA values are white
 #'@returns heatmap
+#'@importFrom dplyr filter_all
+#'@importFrom stats heatmap
+#'@importFrom dplyr any_vars
 #'@export
-#'@example
+#'@examples
+#'heatmap(Zi)
 heatmap.Zi <- function(x, ...) {
   df <- as.data.frame(x@output)
   df <- df %>%
@@ -43,7 +51,7 @@ heatmap.Zi <- function(x, ...) {
 
 #'@name MissingValueHeatmap
 #'@title Missing Value Heatmap
-#'@description
+#'@description Missing Value Heatmap
 #'
 #'@param ZiObject ZiObject, result of the ziMain function
 #'
@@ -68,11 +76,17 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 
 #'@name cor
 #'@title Calculate weighted Pearson Correlation coeffiecients
-#'@description calculate the weighted pearson correlation coefficients of a count matrix
-#'of an Zi object taking weights for structural zeros into account
-#'@param x 'Zi'-class object
+#'@description calculate the weighted pearson correlation coefficients of a
+#'count matrix of an Zi object taking weights for zero counts into account
+#'@param x    'Zi'-class object
+#'@param y    'Zi'-class object
+#'@param use "everything" see \link[stats]{cor}
+#'@param method default = "pearson", weighted correlation only implemented for
+#'person correlation
 #'@importFrom stats cor
 #'@export
+#'@examples
+#'cor(Zi)
 setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
   my_vector <- numeric()
   wx <- x@weights

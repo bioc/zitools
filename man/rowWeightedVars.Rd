@@ -40,3 +40,8 @@ a numeric vector of length N(K)
 \description{
 Calculates the row weighted variances for each row (column) of a matrix-like object.
 }
+\examples{
+rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
+colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
+
+}

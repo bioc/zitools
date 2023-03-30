@@ -10,11 +10,21 @@
 }
 \arguments{
 \item{x}{'Zi'-class object}
+
+\item{y}{'Zi'-class object}
+
+\item{use}{"everything" see \link[stats]{cor}}
+
+\item{method}{default = "pearson", weighted correlation only implemented for
+person correlation}
 }
 \description{
 calculate the weighted pearson correlation coefficients of a count matrix
 of an Zi object taking weights for structural zeros into account
 
-calculate the weighted pearson correlation coefficients of a count matrix
-of an Zi object taking weights for structural zeros into account
+calculate the weighted pearson correlation coefficients of a
+count matrix of an Zi object taking weights for zero counts into account
+}
+\examples{
+cor(Zi)
 }

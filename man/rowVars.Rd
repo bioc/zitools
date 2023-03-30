@@ -19,3 +19,7 @@ a vector of row/col length
 \description{
 calculate row and column variances  for matrix like objects
 }
+\examples{
+rowVars(Zi)
+colVars(Zi)
+}
