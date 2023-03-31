@@ -1,15 +1,18 @@
 #'@export
 #'@name median
-#'@title Median Value
+#'@title Calculate the median of zero-deinflated count data
 #'
-#'@param x 'Zi'-class object, output matrix will be extracted using this function
+#'@param x 'Zi'-class object
 #'@param na.rm logical, default = TRUE, NAs are excluded
 #'@param ... see \link[stats]{median.default}
-#'@description Computes the median of the output matrix of an 'Zi'-class object
+#'@description Caluclate the median of  zero-deinflated data of a 'Zi'-class
+#'object. To calculate the median, the output matrix will be extracted
 #'
 #'@returns median value
 #'@importFrom stats median
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'median(Zi)
 
 median.Zi <- function(x, na.rm = TRUE, ...)
@@ -22,26 +25,26 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 #'@export
 #'@name colMedians
 #'
-#'@title Calculates the median for each row (column) of the output matrix
-#'of a 'Zi'-class object
-#'@description Calculates the median for each row (column) of the output matrix (NxK)
-#'of a 'Zi'-class object
-#'@param  x         'Zi'-class object, the output matrix will be extracted
-#'priot to calculating the median
+#'@title Calculate the row or column median of zero-deinflated count data
+#'@description Calculate the row or column median of  zero-deinflated data of a
+#' 'Zi'-class object. To calculate the median, the output matrix will be extracted
+#'@param  x         'Zi'-class object
 #'@param  rows,     A vector indicating the subset of rows (and/or columns) to operate
 #'@param  cols      over. If NULL, no subsetting is done
 #'@param  na.rm     logical, default = TRUE, NAs are excluded
-#'@param  ...       [MatrixGenerics::rowMedians]
+#'@param  ...       \link[MatrixGenerics::rowMedians]
 #'@param  useNames  If NA, the default behavior of the function about naming support
 #'                  is remained. If FALSE, no naming support is done. Else if TRUE, names
 #'                  attributes of result are set.
 #'
-#'@returns returns a numeric vector of length N(K)
+#'@returns returns a numeric vector of row/column length
 #'
 #'@importFrom MatrixGenerics colMedians
 #'@examples
-#'colMedians(Zi)
-#'rowMedians(Zi)
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'colMedians(Zi, useNames = TRUE)
+#'rowMedians(Zi, useNames = TRUE)
 #'
 setMethod("colMedians", "Zi" , function(x,
                                         rows = NULL,
@@ -81,16 +84,19 @@ setMethod("rowMedians", "Zi", function(x,
 
 #'@export
 #'@name quantile
-#'@title Sample Quantiles
+#'@title Calculate the quantiles of zero-deinflated count data
 #'
-#'@param x An S4 object of class "Zi", NA matrix will be extracted using this function
+#'@param x A 'Zi'-class object
 #'@param na.rm logical, default = TRUE, NAs are excluded
+#'@param ... \link[stats]{quantile}
+#'@description Caluclate the quantiles of  zero-deinflated data of a 'Zi'-class
+#'object. To calculate the quantiles, the output matrix will be extracted.
 #'
-#'@description computes the quantiles of the NA matrix of an S4 "Zi" class object
-#'
-#'@returns quantiles
+#'@returns quantile values
 #'@importFrom stats quantile
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'quantile(Zi)
 
 quantile.Zi <- function(x, na.rm = TRUE, ...) {
@@ -99,25 +105,29 @@ quantile.Zi <- function(x, na.rm = TRUE, ...) {
 
 #'@export
 #'@name rowQuantiles
-#'@title Calculates quantiles for each row (column) of a matrix-like object
+#'@title Calculate the row or column quantiles of zero-deinflated count data
 #'
-#'@param  x         An Object of class "Zi", NA matrix will be extracted using this function
+#'@param  x         A 'Zi'-class obbject
 #'@param  rows,     A vector indicating the subset of rows (and/or columns) to operate
 #'@param  cols      over. If NULL, no subsetting is done
 #'@param  probs     A numeric vector of J probabilities in [0,1]
 #'@param  na.rm     logical, default = TRUE, NAs are excluded
 #'@param  type      An integer specifying the type of estimator
 #'@param  ...       Additional arguments passed to specific methods
+#'\link[MatrixGenerics]{rowQuantiles}
 #'@param  useNames  If NA, the default behavior of the function about naming support
 #'                  is remained. If FALSE, no naming support is done. Else if TRUE, names
 #'                  attributes of result are set.
 #'@param  drop      If TRUE a vector is returned if J == 1.
 #'
-#'@description  Calculates quantiles for each row (column) of a matrix-like object
+#'@description Calculate the row or column quantiles of  zero-deinflated data of a
+#' 'Zi'-class object. To calculate the quantiles, the output matrix will be extracted
 #'@importFrom MatrixGenerics rowQuantiles
 #'
 #'@examples
-#'rowQuantile(Zi)
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'rowQuantile(Zi, useNames = TRUE)
 #'colQuantiles(Zi)
 
 setMethod("rowQuantiles", "Zi", function(x,
@@ -173,15 +183,16 @@ setMethod("colQuantiles", "Zi", function(x,
 #'@export
 #'@name mean
 #'@title Arithmetic Mean
-#'@param x  An Object of class "Zi", input matrix will be used to calculate the
-#'mean taking structural zero weights into account
-#'@param ...
+#'@param x  A 'Zi'-class object
+#'@param ... \link[base]{mean}
 #'
-#'@description  calculate the arithmetic mean of zero inflated data taking weights
+#'@description  Calculate the arithmetic mean of zero inflated data taking weights
 #'for structural zeros into account
 #'
 #'@returns value
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'mean(Zi)
 #'
 
@@ -194,15 +205,17 @@ mean.Zi <- function(zi_result, ...) {
 
 #'@export
 #'@name colMeans
-#'@title Row and Column Means
+#'@title Calculate the row or column means of zero-inflated count data
 #'
-#'@param  x   An Object of class "Zi", input matrix will be used to calculate the
-#'mean taking structural zero weights into account
+#'@param  x   A'Zi'-class object
 #'
-#'@description calculate row and column means for matrix like objects
+#'@description Calculate row and column means of zero-inflated count data taking
+#'weights for structural zeros into account.
 #'
-#'@returns a vector of row/col length
+#'@returns a numeric vector of row/column length
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'colMeans(Zi)
 #'rowMeans(Zi)
 
@@ -232,16 +245,17 @@ setMethod("rowMeans", "Zi", function(x) {
 
 #'@export
 #'@name sd
-#'@title Standard Deviation
-#'@param x  An Object of class "Zi", input matrix will be used to calculate the
-#'standard deviation taking structural zero weights into account
-#'@param ...
+#'@title Standard Deviation of zero inflated count data
+#'@param x  A 'Zi'-class object
+#'@param ... \link[stats]{sd} or \link[matrixStats]{weightedSd}
 #'
-#'@description  calculate the standard deviation of zero inflated data taking weights
-#'for structural zeros into account
+#'@description  Calculate the standard deviation of zero inflated count data
+#'taking weights for structural zeros into account.
 #'@importFrom matrixStats weightedSd
 #'@returns value
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'sd(Zi)
 
 setMethod("sd", "Zi", function(x) {
@@ -252,17 +266,19 @@ setMethod("sd", "Zi", function(x) {
 
 #'@export
 #'@name rowSds
-#'@title Row and Column Standard Deviations
+#'@title Row and Column Standard Deviations of zero inflated count data
 #'
-#'@param  x   An Object of class "Zi", input matrix will be used to calculate the
-#'row or col Standard Deviation taking structural zero weights into account
+#'@param  x   A 'Zi'-class object
 #'
-#'@description calculate row and column sds for matrix like objects
+#'@description Calculate row and column standard deviations of zero inflated
+#'count data taking weights for structural zeros into account
 #'
 #'@returns a vector of row/col length
 #'@importFrom matrixStats weightedSd
 #'@importFrom MatrixGenerics rowSds
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'rowSds(Zi)
 #'colSds(Zi)
 
@@ -288,17 +304,18 @@ setMethod("colSds", "Zi", function(x) {
 
 #'@export
 #'@name var
-#'@title Variance
-#'@param x  An Object of class "Zi", input matrix will be used to calculate the
-#'variance taking structural zero weights into account
-#'@param ...
+#'@title Variance of zero inflated count data
+#'@param x  A 'Zi'-class object
+#'@param ... see \link[matrixStats]{weightedVar}
 #'
-#'@description  calculate the variance of zero inflated data taking weights
-#'for structural zeros into account
+#'@description  Calculate the variance of zero inflated count data taking weights
+#'for structural zeros into account.
 #'
 #'@returns value
 #'@importFrom matrixStats weightedVar
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'var(Zi)
 
 setMethod("var", "Zi", function(x) {
@@ -309,17 +326,19 @@ setMethod("var", "Zi", function(x) {
 
 #'@export
 #'@name rowVars
-#'@title Row and Column Variances
+#'@title Row and Column Variances of zero inflated count data
 #'
-#'@param  x   An Object of class "Zi", input matrix will be used to calculate the
-#'row or col Variance  taking structural zero weights into account
+#'@param  x   A 'Zi'-class object
 #'
-#'@description calculate row and column variances  for matrix like objects
+#'@description Calculate row and column variances of zero inflated count data
+#'taking weights for structural zeros into account.
 #'
 #'@returns a vector of row/col length
 #'@importFrom matrixStats weightedVar
 #'@importFrom MatrixGenerics rowVars
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'rowVars(Zi)
 #'colVars(Zi)
 
@@ -346,39 +365,40 @@ setMethod("colVars", "Zi", function(x) {
 
 #'@export
 #'@name weighted.mean
-#'@title Weighted Arithmetic Mean
+#'@title Weighted Arithmetic Mean of zero inflated count data
 #'
-#'@param x An Object of class "Zi", input matrix will be used to calculate the
-#'meam taking structural zero weights into account
+#'@param x A 'Zi'-class object
 #'@param w a numerical vector of weight the same length as x giving the weights
 #'to use for elements of x
-#'@param ...
+#'@param ... \link[stats]{weighted.mean}
 #'
-#'@description compute a weighted mean
+#'@description Calculate a weighted mean of zero inflated count data taking weights
+#'for structural zeros into account
 #'@returns value
 #'@importFrom stats weighted.mean
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'weight <- runif(length(Zi@countmatrix), 0.1, 1)
 #'weighted.mean(Zi, w= weight)
 
 
 setMethod("weighted.mean", "Zi", function(x, w, ...) {
-  mean <- weighted.mean(x@countmatrix, w = w * x@weights)
+  mean <- weighted.mean(x@countmatrix, w = w * x@weights, ...)
   return(mean)
 })
 
 
 #'@export
 #'@name rowWeightedMeans
-#'@title Calculates the weighted mean for each row (column) of a matrix-like object
+#'@title Row and Column weighted means of zero inflated count data
 #'
-#'@param x An Object of class "Zi", input matrix will be used to calculate the
-#'meam taking structural zero weights into account
-#'@param w a numerical vector of weight the same length as x giving the weights
-#'to use for elements of x
-#'@param ...
+#'@param x A 'Zi'-class object
+#'@param w a numerical vector of weight either of length = rows or length = cols
+#' giving the weights to use for elements of x
+#'@param ... \link[MatrixGenerics]{rowWeightedMeans}
 #'
-#'@description Calculates the weighted mean for each row (column) of a matrix-like object.
+#'@description Calculate the weighted mean for each row (column) of a matrix-like object.
 #'@returns a numeric vector of length N(K)
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics rowWeightedMeans

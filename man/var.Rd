@@ -2,23 +2,24 @@
 % Please edit documentation in R/inherited_functions.R
 \name{var}
 \alias{var}
-\title{Variance}
+\title{Variance of zero inflated count data}
 \usage{
 \S4method{var}{Zi}(x)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-variance taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 
-\item{...}{}
+\item{...}{see \link[matrixStats]{weightedVar}}
 }
 \value{
 value
 }
 \description{
-calculate the variance of zero inflated data taking weights
-for structural zeros into account
+Calculate the variance of zero inflated count data taking weights
+for structural zeros into account.
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 var(Zi)
 }

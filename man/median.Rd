@@ -3,12 +3,12 @@
 \name{median}
 \alias{median}
 \alias{median.Zi}
-\title{Median Value}
+\title{Calculate the median of zero-deinflated count data}
 \usage{
 \method{median}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{'Zi'-class object, output matrix will be extracted using this function}
+\item{x}{'Zi'-class object}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 
@@ -18,8 +18,11 @@
 median value
 }
 \description{
-Computes the median of the output matrix of an 'Zi'-class object
+Caluclate the median of  zero-deinflated data of a 'Zi'-class
+object. To calculate the median, the output matrix will be extracted
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 median(Zi)
 }

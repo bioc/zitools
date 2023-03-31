@@ -3,7 +3,7 @@
 \name{rowQuantiles}
 \alias{rowQuantiles}
 \alias{colQuantiles}
-\title{Calculates quantiles for each row (column) of a matrix-like object}
+\title{Calculate the row or column quantiles of zero-deinflated count data}
 \usage{
 \S4method{rowQuantiles}{Zi}(
   x,
@@ -30,7 +30,7 @@
 )
 }
 \arguments{
-\item{x}{An Object of class "Zi", NA matrix will be extracted using this function}
+\item{x}{A 'Zi'-class obbject}
 
 \item{rows, }{A vector indicating the subset of rows (and/or columns) to operate}
 
@@ -42,7 +42,8 @@
 
 \item{type}{An integer specifying the type of estimator}
 
-\item{...}{Additional arguments passed to specific methods}
+\item{...}{Additional arguments passed to specific methods
+\link[MatrixGenerics]{rowQuantiles}}
 
 \item{useNames}{If NA, the default behavior of the function about naming support
 is remained. If FALSE, no naming support is done. Else if TRUE, names
@@ -51,9 +52,12 @@ attributes of result are set.}
 \item{drop}{If TRUE a vector is returned if J == 1.}
 }
 \description{
-Calculates quantiles for each row (column) of a matrix-like object
+Calculate the row or column quantiles of  zero-deinflated data of a
+'Zi'-class object. To calculate the quantiles, the output matrix will be extracted
 }
 \examples{
-rowQuantile(Zi)
+data(mtx)
+Zi <- ziMain(mtx)
+rowQuantile(Zi, useNames = TRUE)
 colQuantiles(Zi)
 }

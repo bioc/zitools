@@ -3,21 +3,26 @@
 \name{quantile}
 \alias{quantile}
 \alias{quantile.Zi}
-\title{Sample Quantiles}
+\title{Calculate the quantiles of zero-deinflated count data}
 \usage{
 \method{quantile}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{An S4 object of class "Zi", NA matrix will be extracted using this function}
+\item{x}{A 'Zi'-class object}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
+
+\item{...}{\link[stats]{quantile}}
 }
 \value{
-quantiles
+quantile values
 }
 \description{
-computes the quantiles of the NA matrix of an S4 "Zi" class object
+Caluclate the quantiles of  zero-deinflated data of a 'Zi'-class
+object. To calculate the quantiles, the output matrix will be extracted.
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 quantile(Zi)
 }

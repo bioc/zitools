@@ -2,26 +2,28 @@
 % Please edit documentation in R/inherited_functions.R
 \name{weighted.mean}
 \alias{weighted.mean}
-\title{Weighted Arithmetic Mean}
+\title{Weighted Arithmetic Mean of zero inflated count data}
 \usage{
 \S4method{weighted.mean}{Zi}(x, w, ...)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-meam taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 
 \item{w}{a numerical vector of weight the same length as x giving the weights
 to use for elements of x}
 
-\item{...}{}
+\item{...}{\link[stats]{weighted.mean}}
 }
 \value{
 value
 }
 \description{
-compute a weighted mean
+Calculate a weighted mean of zero inflated count data taking weights
+for structural zeros into account
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 weight <- runif(length(Zi@countmatrix), 0.1, 1)
 weighted.mean(Zi, w= weight)
 }

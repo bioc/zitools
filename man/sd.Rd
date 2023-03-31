@@ -2,23 +2,24 @@
 % Please edit documentation in R/inherited_functions.R
 \name{sd}
 \alias{sd}
-\title{Standard Deviation}
+\title{Standard Deviation of zero inflated count data}
 \usage{
 \S4method{sd}{Zi}(x)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-standard deviation taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 
-\item{...}{}
+\item{...}{\link[stats]{sd} or \link[matrixStats]{weightedSd}}
 }
 \value{
 value
 }
 \description{
-calculate the standard deviation of zero inflated data taking weights
-for structural zeros into account
+Calculate the standard deviation of zero inflated count data
+taking weights for structural zeros into account.
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 sd(Zi)
 }

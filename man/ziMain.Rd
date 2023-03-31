@@ -85,16 +85,8 @@ and stored as NA values}
 }}
 
 \examples{
-# simulate count matrix:
-n <- 1000
-male <- sample(c(0,1), size = n, replace = TRUE)
-z <- rbinom(n = n, size = 1, prob = 0.3)
-mean(z == 0)
-y_sim <- ifelse(z == 0, 0,
-               rnbinom(n = n,
-                       mu = exp(1.3 + 1.5 * (male == 1)),
-                       size = 2))
-mtx <- matrix(y_sim, 100, 10)
+# zero-inflated count matrix
+data(mtx)
 # calling ziMain function:
 Zi <- ziMain(mtx)
 

@@ -3,7 +3,7 @@
 \name{rowWeightedMeans}
 \alias{rowWeightedMeans}
 \alias{colWeightedMeans}
-\title{Calculates the weighted mean for each row (column) of a matrix-like object}
+\title{Row and Column weighted means of zero inflated count data}
 \usage{
 \S4method{rowWeightedMeans}{Zi}(
   x,
@@ -26,19 +26,18 @@
 )
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-meam taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 
-\item{w}{a numerical vector of weight the same length as x giving the weights
-to use for elements of x}
+\item{w}{a numerical vector of weight either of length = rows or length = cols
+giving the weights to use for elements of x}
 
-\item{...}{}
+\item{...}{\link[MatrixGenerics]{rowWeightedMeans}}
 }
 \value{
 a numeric vector of length N(K)
 }
 \description{
-Calculates the weighted mean for each row (column) of a matrix-like object.
+Calculate the weighted mean for each row (column) of a matrix-like object.
 }
 \examples{
 rowWeightedMeans(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))

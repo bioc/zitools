@@ -3,16 +3,14 @@
 \name{colMedians}
 \alias{colMedians}
 \alias{rowMedians}
-\title{Calculates the median for each row (column) of the output matrix
-of a 'Zi'-class object}
+\title{Calculate the row or column median of zero-deinflated count data}
 \usage{
 \S4method{colMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
 
 \S4method{rowMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
 }
 \arguments{
-\item{x}{'Zi'-class object, the output matrix will be extracted
-priot to calculating the median}
+\item{x}{'Zi'-class object}
 
 \item{rows, }{A vector indicating the subset of rows (and/or columns) to operate}
 
@@ -20,21 +18,23 @@ priot to calculating the median}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 
-\item{...}{\link[MatrixGenerics:rowMedians]{MatrixGenerics::rowMedians}}
+\item{...}{\link\link[MatrixGenerics:rowMedians]{MatrixGenerics::rowMedians}}
 
 \item{useNames}{If NA, the default behavior of the function about naming support
 is remained. If FALSE, no naming support is done. Else if TRUE, names
 attributes of result are set.}
 }
 \value{
-returns a numeric vector of length N(K)
+returns a numeric vector of row/column length
 }
 \description{
-Calculates the median for each row (column) of the output matrix (NxK)
-of a 'Zi'-class object
+Calculate the row or column median of  zero-deinflated data of a
+'Zi'-class object. To calculate the median, the output matrix will be extracted
 }
 \examples{
-colMedians(Zi)
-rowMedians(Zi)
+data(mtx)
+Zi <- ziMain(mtx)
+colMedians(Zi, useNames = TRUE)
+rowMedians(Zi, useNames = TRUE)
 
 }

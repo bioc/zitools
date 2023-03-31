@@ -3,23 +3,25 @@
 \name{rowVars}
 \alias{rowVars}
 \alias{colVars}
-\title{Row and Column Variances}
+\title{Row and Column Variances of zero inflated count data}
 \usage{
 \S4method{rowVars}{Zi}(x)
 
 \S4method{colVars}{Zi}(x)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-row or col Variance  taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 }
 \value{
 a vector of row/col length
 }
 \description{
-calculate row and column variances  for matrix like objects
+Calculate row and column variances of zero inflated count data
+taking weights for structural zeros into account.
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 rowVars(Zi)
 colVars(Zi)
 }

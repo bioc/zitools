@@ -8,19 +8,20 @@
 \method{mean}{Zi}(zi_result, ...)
 }
 \arguments{
-\item{...}{}
+\item{...}{\link[base]{mean}}
 
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-mean taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 }
 \value{
 value
 }
 \description{
-calculate the arithmetic mean of zero inflated data taking weights
+Calculate the arithmetic mean of zero inflated data taking weights
 for structural zeros into account
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 mean(Zi)
 
 }

@@ -3,23 +3,25 @@
 \name{rowSds}
 \alias{rowSds}
 \alias{colSds}
-\title{Row and Column Standard Deviations}
+\title{Row and Column Standard Deviations of zero inflated count data}
 \usage{
 \S4method{rowSds}{Zi}(x)
 
 \S4method{colSds}{Zi}(x)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-row or col Standard Deviation taking structural zero weights into account}
+\item{x}{A 'Zi'-class object}
 }
 \value{
 a vector of row/col length
 }
 \description{
-calculate row and column sds for matrix like objects
+Calculate row and column standard deviations of zero inflated
+count data taking weights for structural zeros into account
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 rowSds(Zi)
 colSds(Zi)
 }
