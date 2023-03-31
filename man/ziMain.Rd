@@ -5,7 +5,7 @@
 \title{ziMain}
 \usage{
 ziMain(
-  datafile,
+  inputdata,
   feature = "feature",
   formula = count ~ sample + feature,
   dist = "negbin",
@@ -15,7 +15,7 @@ ziMain(
 )
 }
 \arguments{
-\item{datafile}{phyloseq object, SummarizedExperiment object, or matrix (rows
+\item{inputdata}{phyloseq object, SummarizedExperiment object, or matrix (rows
 =features, columns=samples)}
 
 \item{feature}{"feature", "gene", "OTU", "phylum", etc.}
@@ -41,24 +41,37 @@ count matrix per default = 0 and weights = 1)}
 'Zi'-class object
 }
 \description{
-The input datafile of the ziMain function is either a phyloseq
-object, SummarizedExperiment object or count matrix. Initially, the count matrix
-of the phyloseq or SummarizedExperiment object is extracted and divided into
-blocks of around 5000 count values. ?Further?, a zero inflation model (either
+This function fits a zero-inflated negative binomial model to count data and calculates
+weights for all zeros indicating whether a zero is a real count (weight close to 1)
+or whether it is a structural zeros (weight close to 0).
+
+The input inputdata of the ziMain function is either a phyloseq
+object, SummarizedExperiment object or count matrix.
+
+In order to reduce calculation times, the count matrix is divided into
+blocks of around 5000 count values. Then, a zero inflation model (either
 Poisson or negative binomial distribution) is fitted to the data. Using the
 fitted zero inflated model, probabilities given that a zero in the count matrix
-is a structural zero are predicted. Those probabilities are used to draw zeros
-from a binomial distribution and replace them with NA. Further, weights for
+is a structural zero are predicted. Those probabilities are used in two ways:
+\enumerate{
+\item A count matrix is generated where a appropriate proportion of zeros are
+randomly replaced by NA. This count matrix can be used for analysis methods
+which cannot deal with weights.
+\item Weights
+#'\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
+(see Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
+are calculated in order to down-weight structrual zeros in analyses
+which can account for weighting of individual data points.
+}
+
 all zero counts are calculated given the following formula:
-\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
-(Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
 
 The result of the ziMain function can be used to analyze zero inflated count data.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{datafile}}{a matrix, phyloseq or SummarizedExperiment object.}
+\item{\code{inputdata}}{a matrix, phyloseq or SummarizedExperiment object.}
 
 \item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
 
@@ -72,7 +85,7 @@ and stored as NA values}
 }}
 
 \examples{
-simulate count matrix
+# simulate count matrix:
 n <- 1000
 male <- sample(c(0,1), size = n, replace = TRUE)
 z <- rbinom(n = n, size = 1, prob = 0.3)
@@ -82,7 +95,7 @@ y_sim <- ifelse(z == 0, 0,
                        mu = exp(1.3 + 1.5 * (male == 1)),
                        size = 2))
 mtx <- matrix(y_sim, 100, 10)
-ziMain function
+# calling ziMain function:
 Zi <- ziMain(mtx)
 
 

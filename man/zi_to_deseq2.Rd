@@ -16,7 +16,7 @@ in the formula (e.g. z) for presenting results (fold changes, etc.) and plotting
 When considering your specification of experimental design, you will want to re-order the
 levels so that the NULL set is first.}
 
-\item{colData}{if the datafile of the 'Zi'-class object is a matrix: a
+\item{colData}{if the inputdata of the 'Zi'-class object is a matrix: a
 DataFrame or data.frame with at least a single column. Rows of colData
 correspond to columns of countData}
 }

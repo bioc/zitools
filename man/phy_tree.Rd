@@ -14,5 +14,5 @@ phy_tree
 }
 \description{
 access the phylogenetic tree (phy_tree) of an object of the class
-"Zi" if the datafile slot is a phyloseq object
+"Zi" if the inputdata slot is a phyloseq object
 }

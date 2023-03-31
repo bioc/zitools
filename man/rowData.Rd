@@ -13,6 +13,6 @@
 DFrame
 }
 \description{
-access the rowData of an 'Zi'-class object if the datafile
+access the rowData of an 'Zi'-class object if the inputdata
 is an object of the class SummarizedExperiment
 }

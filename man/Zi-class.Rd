@@ -11,7 +11,7 @@ zero inflated data analysis
 \section{Slots}{
 
 \describe{
-\item{\code{datafile}}{a matrix, phyloseq or SummarizedExperiment object.}
+\item{\code{inputdata}}{a matrix, phyloseq or SummarizedExperiment object.}
 
 \item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
 

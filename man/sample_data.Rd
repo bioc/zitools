@@ -14,5 +14,5 @@ sample_data
 }
 \description{
 access the sample_data of an 'Zi'-class object if the
-datafile slot is a phyloseq object
+inputdata slot is a phyloseq object
 }

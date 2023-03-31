@@ -14,5 +14,5 @@ otu_table
 }
 \description{
 access the otu_table of an 'Zi'-class object if the
-datafile slot is a phyloseq object
+inputdata slot is a phyloseq object
 }

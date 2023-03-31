@@ -51,25 +51,27 @@ heatmap.Zi <- function(x, ...) {
 
 #'@name MissingValueHeatmap
 #'@title Missing Value Heatmap
-#'@description Missing Value Heatmap
+#'@description
+#'This function illustrates replacement of structural zeros with NA (zero-deinflation) as heamap.
+#'NAs are highlighted in black color.
+#'The function also enables reordering of the rows according to proportions of NA.
+#'
 #'
 #'@param ZiObject ZiObject, result of the ziMain function
+#'@param reorderRows If TRUE, rows with least NAs are at the top.
 #'
 #'@returns heatmap
 #'
 #'
-#'
-MissingValueHeatmap <- function(ZiObject) {
-  mtx <- ZiObject@output
+MissingValueHeatmap <- function(ZiObject,reorderRows=FALSE) {
+  mtx <- log1p(ZiObject@output)
   # Sort matrix according to number of missing values
-  mtx.heatmap <- mtx[order(-rowSums(is.na(mtx))), ]
-  stats::heatmap(mtx.heatmap,Rowv=NA,Colv=NA,labRow=FALSE,
-                 na.rm=T,col=RColorBrewer::brewer.pal(n = 9, name = "Blues"),
-                 scale = "none", margins = c(11,0), cexCol=1)
+  if(reorderRows)
+    mtx <- mtx[order(rowSums(mtx,na.rm=T)), ]
+  stats::heatmap(mtx,Rowv=NA,Colv=NA,labRow=FALSE,
+                 na.rm=T,col=c(RColorBrewer::brewer.pal(n = 9, name = "Blues")),
+                 scale = "none", margins = c(11,0), cexCol=1, na.value="red")
 }
-
-
-
 
 setGeneric("cor", function(x, y = NULL, use = "everything",
                            method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))

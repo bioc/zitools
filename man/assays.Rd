@@ -13,6 +13,6 @@
 list
 }
 \description{
-access  assays of an 'Zi'-class object if the datafile is an
+access  assays of an 'Zi'-class object if the inputdata is an
 object of the class SummarizedExperiment
 }

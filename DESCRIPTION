@@ -24,7 +24,8 @@ Imports: phyloseq,
           tidyr,
           tibble,
           dplyr,
-          DESeq2
+          DESeq2,
+          reshape2
 Suggests: 
     boot,
     naniar,
