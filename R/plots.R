@@ -5,7 +5,7 @@
 #'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
 #'place
 #'@param ... see \link[graphics]{boxplot.default}
-#'@seealso \link[graphics]{boxplot}
+#'@seealso \link[graphics]{boxplot.default}
 #'@importFrom graphics boxplot
 #'@export
 #'@examples
@@ -19,7 +19,7 @@ boxplot.Zi <- function(x, log1p =FALSE, ...)
     boxplot(log1p(x@output), ...)
   }
   if (log1p == FALSE) {
-    boxplot(x@output)
+    boxplot(x@output, ...)
   }
 }
 
@@ -39,33 +39,40 @@ heatmap <- function(x, ...) {
 #'@importFrom dplyr any_vars
 #'@export
 #'@examples
-#'heatmap(Zi)
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'heatmap(Zi) # error because too many NA
+#'heatmap(Zi, Rowv=NA) # no clustering of rows
+#'heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
+#'
 heatmap.Zi <- function(x, ...) {
   df <- as.data.frame(x@output)
-  df <- df %>%
-    filter_all(any_vars(!is.na(.)))%>%
-    filter_all(any_vars(. != 0))
   mtx <- as.matrix(df)
   stats::heatmap(mtx, ...)
 }
 
 #'@name MissingValueHeatmap
 #'@title Missing Value Heatmap
-#'@description Missing Value Heatmap
+#'@description
+#'This function illustrates replacement of structural zeros with NA (zero-deinflation) as heamap.
+#'NAs are highlighted in black color.
+#'The function also enables reordering of the rows according to proportions of NA.
+#'
 #'
 #'@param ZiObject ZiObject, result of the ziMain function
+#'@param reorderRows If TRUE, rows with least NAs are at the top.
 #'
 #'@returns heatmap
 #'
 #'
-#'
-MissingValueHeatmap <- function(ZiObject) {
-  mtx <- ZiObject@output
+MissingValueHeatmap <- function(ZiObject,reorderRows=FALSE) {
+  mtx <- log1p(ZiObject@output)
   # Sort matrix according to number of missing values
-  mtx.heatmap <- mtx[order(-rowSums(is.na(mtx))), ]
-  stats::heatmap(mtx.heatmap,Rowv=NA,Colv=NA,labRow=FALSE,
-                 na.rm=T,col=RColorBrewer::brewer.pal(n = 9, name = "Blues"),
-                 scale = "none", margins = c(11,0), cexCol=1)
+  if(reorderRows)
+    mtx <- mtx[order(rowSums(mtx,na.rm=T)), ]
+  stats::heatmap(mtx,Rowv=NA,Colv=NA,labRow=FALSE,
+                 na.rm=T,col=c(RColorBrewer::brewer.pal(n = 9, name = "Blues")),
+                 scale = "none", margins = c(11,0), cexCol=1, na.value="red")
 }
 
 
