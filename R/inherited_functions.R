@@ -526,7 +526,7 @@ setMethod(
     weights <- t(x@weights)
     result <- new(
       Class = "Zi",
-      datafile = x@datafile,
+      inputdata = x@inputdata,
       countmatrix = countmatrix,
       ZINBModel = x@ZINBModel,
       output = output,

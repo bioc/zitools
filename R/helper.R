@@ -11,8 +11,8 @@
 
 replace_phyloseq <- function(ZiObject)
 {
-  ps <- ZiObject@datafile
-  new_otu <- otu_table(ZiObject@output, taxa_are_rows(ZiObject@datafile))
+  ps <- ZiObject@inputdata
+  new_otu <- otu_table(ZiObject@output, taxa_are_rows(ZiObject@inputdata))
   otu_table(ps)<-new_otu
   return(ps)
 }
@@ -52,13 +52,13 @@ zi2countmatrix <- function(ZiObject) {
 #'
 #'@param ZiObject 'Zi'-class object
 #'@description access the taxonomy table of an 'Zi'-class object if the
-#'datafile slot is a phyloseq object
+#'inputdata slot is a phyloseq object
 #'@importFrom phyloseq tax_table
 #'@returns tax_table
 #'@export
 
 setMethod("tax_table", signature = "Zi", function(object){
-  tax_table <- tax_table(object@datafile)
+  tax_table <- tax_table(object@inputdata)
   return(tax_table)
 })
 
@@ -66,7 +66,7 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'@title Access the sample data
 #'@param ZiObject 'Zi'-class object
 #'@description access the sample_data of an 'Zi'-class object if the
-#'datafile slot is a phyloseq object
+#'inputdata slot is a phyloseq object
 #'@importFrom phyloseq sample_data
 #'@returns sample_data
 #'
@@ -74,7 +74,7 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'
 
 setMethod("sample_data", signature = "Zi", function(object){
-  sample_data <- sample_data(object@datafile)
+  sample_data <- sample_data(object@inputdata)
   return(sample_data)
 })
 
@@ -82,7 +82,7 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'@title Access the otu table
 #'@param ZiObject 'Zi'-class object
 #'@description access the otu_table of an 'Zi'-class object if the
-#'datafile slot is a phyloseq object
+#'inputdata slot is a phyloseq object
 #'@returns otu_table
 #'@importFrom phyloseq otu_table
 #'
@@ -90,7 +90,7 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'
 
 setMethod("otu_table", signature = "Zi", function(object){
-  otu_table <- otu_table(object@datafile)
+  otu_table <- otu_table(object@inputdata)
   return(otu_table)
 })
 
@@ -98,7 +98,7 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'@title Access the phylogenetic tree
 #'@param ZiObject 'Zi'-class object
 #'@description access the phylogenetic tree (phy_tree) of an object of the class
-#'"Zi" if the datafile slot is a phyloseq object
+#'"Zi" if the inputdata slot is a phyloseq object
 #'@returns phy_tree
 #'@importFrom phyloseq phy_tree
 #'
@@ -106,14 +106,14 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'
 
 setMethod("phy_tree", signature = "Zi", function(physeq){
-  phy_tree <- phy_tree(physeq@datafile)
+  phy_tree <- phy_tree(physeq@inputdata)
   return(phy_tree)
 })
 
 #'@name rowData
 #'@title Access the row data
 #'@param ZiObject 'Zi'-class object
-#'@description access the rowData of an 'Zi'-class object if the datafile
+#'@description access the rowData of an 'Zi'-class object if the inputdata
 #'is an object of the class SummarizedExperiment
 #'@returns DFrame
 #'@importFrom SummarizedExperiment rowData
@@ -122,21 +122,21 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 #'
 
 setMethod("rowData", signature = "Zi", function(x, ...){
-  rowData <- rowData(x@datafile, ...)
+  rowData <- rowData(x@inputdata, ...)
   return(rowData)
 })
 
 #'@name assays
 #'@title Access assays
 #'@param ZiObject 'Zi'-class object
-#'@description access  assays of an 'Zi'-class object if the datafile is an
+#'@description access  assays of an 'Zi'-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment assays
 #'@returns list
 #'@export
 
 setMethod("assays", signature = "Zi", function(x, ...){
-  assays <- assays(x@datafile, ...)
+  assays <- assays(x@inputdata, ...)
   return(assays)
 })
 
@@ -144,7 +144,7 @@ setMethod("assays", signature = "Zi", function(x, ...){
 #'@name colData
 #'@title Access the col Data
 #'@param ZiObject 'Zi'-class object
-#'@description access the colData of an 'Zi'-class object if the datafile is an
+#'@description access the colData of an 'Zi'-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment colData
 #'@returns DFrame
@@ -152,7 +152,7 @@ setMethod("assays", signature = "Zi", function(x, ...){
 #'@export
 
 setMethod("colData", signature = "Zi", function(x, ...){
-  colData <- colData(x@datafile, ...)
+  colData <- colData(x@inputdata, ...)
   return(colData)
 })
 
@@ -170,7 +170,7 @@ setMethod("t", signature = "Zi", definition = function(x){
   weights <- t(x@weights)
   result <- new(
     Class = "Zi",
-    datafile = x@datafile,
+    inputdata = x@inputdata,
     countmatrix = countmatrix,
     ZiModel = x@ZiModel,
     output = output,
@@ -192,7 +192,7 @@ setMethod("t", signature = "Zi", definition = function(x){
 #' in the formula (e.g. z) for presenting results (fold changes, etc.) and plotting.
 #' When considering your specification of experimental design, you will want to re-order the
 #' levels so that the NULL set is first.
-#'@param colData if the datafile of the 'Zi'-class object is a matrix: a
+#'@param colData if the inputdata of the 'Zi'-class object is a matrix: a
 #'DataFrame or data.frame with at least a single column. Rows of colData
 #'correspond to columns of countData
 #'@importFrom phyloseq phyloseq_to_deseq2
@@ -202,13 +202,13 @@ setMethod("t", signature = "Zi", definition = function(x){
 #'
 
 zi_to_deseq2 <- function(ZiObject, design, colData, ... ){
-  if (is(ZiObject@datafile, "phyloseq") == TRUE) {
-    dds <- phyloseq_to_deseq2(ZiObject@datafile, design = design, ...)
+  if (is(ZiObject@inputdata, "phyloseq") == TRUE) {
+    dds <- phyloseq_to_deseq2(ZiObject@inputdata, design = design, ...)
   }
-  if (is(ZiObject@datafile, "SummarizedExperiment") == TRUE) {
-    dds <- DESeqDataSet(ZiObject@datafile, design = design)
+  if (is(ZiObject@inputdata, "SummarizedExperiment") == TRUE) {
+    dds <- DESeqDataSet(ZiObject@inputdata, design = design)
   }
-  if (is(ZiObject@datafile, "matrix") == TRUE){
+  if (is(ZiObject@inputdata, "matrix") == TRUE){
     dds <- DESeqDataSetFromMatrix(ZiObject@countmatrix, colData = colData, design = design, ...)
   }
   assays(dds)[["weights"]] <- ZiObject@weights

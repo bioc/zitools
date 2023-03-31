@@ -2,7 +2,7 @@
 #'
 #'Objects of this class store all the results of the ZiMain function to continue
 #'zero inflated data analysis
-#'@slot datafile a matrix, phyloseq or SummarizedExperiment object.
+#'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
 #'@slot ZiModel list. The result of fitting a zero inflated model using
 #'pscl::zeroinfl
@@ -16,7 +16,7 @@
 setClass(
   Class = "Zi",
   slots = list(
-    datafile = "ANY",
+    inputdata = "ANY",
     countmatrix = "matrix",
     ZiModel = "list",
     output = "matrix",
@@ -26,7 +26,7 @@ setClass(
 #'@name ziMain
 #'
 #'@title  ziMain
-#'@param datafile phyloseq object, SummarizedExperiment object, or matrix (rows
+#'@param inputdata phyloseq object, SummarizedExperiment object, or matrix (rows
 #'=features, columns=samples)
 #'@param feature "feature", "gene", "OTU", "phylum", etc.
 #'@param formula  formula to fit the zero inflated model
@@ -42,22 +42,34 @@ setClass(
 #'count matrix per default = 0 and weights = 1)
 #'@param ... additional parameters to describe the model, see \link[pscl]{zeroinfl}
 #'
-#'@description The input datafile of the ziMain function is either a phyloseq
-#'object, SummarizedExperiment object or count matrix. Initially, the count matrix
-#'of the phyloseq or SummarizedExperiment object is extracted and divided into
-#'blocks of around 5000 count values. ?Further?, a zero inflation model (either
+#'@description
+#'This function fits a zero-inflated negative binomial model to count data and calculates
+#'weights for all zeros indicating whether a zero is a real count (weight close to 1)
+#'or whether it is a structural zeros (weight close to 0).
+#'
+#'The input inputdata of the ziMain function is either a phyloseq
+#'object, SummarizedExperiment object or count matrix.
+#'
+#'In order to reduce calculation times, the count matrix is divided into
+#'blocks of around 5000 count values. Then, a zero inflation model (either
 #'Poisson or negative binomial distribution) is fitted to the data. Using the
 #'fitted zero inflated model, probabilities given that a zero in the count matrix
-#'is a structural zero are predicted. Those probabilities are used to draw zeros
-#'from a binomial distribution and replace them with NA. Further, weights for
+#'is a structural zero are predicted. Those probabilities are used in two ways:
+#' 1) A count matrix is generated where a appropriate proportion of zeros are
+#' randomly replaced by NA. This count matrix can be used for analysis methods
+#' which cannot deal with weights.
+#' 2) Weights
+#' #'\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
+#' (see Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
+#' are calculated in order to down-weight structrual zeros in analyses
+#' which can account for weighting of individual data points.
+#'
 #'all zero counts are calculated given the following formula:
-#'\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
-#'(Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
 #'
 #'The result of the ziMain function can be used to analyze zero inflated count data.
 #'
 #'@returns 'Zi'-class object
-#'@slot datafile a matrix, phyloseq or SummarizedExperiment object.
+#'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
 #'@slot ZiModel list. The result of fitting a zero inflated model using
 #'pscl::zeroinfl
@@ -70,7 +82,7 @@ setClass(
 #'Genome Biol 19, 24 (2018). https://doi.org/10.1186/s13059-018-1406-4
 #'@export
 #'@examples
-#'simulate count matrix
+#'# simulate count matrix:
 #'n <- 1000
 #'male <- sample(c(0,1), size = n, replace = TRUE)
 #'z <- rbinom(n = n, size = 1, prob = 0.3)
@@ -80,12 +92,12 @@ setClass(
 #'                        mu = exp(1.3 + 1.5 * (male == 1)),
 #'                        size = 2))
 #'mtx <- matrix(y_sim, 100, 10)
-#'ziMain function
+#'# calling ziMain function:
 #'Zi <- ziMain(mtx)
 #'
 #'
 
-setGeneric("ziMain", function(datafile,
+setGeneric("ziMain", function(inputdata,
                               feature = "feature",
                               formula = count ~ sample + feature,
                               dist = "negbin",
@@ -93,7 +105,7 @@ setGeneric("ziMain", function(datafile,
                               zeroRows.rm = FALSE,
                               ...)
 {
-  mtx <- as.matrix(datafile)
+  mtx <- as.matrix(inputdata)
   if(is.null(rownames(mtx))) {
     rownames(mtx) <- c(1:nrow(mtx))
   }
@@ -139,7 +151,7 @@ setGeneric("ziMain", function(datafile,
   weights <- weights[rownames,colnames]
   result <- new(
     Class = "Zi",
-    datafile = datafile,
+    inputdata = inputdata,
     countmatrix = mtx_new,
     ZiModel = ziModel,
     output = ziOutput,
@@ -154,14 +166,14 @@ setGeneric("ziMain", function(datafile,
 setMethod(
   "ziMain",
   signature = c("phyloseq"),
-  definition = function(datafile,
+  definition = function(inputdata,
                         feature = "feature",
                         formula = count ~ sample + feature,
                         dist = "negbin",
                         link = "logit",
                         zeroRows.rm = FALSE,
                         ...) {
-    matrix <- as.matrix(otu_table(datafile))
+    matrix <- as.matrix(otu_table(inputdata))
     suppressWarnings(class(matrix) <- "matrix")
     zi_result <-
       ziMain(
@@ -175,7 +187,7 @@ setMethod(
       )
     result <- new(
       Class = "Zi",
-      datafile = datafile,
+      inputdata = inputdata,
       countmatrix = zi_result@countmatrix,
       ZiModel = zi_result@ZiModel,
       output = zi_result@output,
@@ -189,14 +201,14 @@ setMethod(
 setMethod(
   "ziMain",
   signature = c("SummarizedExperiment"),
-  definition = function(datafile,
+  definition = function(inputdata,
                         feature = "feature",
                         formula = count ~ sample + feature,
                         dist = "negbin",
                         link = "logit",
                         zeroRows.rm = FALSE,
                         ...) {
-    matrix <- as.matrix(assays(datafile)$counts)
+    matrix <- as.matrix(assays(inputdata)$counts)
     zi_result <-
       ziMain(
         matrix,
@@ -209,7 +221,7 @@ setMethod(
       )
     result <- new(
       Class = "Zi",
-      datafile = datafile,
+      inputdata = inputdata,
       countmatrix = zi_result@countmatrix,
       ZiModel = zi_result@ZiModel,
       output = zi_result@output,
