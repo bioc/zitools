@@ -20,5 +20,10 @@ draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the output
 matrix (drawn structural zeros) to produce a heatmap. NA values are white
 }
 \examples{
-heatmap(Zi)
+data(mtx)
+Zi <- ziMain(mtx)
+heatmap(Zi) # error because too many NA
+heatmap(Zi, Rowv=NA) # no clustering of rows
+heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
+
 }

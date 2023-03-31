@@ -215,3 +215,125 @@ zi_to_deseq2 <- function(ZiObject, design, colData, ... ){
   return(dds)
 }
 
+#'@name subset_sample
+#'@title Subset a 'Zi'-class object based on sample data
+#'
+#'@description Subset a 'Zi'-class object based on sample_data of an phyloseq
+#'object or on colData based on a SummarizedExperiment object
+#'
+#'@param Zi 'Zi'-class object
+#'@param ... The subsetting expression that should be applied, see \link[base]{subset}
+#'for more details
+#'
+#'@export
+#'@importFrom phyloseq sample_data
+#'@importFrom phyloseq sample_data<-
+#'@importFrom SummarizedExperiment colData
+#'
+
+subset_sample <- function(Zi, ...){
+  if (is(Zi@inputdata, "phyloseq") == TRUE){
+    newDF <- subset(as(sample_data(Zi@inputdata), "data.frame"), ...)
+    colnames <- rownames(newDF)
+    sample_data(Zi@inputdata) <- sample_data(newDF)
+  }
+  if (is(Zi@inputdata, "SummarizedExperiment") == TRUE){
+    newDF <- subset(as(colData(Zi@inputdata), "DataFrame"), ...)
+    colnames <- rownames(newDF)
+    Zi@inputdata <- Zi@inputdata[,colnames]
+  }
+  countmatrix <- Zi@countmatrix[,colnames]
+  output <- Zi@output[,colnames]
+  weights <- Zi@weights[,colnames]
+  result <- new(
+    Class = "Zi",
+    inputdata = Zi@inputdata,
+    countmatrix = countmatrix,
+    ZiModel = Zi@ZiModel,
+    output = output,
+    weights = weights
+  )
+  return(result)
+}
+
+#'@name subset_sample
+#'@title Subset a 'Zi'-class object based on sample data
+#'
+#'@description Subset a 'Zi'-class object based on sample_data of an phyloseq
+#'object or on colData of a SummarizedExperiment object
+#'
+#'@param Zi 'Zi'-class object
+#'@param ... The subsetting expression that should be applied, see \link[base]{subset}
+#'for more details
+#'
+#'@export
+#'@importFrom phyloseq sample_data
+#'@importFrom phyloseq sample_data<-
+#'@importFrom SummarizedExperiment colData
+#'
+
+subset_feature <- function(Zi, ...){
+  if (is(Zi@inputdata, "phyloseq") == TRUE){
+    newDF <- subset(as(tax_table(Zi@inputdata), "data.frame"), ...)
+    rownames <- rownames(newDF)
+    tax_table(Zi@inputdata) <- sample_data(newDF)
+  }
+  if (is(Zi@inputdata, "SummarizedExperiment") == TRUE){
+    newDF <- subset(as(colData(Zi@inputdata), "DataFrame"), ...)
+    colnames <- rownames(newDF)
+    Zi@inputdata <- Zi@inputdata[,colnames]
+  }
+  countmatrix <- Zi@countmatrix[,colnames]
+  output <- Zi@output[,colnames]
+  weights <- Zi@weights[,colnames]
+  result <- new(
+    Class = "Zi",
+    inputdata = Zi@inputdata,
+    countmatrix = countmatrix,
+    ZiModel = Zi@ZiModel,
+    output = output,
+    weights = weights
+  )
+  return(result)
+}
+#'@name subset_sample
+#'@title Subset a 'Zi'-class object based on feature data
+#'
+#'@description Subset a 'Zi'-class object based on tax_table of a phyloseq
+#'object or on rowData of a SummarizedExperiment object
+#'
+#'@param Zi 'Zi'-class object
+#'@param ... The subsetting expression that should be applied, see \link[base]{subset}
+#'for more details
+#'
+#'@export
+#'@importFrom phyloseq tax_table
+#'@importFrom phyloseq tax_table<-
+#'@importFrom SummarizedExperiment rowData
+#'
+subset_feature <- function(Zi, ...){
+  if (is(Zi@inputdata, "phyloseq") == TRUE){
+    mtx <- as(tax_table(Zi@inputdata), "matrix")
+    newdf <- subset(data.frame(mtx), ...)
+    newmtx <- as(newdf, "matrix")
+    rownames <- rownames(newdf)
+    tax_table(Zi@inputdata) <- tax_table(newmtx)
+  }
+  if (is(Zi@inputdata, "SummarizedExperiment") == TRUE){
+    newDF <- subset(as(rowData(Zi@inputdata), "DataFrame"), ...)
+    rownames <- rownames(newDF)
+    Zi@inputdata <- Zi@inputdata[rownames,]
+  }
+  countmatrix <- Zi@countmatrix[rownames,]
+  output <- Zi@output[rownames,]
+  weights <- Zi@weights[rownames,]
+  result <- new(
+    Class = "Zi",
+    inputdata = Zi@inputdata,
+    countmatrix = countmatrix,
+    ZiModel = Zi@ZiModel,
+    output = output,
+    weights = weights
+  )
+  return(result)
+}

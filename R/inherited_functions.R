@@ -528,10 +528,32 @@ setMethod(
       Class = "Zi",
       inputdata = x@inputdata,
       countmatrix = countmatrix,
-      ZINBModel = x@ZINBModel,
+      ZiModel = x@ZiModel,
       output = output,
       weights = weights
     )
     return(result)
   }
 )
+
+#'@name log1p
+#'@title log(1+x)
+#'@description log1p(x) computs log(1+x) of all 'matrix' objects of a 'Zi'-class
+#'object
+#'@param x 'Zi'-class object
+#'@export
+#'@seealso \link[base]{log1p}
+#'
+#'
+setMethod("log1p", signature ="Zi", definition = function(x){
+  countmatrix <- log1p(x@countmatrix)
+  output <- log1p(x@output)
+  weights <- log1p(x@weights)
+  result <- new(
+    Class = "Zi",
+    inputdata = x@inputdata,
+    countmatrix = countmatrix,
+    ZiModel = x@ZiModel,
+    output = output,
+    weights = weights)
+})

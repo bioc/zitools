@@ -54,9 +54,9 @@ Poisson or negative binomial distribution) is fitted to the data. Using the
 fitted zero inflated model, probabilities given that a zero in the count matrix
 is a structural zero are predicted. Those probabilities are used in two ways:
 \enumerate{
-\item A count matrix is generated where a appropriate proportion of zeros are
-randomly replaced by NA. This count matrix can be used for analysis methods
-which cannot deal with weights.
+\item A zero-deinflated count matrix is generated where a appropriate proportion
+of zeros are randomly replaced by NA. This count matrix can be used for analysis
+methods which cannot deal with weights.
 \item Weights
 #'\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
 (see Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
@@ -104,4 +104,7 @@ Zi <- ziMain(mtx)
 Van den Berge, K., Perraudeau, F., Soneson, C. et al. Observation weights
 unlock bulk RNA-seq tools for zero inflation and single-cell applications.
 Genome Biol 19, 24 (2018). https://doi.org/10.1186/s13059-018-1406-4
+}
+\seealso{
+\code{\link{pscl::zeroinfl}}
 }

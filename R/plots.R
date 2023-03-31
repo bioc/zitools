@@ -2,25 +2,21 @@
 #'@title Create boxplots of a 'Zi'-class object
 #'@description Create boxplots of a 'Zi'-class object.
 #'@param x 'Zi'-class object
-#'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
-#'place
 #'@param ... see \link[graphics]{boxplot.default}
 #'@seealso \link[graphics]{boxplot.default}
 #'@importFrom graphics boxplot
 #'@export
 #'@examples
-#'boxplot(Zi, log1p = TRUE)
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'boxplot(Zi)
+#'boxplot(log1p(Zi))
 #'
 #'
 
-boxplot.Zi <- function(x, log1p =FALSE, ...)
+boxplot.Zi <- function(x, ...)
 {
-  if (log1p == TRUE) {
-    boxplot(log1p(x@output), ...)
-  }
-  if (log1p == FALSE) {
-    boxplot(x@output, ...)
-  }
+  boxplot(x@output, ...)
 }
 
 heatmap <- function(x, ...) {
@@ -53,27 +49,31 @@ heatmap.Zi <- function(x, ...) {
 
 #'@name MissingValueHeatmap
 #'@title Missing Value Heatmap
-#'@description
-#'This function illustrates replacement of structural zeros with NA (zero-deinflation) as heamap.
-#'NAs are highlighted in black color.
-#'The function also enables reordering of the rows according to proportions of NA.
-#'
+#'@description Missing Value Heatmap
 #'
 #'@param ZiObject ZiObject, result of the ziMain function
-#'@param reorderRows If TRUE, rows with least NAs are at the top.
 #'
 #'@returns heatmap
 #'
-#'
-MissingValueHeatmap <- function(ZiObject,reorderRows=FALSE) {
-  mtx <- log1p(ZiObject@output)
-  # Sort matrix according to number of missing values
-  if(reorderRows)
-    mtx <- mtx[order(rowSums(mtx,na.rm=T)), ]
-  stats::heatmap(mtx,Rowv=NA,Colv=NA,labRow=FALSE,
-                 na.rm=T,col=c(RColorBrewer::brewer.pal(n = 9, name = "Blues")),
-                 scale = "none", margins = c(11,0), cexCol=1, na.value="red")
-}
+#'@import ggplot2
+#'@importFrom reshape2 melt
+
+MissingValueHeatmap <- function(ZiObject,title = "", xlab = "", ylab = "") {
+
+  mtx <- ZiObject@output
+  mtx.heatmap.sorted <- data.frame(mtx[order(-rowSums(is.na(mtx)), rowMeans(mtx, na.rm = TRUE)),])
+  mtx.heatmap.sorted$Feature <- row.names(mtx.heatmap.sorted)
+  mtx.heatmap.sorted$FeatureIdx <- seq(1, nrow(mtx.heatmap.sorted))
+
+  mtx.long <- reshape2::melt(mtx)
+  colnames(mtx.long) <- c("Feature", "Sample", "value")
+  heatmap.df <-merge(mtx.long, mtx.heatmap.sorted[, c("Feature", "FeatureIdx")], by="Feature")
+  gg.heatmap <-   ggplot(data = heatmap.df, aes(x = Sample, y = FeatureIdx, fill = value))  +
+    geom_tile() +
+    scale_fill_gradientn(colors = RColorBrewer::brewer.pal(n = 9, name = "Blues"), na.value = 'red') +
+    labs(x = xlab, y = ylab) +
+    ggtitle(title)
+  return(gg.heatmap)}
 
 setGeneric("cor", function(x, y = NULL, use = "everything",
                            method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))

@@ -4,20 +4,14 @@
 \alias{MissingValueHeatmap}
 \title{Missing Value Heatmap}
 \usage{
-MissingValueHeatmap(ZiObject, title = "")
-
-MissingValueHeatmap(ZiObject, title = "")
+MissingValueHeatmap(ZiObject, title = "", xlab = "", ylab = "")
 }
 \arguments{
 \item{ZiObject}{ZiObject, result of the ziMain function}
 }
 \value{
 heatmap
-
-heatmap
 }
 \description{
-Missing Value Heatmap
-
 Missing Value Heatmap
 }

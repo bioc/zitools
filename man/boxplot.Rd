@@ -5,13 +5,10 @@
 \alias{boxplot.Zi}
 \title{Create boxplots of a 'Zi'-class object}
 \usage{
-\method{boxplot}{Zi}(x, log1p = FALSE, ...)
+\method{boxplot}{Zi}(x, ...)
 }
 \arguments{
 \item{x}{'Zi'-class object}
-
-\item{log1p}{logical, default = FALSE, if TRUE log(1+p) transformation takes
-place}
 
 \item{...}{see \link[graphics]{boxplot.default}}
 }
@@ -19,10 +16,13 @@ place}
 Create boxplots of a 'Zi'-class object.
 }
 \examples{
-boxplot(Zi, log1p = TRUE)
+data(mtx)
+Zi <- ziMain(mtx)
+boxplot(Zi)
+boxplot(log1p(Zi))
 
 
 }
 \seealso{
-\link[graphics]{boxplot}
+\link[graphics]{boxplot.default}
 }
