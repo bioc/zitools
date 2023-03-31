@@ -25,7 +25,7 @@ reshape_zi <- function(mtx, feature = "") {
 #'compare if predicted zero = zero count, if YES set to NA, repeat until
 #'NA >= sum(p_str_zero), replace excess of NA with zero (random sampling)
 #'
-#'@param zi result of fitting a zero inflation model to the data using pscl::zeroinfl
+#'@param zi result of fitting a zero inflation model using pscl::zeroinfl
 #'@param zi_input result of reshape_zi, count data in a long format
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'

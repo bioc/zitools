@@ -5,7 +5,7 @@
 #'@param log1p logical, default = FALSE, if TRUE log(1+p) transformation takes
 #'place
 #'@param ... see \link[graphics]{boxplot.default}
-#'@seealso \link[graphics]{boxplot}
+#'@seealso \link[graphics]{boxplot.default}
 #'@importFrom graphics boxplot
 #'@export
 #'@examples
@@ -19,7 +19,7 @@ boxplot.Zi <- function(x, log1p =FALSE, ...)
     boxplot(log1p(x@output), ...)
   }
   if (log1p == FALSE) {
-    boxplot(x@output)
+    boxplot(x@output, ...)
   }
 }
 
@@ -39,12 +39,14 @@ heatmap <- function(x, ...) {
 #'@importFrom dplyr any_vars
 #'@export
 #'@examples
-#'heatmap(Zi)
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'heatmap(Zi) # error because too many NA
+#'heatmap(Zi, Rowv=NA) # no clustering of rows
+#'heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
+#'
 heatmap.Zi <- function(x, ...) {
   df <- as.data.frame(x@output)
-  df <- df %>%
-    filter_all(any_vars(!is.na(.)))%>%
-    filter_all(any_vars(. != 0))
   mtx <- as.matrix(df)
   stats::heatmap(mtx, ...)
 }
