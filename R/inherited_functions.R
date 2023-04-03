@@ -101,8 +101,8 @@ setMethod("rowMedians", "Zi", function(x,
 #'Zi <- ziMain(mtx)
 #'quantile(Zi)
 
-quantile.Zi <- function(x, na.rm = TRUE, ...) {
-  quantile(x@output, na.rm = na.rm, ...)
+quantile.Zi <- function(x, probs = seq(0, 1, 0.25), na.rm = TRUE, ...) {
+  quantile(x@output, probs = probs, na.rm = na.rm, ...)
 }
 
 #'@export
