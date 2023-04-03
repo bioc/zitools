@@ -7,12 +7,12 @@
 \S4method{colData}{Zi}(x, ...)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 DFrame
 }
 \description{
-access the colData of an 'Zi'-class object if the inputdata is an
+access the colData of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 object of the class SummarizedExperiment
 }

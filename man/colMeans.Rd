@@ -5,12 +5,12 @@
 \alias{rowMeans}
 \title{Calculate the row or column means of zero-inflated count data}
 \usage{
-\S4method{colMeans}{Zi}(x)
+\S4method{colMeans}{Zi}(x, rows = NULL, cols = NULL, na.rm = FALSE)
 
 \S4method{rowMeans}{Zi}(x)
 }
 \arguments{
-\item{x}{A'Zi'-class object}
+\item{x}{A\code{\linkS4class{Zi}}-class object}
 }
 \value{
 a numeric vector of row/column length

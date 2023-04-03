@@ -8,7 +8,7 @@
 \method{median}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{'Zi'-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 

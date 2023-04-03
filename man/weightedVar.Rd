@@ -7,21 +7,21 @@
 weightedVar(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL, ...)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-row weighted Standard Deviation taking structural zero weights into account}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 
 \item{w}{a vector of weights the same length as x giving the weights to use for
-each element of x. Negative weights are treated as zero weights. Default value
-is equal weight to all values.}
+each element of x}
 }
 \value{
 a numeric scalar
 }
 \description{
-Computes a weighted variance / standard deviation of a numeric
-vector or across rows or columns of a matrix
+Calculate a weighted variance of zero inflated count data,
+additionally taking weights for structural zeros into account
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 weight <- runif(length(Zi@countmatrix), 0.1, 1)
 weighted.mean(Zi, w= weight)
 }

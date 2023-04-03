@@ -1,8 +1,11 @@
+#'@include zi_function.R
+NULL
+
 #'@export
 #'@name median
 #'@title Calculate the median of zero-deinflated count data
 #'
-#'@param x 'Zi'-class object
+#'@param x \code{\linkS4class{Zi}}-class object
 #'@param na.rm logical, default = TRUE, NAs are excluded
 #'@param ... see \link[stats]{median.default}
 #'@description Caluclate the median of  zero-deinflated data of a 'Zi'-class
@@ -27,18 +30,17 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 #'
 #'@title Calculate the row or column median of zero-deinflated count data
 #'@description Calculate the row or column median of  zero-deinflated data of a
-#' 'Zi'-class object. To calculate the median, the output matrix will be extracted
-#'@param  x         'Zi'-class object
+#' \code{\linkS4class{Zi}}-class object. To calculate the median, the output matrix will be extracted
+#'@param  x         \code{\linkS4class{Zi}}-class object
 #'@param  rows,     A vector indicating the subset of rows (and/or columns) to operate
 #'@param  cols      over. If NULL, no subsetting is done
 #'@param  na.rm     logical, default = TRUE, NAs are excluded
-#'@param  ...       \link[MatrixGenerics::rowMedians]
+#'@param  ...       \code{\link[MatrixGenerics]{colMedians}}
 #'@param  useNames  If NA, the default behavior of the function about naming support
 #'                  is remained. If FALSE, no naming support is done. Else if TRUE, names
 #'                  attributes of result are set.
 #'
 #'@returns returns a numeric vector of row/column length
-#'
 #'@importFrom MatrixGenerics colMedians
 #'@examples
 #'data(mtx)
@@ -86,7 +88,7 @@ setMethod("rowMedians", "Zi", function(x,
 #'@name quantile
 #'@title Calculate the quantiles of zero-deinflated count data
 #'
-#'@param x A 'Zi'-class object
+#'@param x A \code{\linkS4class{Zi}}-class object
 #'@param na.rm logical, default = TRUE, NAs are excluded
 #'@param ... \link[stats]{quantile}
 #'@description Caluclate the quantiles of  zero-deinflated data of a 'Zi'-class
@@ -121,7 +123,7 @@ quantile.Zi <- function(x, na.rm = TRUE, ...) {
 #'@param  drop      If TRUE a vector is returned if J == 1.
 #'
 #'@description Calculate the row or column quantiles of  zero-deinflated data of a
-#' 'Zi'-class object. To calculate the quantiles, the output matrix will be extracted
+#' \code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output matrix will be extracted
 #'@importFrom MatrixGenerics rowQuantiles
 #'
 #'@examples
@@ -183,7 +185,7 @@ setMethod("colQuantiles", "Zi", function(x,
 #'@export
 #'@name mean
 #'@title Arithmetic Mean
-#'@param x  A 'Zi'-class object
+#'@param x  A \code{\linkS4class{Zi}}-class object
 #'@param ... \link[base]{mean}
 #'
 #'@description  Calculate the arithmetic mean of zero inflated data taking weights
@@ -207,7 +209,7 @@ mean.Zi <- function(zi_result, ...) {
 #'@name colMeans
 #'@title Calculate the row or column means of zero-inflated count data
 #'
-#'@param  x   A'Zi'-class object
+#'@param  x   A\code{\linkS4class{Zi}}-class object
 #'
 #'@description Calculate row and column means of zero-inflated count data taking
 #'weights for structural zeros into account.
@@ -220,13 +222,16 @@ mean.Zi <- function(zi_result, ...) {
 #'rowMeans(Zi)
 
 
-setMethod("colMeans", "Zi", function(x) {
+setMethod("colMeans", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE) {
+  if(is.null(rows)){
+    rows <-  1:nrow(x@countmatrix)}
+  if(is.null(cols)){
+    cols <-  1:ncol(x@countmatrix)}
   colmean <-
     mapply(
       weighted.mean,
-      as.data.frame(x@countmatrix),
-      as.data.frame(x@weights, USE.NAMES = TRUE)
-    )
+      as.data.frame(x@countmatrix[rows,cols]),
+      as.data.frame(x@weights[rows,cols], USE.NAMES = TRUE), na.rm = na.rm)
   return(colmean)
 })
 
@@ -238,7 +243,7 @@ setMethod("rowMeans", "Zi", function(x) {
   rowmean <-
     mapply(weighted.mean,
            as.data.frame(t(x@countmatrix)),
-           as.data.frame(t(x@weights), USE.NAMES = TRUE))
+           as.data.frame(t(x@weights), USE.NAMES = TRUE),na.rm=na.rm)
   return(rowmean)
 })
 
@@ -246,7 +251,7 @@ setMethod("rowMeans", "Zi", function(x) {
 #'@export
 #'@name sd
 #'@title Standard Deviation of zero inflated count data
-#'@param x  A 'Zi'-class object
+#'@param x  A \code{\linkS4class{Zi}}-class object
 #'@param ... \link[stats]{sd} or \link[matrixStats]{weightedSd}
 #'
 #'@description  Calculate the standard deviation of zero inflated count data
@@ -268,7 +273,7 @@ setMethod("sd", "Zi", function(x) {
 #'@name rowSds
 #'@title Row and Column Standard Deviations of zero inflated count data
 #'
-#'@param  x   A 'Zi'-class object
+#'@param  x   A \code{\linkS4class{Zi}}-class object
 #'
 #'@description Calculate row and column standard deviations of zero inflated
 #'count data taking weights for structural zeros into account
@@ -305,7 +310,7 @@ setMethod("colSds", "Zi", function(x) {
 #'@export
 #'@name var
 #'@title Variance of zero inflated count data
-#'@param x  A 'Zi'-class object
+#'@param x  A \code{\linkS4class{Zi}}-class object
 #'@param ... see \link[matrixStats]{weightedVar}
 #'
 #'@description  Calculate the variance of zero inflated count data taking weights
@@ -328,7 +333,7 @@ setMethod("var", "Zi", function(x) {
 #'@name rowVars
 #'@title Row and Column Variances of zero inflated count data
 #'
-#'@param  x   A 'Zi'-class object
+#'@param  x   A \code{\linkS4class{Zi}}-class object
 #'
 #'@description Calculate row and column variances of zero inflated count data
 #'taking weights for structural zeros into account.
@@ -367,13 +372,13 @@ setMethod("colVars", "Zi", function(x) {
 #'@name weighted.mean
 #'@title Weighted Arithmetic Mean of zero inflated count data
 #'
-#'@param x A 'Zi'-class object
+#'@param x A \code{\linkS4class{Zi}}-class object
 #'@param w a numerical vector of weight the same length as x giving the weights
 #'to use for elements of x
 #'@param ... \link[stats]{weighted.mean}
 #'
-#'@description Calculate a weighted mean of zero inflated count data taking weights
-#'for structural zeros into account
+#'@description Calculate a weighted mean of zero inflated count data, additionally
+#' taking weights for structural zeros into account
 #'@returns value
 #'@importFrom stats weighted.mean
 #'@examples
@@ -393,16 +398,19 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 #'@name rowWeightedMeans
 #'@title Row and Column weighted means of zero inflated count data
 #'
-#'@param x A 'Zi'-class object
-#'@param w a numerical vector of weight either of length = rows or length = cols
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param w a numerical vector of weights either of length = rows or length = cols
 #' giving the weights to use for elements of x
 #'@param ... \link[MatrixGenerics]{rowWeightedMeans}
 #'
-#'@description Calculate the weighted mean for each row (column) of a matrix-like object.
+#'@description Calculate row and column weighted means of zero inflated count
+#'data, additionally taking weights for structural zeros into account.
 #'@returns a numeric vector of length N(K)
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics rowWeightedMeans
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'rowWeightedMeans(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
 #'colWeightedMeans(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
 #'
@@ -426,27 +434,35 @@ setMethod("colWeightedMeans", "Zi", function(x, w, ...) {
 })
 
 
+
 #setMethod("weightedSd", "Zi", function(x, w, ...) {
   #sqrt(weightedVar(x=x,w=w,...))
 #})
 
 #'@export
 #'@name rowWeightedSds
-#'@title Calculates the weighted mean for each row (column) of a matrix-like object
+#'@title Row and column weighted standard deviations or variances of zero
+#'inflated count data
 #'
-#'@param x An Object of class "Zi", input matrix will be used to calculate the
-#'row weighted Standard Deviation taking structural zero weights into account
-#'@param w a numerical vector of weight the same length as x giving the weights
-#'to use for elements of x
-#'@param ...
+#'@param x A "Zi"-class object
+#'@param w a numerical vector of weights either of length = rows or length = cols
+#' giving the weights to use for elements of x
+#'@param ... \link[matrixStats]{weightedSd}
 #'
-#'@description Calculates the row weighted mean for each row (column) of a matrix-like object.
+#'@description Calculate row and column standard deviations or variances of
+#'zero inflated count data, additionally taking weights for structural zeros
+#'into account.
 #'@returns a numeric vector of length N(K)
 #'@importFrom matrixStats weightedSd
 #'@importFrom MatrixGenerics rowWeightedSds
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'rowWeightedSds(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
 #'colWeightedSds(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
+#'rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
+#'colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
+#'
 
 setMethod("rowWeightedSds", "Zi", function(x, w, ...) {
   mapply(weightedSd,
@@ -472,16 +488,16 @@ setMethod("colWeightedSds", "Zi", function(x, w, ...) {
 #'@name weightedVar
 #'@title Weighted Variance and weighted Standard Deviation
 #'
-#'@param x An Object of class "Zi", input matrix will be used to calculate the
-#'row weighted Standard Deviation taking structural zero weights into account
+#'@param x A \code{\linkS4class{Zi}}-class object
 #'@param w a vector of weights the same length as x giving the weights to use for
-#'each element of x. Negative weights are treated as zero weights. Default value
-#'is equal weight to all values.
-#'@description Computes a weighted variance / standard deviation of a numeric
-#'vector or across rows or columns of a matrix
+#'each element of x
+#'@description  Calculate a weighted variance of zero inflated count data,
+#'additionally taking weights for structural zeros into account
 #'@returns a numeric scalar
 #'@importFrom matrixStats weightedVar
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'weight <- runif(length(Zi@countmatrix), 0.1, 1)
 #'weighted.mean(Zi, w= weight)
 
@@ -495,22 +511,10 @@ setMethod("weightedVar", "Zi", function(x, w, ...) {
 
 #'@export
 #'@name rowWeightedVars
-#'@title Calculates the weighted variance for each row (column) of a matrix-like object
-#'
-#'@param x An Object of class "Zi", input matrix will be used to calculate the
-#'row weighted variances taking structural zero weights into account
-#'@param w a numerical vector of weight the same length as x giving the weights
-#'to use for elements of x
-#'@param ...
-#'
-#'@description Calculates the row weighted variances for each row (column) of a matrix-like object.
-#'@returns a numeric vector of length N(K)
+#'@rdname rowWeightedSds
 #'@importFrom matrixStats weightedVar
 #'@importFrom MatrixGenerics rowWeightedVars
-#'@examples
-#'rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
-#'colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
-#'
+
 setMethod("rowWeightedVars", "Zi", function(x, w, ...) {
   mapply(weightedVar,
          as.data.frame(t(x@countmatrix)),
@@ -519,7 +523,7 @@ setMethod("rowWeightedVars", "Zi", function(x, w, ...) {
 
 #'@name colWeightedVars
 #'@export
-#'@rdname rowWeightedVars
+#'@rdname rowWeightedSds
 #'@importFrom matrixStats weightedVar
 #'@importFrom MatrixGenerics colWeightedVars
 
@@ -530,37 +534,11 @@ setMethod("colWeightedVars", "Zi", function(x, w, ...) {
     as.data.frame(x@weights * w, USE.NAMES = TRUE))
 })
 
-#'@name t()
-#'@title Matrix Transpose
-#'
-#'@export
-#'@examples
-#'t(Zi)
-#'
-setMethod(
-  "t",
-  signature = "Zi",
-  definition = function(x) {
-    countmatrix <- t(x@countmatrix)
-    output <- t(x@output)
-    weights <- t(x@weights)
-    result <- new(
-      Class = "Zi",
-      inputdata = x@inputdata,
-      countmatrix = countmatrix,
-      ZiModel = x@ZiModel,
-      output = output,
-      weights = weights
-    )
-    return(result)
-  }
-)
-
 #'@name log1p
 #'@title log(1+x)
-#'@description log1p(x) computs log(1+x) of all 'matrix' objects of a 'Zi'-class
+#'@description Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
 #'object
-#'@param x 'Zi'-class object
+#'@param x \code{\linkS4class{Zi}}-class object
 #'@export
 #'@seealso \link[base]{log1p}
 #'

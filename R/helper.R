@@ -1,8 +1,11 @@
+#'@include zi_function.R
+NULL
+
 #'@name replace_phyloseq
 #'@title Replace the otu table of a phyloseq object
-#'@param ZiObject 'Zi'-class object with a phyloseq object as input
-#'@description Replace the OTU table of a phyloseq object with an OTU table
-#'where predicted structural zeros are replaced with NA
+#'@param ZiObject \code{\linkS4class{Zi}}-class object with a phyloseq object as input
+#'@description Replace the OTU table of a phyloseq object with the OTU table
+#'of zero de-inflated count data
 #'@returns a "phyloseq"-class object
 #'@importFrom phyloseq otu_table
 #'@importFrom phyloseq otu_table<-
@@ -18,30 +21,37 @@ replace_phyloseq <- function(ZiObject)
 }
 
 #'@name zi2outputMatrix
-#'@title Access the output matrix of an 'Zi'-class object
+#'@title Access the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object
 #'
-#'@param  ZiObject 'Zi'-class object
-#'@description extract the output matrix of an 'Zi'-class object. The
+#'@param  ZiObject \code{\linkS4class{Zi}}-class object
+#'@description extract the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object. The
 #'output matrix is a count matrix (column = sample, row = feature) where
 #'predicted structural zeros are replaced with NA
 #'
 #'@returns matrix
 #'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'zi2outputMatrix(Zi)
 #'
 zi2outputMatrix <- function(ZiObject) {
   ZiObject@output
 }
 
-#'@name zi2inputMatrix
-#'@title Access the input matrix of an 'Zi'-class object
+#'@name zi2countmatrix
+#'@title Access the count matrix of an \code{\linkS4class{Zi}}-class object
 #'
-#'@param ZiObject 'Zi'-class object
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
 #'@description extract the count matrix (column = sample, row = feature), that
 #'has been used to fit a zero inflation model
 #'
 #'@returns matrix
 #'@export
-#'
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'zi2countmatrix(Zi)
 
 zi2countmatrix <- function(ZiObject) {
   ZiObject@countmatrix
@@ -50,12 +60,13 @@ zi2countmatrix <- function(ZiObject) {
 #'@name tax_table
 #'@title Access the taxonomy table
 #'
-#'@param ZiObject 'Zi'-class object
-#'@description access the taxonomy table of an 'Zi'-class object if the
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description access the taxonomy table of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq tax_table
 #'@returns tax_table
 #'@export
+
 
 setMethod("tax_table", signature = "Zi", function(object){
   tax_table <- tax_table(object@inputdata)
@@ -64,8 +75,8 @@ setMethod("tax_table", signature = "Zi", function(object){
 
 #'@name sample_data
 #'@title Access the sample data
-#'@param ZiObject 'Zi'-class object
-#'@description access the sample_data of an 'Zi'-class object if the
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description access the sample_data of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq sample_data
 #'@returns sample_data
@@ -80,8 +91,8 @@ setMethod("sample_data", signature = "Zi", function(object){
 
 #'@name otu_table
 #'@title Access the otu table
-#'@param ZiObject 'Zi'-class object
-#'@description access the otu_table of an 'Zi'-class object if the
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description access the otu_table of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@returns otu_table
 #'@importFrom phyloseq otu_table
@@ -96,7 +107,7 @@ setMethod("otu_table", signature = "Zi", function(object){
 
 #'@name phy_tree
 #'@title Access the phylogenetic tree
-#'@param ZiObject 'Zi'-class object
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
 #'@description access the phylogenetic tree (phy_tree) of an object of the class
 #'"Zi" if the inputdata slot is a phyloseq object
 #'@returns phy_tree
@@ -112,8 +123,8 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 
 #'@name rowData
 #'@title Access the row data
-#'@param ZiObject 'Zi'-class object
-#'@description access the rowData of an 'Zi'-class object if the inputdata
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description access the rowData of an \code{\linkS4class{Zi}}-class object if the inputdata
 #'is an object of the class SummarizedExperiment
 #'@returns DFrame
 #'@importFrom SummarizedExperiment rowData
@@ -128,8 +139,8 @@ setMethod("rowData", signature = "Zi", function(x, ...){
 
 #'@name assays
 #'@title Access assays
-#'@param ZiObject 'Zi'-class object
-#'@description access  assays of an 'Zi'-class object if the inputdata is an
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description access  assays of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment assays
 #'@returns list
@@ -143,8 +154,8 @@ setMethod("assays", signature = "Zi", function(x, ...){
 
 #'@name colData
 #'@title Access the col Data
-#'@param ZiObject 'Zi'-class object
-#'@description access the colData of an 'Zi'-class object if the inputdata is an
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description access the colData of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment colData
 #'@returns DFrame
@@ -157,10 +168,10 @@ setMethod("colData", signature = "Zi", function(x, ...){
 })
 
 #'@name t
-#'@title Transpose a 'Zi'-class object
-#'@param ZiObject 'Zi'-class object
-#'@description transpose all matrizes of a 'Zi'-class object
-#'@returns 'Zi'-class object
+#'@title Transpose a \code{\linkS4class{Zi}}-class object
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@description transpose all matrizes of a \code{\linkS4class{Zi}}-class object
+#'@returns \code{\linkS4class{Zi}}-class object
 #'@export
 #'
 
@@ -180,21 +191,24 @@ setMethod("t", signature = "Zi", definition = function(x){
 })
 
 #'@name zi_to_deseq2
-#'@title Convert a 'Zi'-class object to a DESeq2 dds object
-#'@description A 'Zi'-class object is converted to a DESeqDataSet object, which
+#'@title Convert a \code{\linkS4class{Zi}}-class object to a DESeq2 dds object
+#'@description A \code{\linkS4class{Zi}}-class object is converted to a DESeqDataSet object, which
 #'can be used for DESeq2 analysis. Both, weight and count matrices will be
 #'stored in assays of the DESeqDataSet.
 #'
-#'@param ZiObject 'Zi'-class object
+#'@param ZiObject \code{\linkS4class{Zi}}-class object
 #'@param design  A formula which specifies the design of the experiment, taking
 #' the form formula(~ x + y + z). That is, a formula with right-hand side only.
 #' By default, the functions in this package and DESeq2 will use the last variable
 #' in the formula (e.g. z) for presenting results (fold changes, etc.) and plotting.
 #' When considering your specification of experimental design, you will want to re-order the
 #' levels so that the NULL set is first.
-#'@param colData if the inputdata of the 'Zi'-class object is a matrix: a
+#'@param colData if the inputdata of the \code{\linkS4class{Zi}}-class object is a matrix: a
 #'DataFrame or data.frame with at least a single column. Rows of colData
 #'correspond to columns of countData
+#'@param ...  [phyloseq::phyloseq_to_deseq2] if the inputdata of the 'Zi'-object
+#'is a phyloseq object       [DESeq2::DESeqDataSet] if the inputdata the '
+#'Zi'-object is a SummarizedExperiment object
 #'@importFrom phyloseq phyloseq_to_deseq2
 #'@importFrom DESeq2 DESeqDataSet
 #'@importFrom DESeq2 DESeqDataSetFromMatrix
@@ -206,7 +220,7 @@ zi_to_deseq2 <- function(ZiObject, design, colData, ... ){
     dds <- phyloseq_to_deseq2(ZiObject@inputdata, design = design, ...)
   }
   if (is(ZiObject@inputdata, "SummarizedExperiment") == TRUE) {
-    dds <- DESeqDataSet(ZiObject@inputdata, design = design)
+    dds <- DESeqDataSet(ZiObject@inputdata, design = design, ...)
   }
   if (is(ZiObject@inputdata, "matrix") == TRUE){
     dds <- DESeqDataSetFromMatrix(ZiObject@countmatrix, colData = colData, design = design, ...)
@@ -216,12 +230,12 @@ zi_to_deseq2 <- function(ZiObject, design, colData, ... ){
 }
 
 #'@name subset_sample
-#'@title Subset a 'Zi'-class object based on sample data
+#'@title Subset a \code{\linkS4class{Zi}}-class object based on sample data
 #'
-#'@description Subset a 'Zi'-class object based on sample_data of an phyloseq
+#'@description Subset a \code{\linkS4class{Zi}}-class object based on sample_data of an phyloseq
 #'object or on colData based on a SummarizedExperiment object
 #'
-#'@param Zi 'Zi'-class object
+#'@param Zi \code{\linkS4class{Zi}}-class object
 #'@param ... The subsetting expression that should be applied, see \link[base]{subset}
 #'for more details
 #'
@@ -257,12 +271,12 @@ subset_sample <- function(Zi, ...){
 }
 
 #'@name subset_sample
-#'@title Subset a 'Zi'-class object based on sample data
+#'@title Subset a \code{\linkS4class{Zi}}-class object based on sample data
 #'
-#'@description Subset a 'Zi'-class object based on sample_data of an phyloseq
+#'@description Subset a \code{\linkS4class{Zi}}-class object based on sample_data of an phyloseq
 #'object or on colData of a SummarizedExperiment object
 #'
-#'@param Zi 'Zi'-class object
+#'@param Zi \code{\linkS4class{Zi}}-class object
 #'@param ... The subsetting expression that should be applied, see \link[base]{subset}
 #'for more details
 #'
@@ -296,13 +310,13 @@ subset_feature <- function(Zi, ...){
   )
   return(result)
 }
-#'@name subset_sample
-#'@title Subset a 'Zi'-class object based on feature data
+#'@name subset_feature
+#'@title Subset a \code{\linkS4class{Zi}}-class object based on feature data
 #'
-#'@description Subset a 'Zi'-class object based on tax_table of a phyloseq
+#'@description Subset a \code{\linkS4class{Zi}}-class object based on tax_table of a phyloseq
 #'object or on rowData of a SummarizedExperiment object
 #'
-#'@param Zi 'Zi'-class object
+#'@param Zi \code{\linkS4class{Zi}}-class object
 #'@param ... The subsetting expression that should be applied, see \link[base]{subset}
 #'for more details
 #'

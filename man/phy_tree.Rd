@@ -7,7 +7,7 @@
 \S4method{phy_tree}{Zi}(physeq)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 phy_tree

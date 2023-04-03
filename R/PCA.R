@@ -1,3 +1,6 @@
+#'@include zi_function.R
+NULL
+
 #'@name cor
 #'@title Calculate weighted Pearson Correlation coeffiecients
 #'

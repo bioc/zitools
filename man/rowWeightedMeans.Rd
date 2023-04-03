@@ -26,9 +26,9 @@
 )
 }
 \arguments{
-\item{x}{A 'Zi'-class object}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{w}{a numerical vector of weight either of length = rows or length = cols
+\item{w}{a numerical vector of weights either of length = rows or length = cols
 giving the weights to use for elements of x}
 
 \item{...}{\link[MatrixGenerics]{rowWeightedMeans}}
@@ -37,9 +37,12 @@ giving the weights to use for elements of x}
 a numeric vector of length N(K)
 }
 \description{
-Calculate the weighted mean for each row (column) of a matrix-like object.
+Calculate row and column weighted means of zero inflated count
+data, additionally taking weights for structural zeros into account.
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 rowWeightedMeans(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
 colWeightedMeans(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
 

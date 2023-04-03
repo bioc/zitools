@@ -16,7 +16,7 @@ zero inflated data analysis
 \item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
 
 \item{\code{ZiModel}}{list. The result of fitting a zero inflated model using
-pscl::zeroinfl}
+\link[pscl]{zeroinfl}}
 
 \item{\code{output}}{matrix. The matrix where predicted structural zeros are omitted
 and stored as NA values}

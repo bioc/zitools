@@ -7,7 +7,7 @@
 \S4method{sd}{Zi}(x)
 }
 \arguments{
-\item{x}{A 'Zi'-class object}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 
 \item{...}{\link[stats]{sd} or \link[matrixStats]{weightedSd}}
 }

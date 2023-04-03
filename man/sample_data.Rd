@@ -7,12 +7,12 @@
 \S4method{sample_data}{Zi}(object)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 sample_data
 }
 \description{
-access the sample_data of an 'Zi'-class object if the
+access the sample_data of an \code{\linkS4class{Zi}}-class object if the
 inputdata slot is a phyloseq object
 }

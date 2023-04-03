@@ -5,11 +5,10 @@
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
 #'@slot ZiModel list. The result of fitting a zero inflated model using
-#'pscl::zeroinfl
+#'\link[pscl]{zeroinfl}
 #'@slot output matrix. The matrix where predicted structural zeros are omitted
 #'and stored as NA values
 #'@slot weights matrix. A matrix containing weights for zero counts
-#'
 #'@exportClass Zi
 #'
 #'
@@ -67,8 +66,6 @@ setClass(
 #'all zero counts are calculated given the following formula:
 #'
 #'The result of the ziMain function can be used to analyze zero inflated count data.
-#'
-#'@returns 'Zi'-class object
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
 #'@slot ZiModel list. The result of fitting a zero inflated model using
@@ -82,7 +79,7 @@ setClass(
 #'Genome Biol 19, 24 (2018). https://doi.org/10.1186/s13059-018-1406-4
 #'
 #'@seealso \code{\link{pscl::zeroinfl}}
-#'
+#'@returns \code{\linkS4class{Zi}}-class object
 #'@export
 #'@examples
 #'# zero-inflated count matrix

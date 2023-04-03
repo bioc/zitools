@@ -53,7 +53,7 @@ attributes of result are set.}
 }
 \description{
 Calculate the row or column quantiles of  zero-deinflated data of a
-'Zi'-class object. To calculate the quantiles, the output matrix will be extracted
+\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output matrix will be extracted
 }
 \examples{
 data(mtx)

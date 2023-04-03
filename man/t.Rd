@@ -2,16 +2,16 @@
 % Please edit documentation in R/helper.R
 \name{t}
 \alias{t}
-\title{Transpose a 'Zi'-class object}
+\title{Transpose a \code{\linkS4class{Zi}}-class object}
 \usage{
 \S4method{t}{Zi}(x)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
-'Zi'-class object
+\code{\linkS4class{Zi}}-class object
 }
 \description{
-transpose all matrizes of a 'Zi'-class object
+transpose all matrizes of a \code{\linkS4class{Zi}}-class object
 }

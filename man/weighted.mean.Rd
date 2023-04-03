@@ -7,7 +7,7 @@
 \S4method{weighted.mean}{Zi}(x, w, ...)
 }
 \arguments{
-\item{x}{A 'Zi'-class object}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 
 \item{w}{a numerical vector of weight the same length as x giving the weights
 to use for elements of x}
@@ -18,8 +18,8 @@ to use for elements of x}
 value
 }
 \description{
-Calculate a weighted mean of zero inflated count data taking weights
-for structural zeros into account
+Calculate a weighted mean of zero inflated count data, additionally
+taking weights for structural zeros into account
 }
 \examples{
 data(mtx)

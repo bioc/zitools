@@ -34,3 +34,10 @@ Suggests:
     pheatmap,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Collate: 
+    'zi_function.R'
+    'PCA.R'
+    'helper.R'
+    'inherited_functions.R'
+    'plots.R'
+    'utils.R'

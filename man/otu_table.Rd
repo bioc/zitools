@@ -7,12 +7,12 @@
 \S4method{otu_table}{Zi}(object)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 otu_table
 }
 \description{
-access the otu_table of an 'Zi'-class object if the
+access the otu_table of an \code{\linkS4class{Zi}}-class object if the
 inputdata slot is a phyloseq object
 }

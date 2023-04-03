@@ -10,7 +10,7 @@
 \S4method{rowMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
 }
 \arguments{
-\item{x}{'Zi'-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
 
 \item{rows, }{A vector indicating the subset of rows (and/or columns) to operate}
 
@@ -18,7 +18,7 @@
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 
-\item{...}{\link\link[MatrixGenerics:rowMedians]{MatrixGenerics::rowMedians}}
+\item{...}{\code{\link[MatrixGenerics]{colMedians}}}
 
 \item{useNames}{If NA, the default behavior of the function about naming support
 is remained. If FALSE, no naming support is done. Else if TRUE, names
@@ -29,7 +29,7 @@ returns a numeric vector of row/column length
 }
 \description{
 Calculate the row or column median of  zero-deinflated data of a
-'Zi'-class object. To calculate the median, the output matrix will be extracted
+\code{\linkS4class{Zi}}-class object. To calculate the median, the output matrix will be extracted
 }
 \examples{
 data(mtx)

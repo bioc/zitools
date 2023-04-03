@@ -1,3 +1,6 @@
+#'@include zi_function.R
+NULL
+
 #'@name reshape_zi
 #'@title Reshape a given matrix into long format
 #'

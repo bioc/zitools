@@ -7,12 +7,12 @@
 replace_phyloseq(ZiObject)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object with a phyloseq object as input}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object with a phyloseq object as input}
 }
 \value{
 a "phyloseq"-class object
 }
 \description{
-Replace the OTU table of a phyloseq object with an OTU table
-where predicted structural zeros are replaced with NA
+Replace the OTU table of a phyloseq object with the OTU table
+of zero de-inflated count data
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/helper.R
 \name{zi_to_deseq2}
 \alias{zi_to_deseq2}
-\title{Convert a 'Zi'-class object to a DESeq2 dds object}
+\title{Convert a \code{\linkS4class{Zi}}-class object to a DESeq2 dds object}
 \usage{
 zi_to_deseq2(ZiObject, design, colData, ...)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 
 \item{design}{A formula which specifies the design of the experiment, taking
 the form formula(~ x + y + z). That is, a formula with right-hand side only.
@@ -16,12 +16,16 @@ in the formula (e.g. z) for presenting results (fold changes, etc.) and plotting
 When considering your specification of experimental design, you will want to re-order the
 levels so that the NULL set is first.}
 
-\item{colData}{if the inputdata of the 'Zi'-class object is a matrix: a
+\item{colData}{if the inputdata of the \code{\linkS4class{Zi}}-class object is a matrix: a
 DataFrame or data.frame with at least a single column. Rows of colData
 correspond to columns of countData}
+
+\item{...}{\link[phyloseq:phyloseq_to_deseq2]{phyloseq::phyloseq_to_deseq2} if the inputdata of the 'Zi'-object
+is a phyloseq object       \link[DESeq2:DESeqDataSet]{DESeq2::DESeqDataSet} if the inputdata the '
+Zi'-object is a SummarizedExperiment object}
 }
 \description{
-A 'Zi'-class object is converted to a DESeqDataSet object, which
+A \code{\linkS4class{Zi}}-class object is converted to a DESeqDataSet object, which
 can be used for DESeq2 analysis. Both, weight and count matrices will be
 stored in assays of the DESeqDataSet.
 }

@@ -10,7 +10,7 @@
 \arguments{
 \item{...}{\link[base]{mean}}
 
-\item{x}{A 'Zi'-class object}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 }
 \value{
 value

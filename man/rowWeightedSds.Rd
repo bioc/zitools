@@ -3,7 +3,10 @@
 \name{rowWeightedSds}
 \alias{rowWeightedSds}
 \alias{colWeightedSds}
-\title{Calculates the weighted mean for each row (column) of a matrix-like object}
+\alias{rowWeightedVars}
+\alias{colWeightedVars}
+\title{Row and column weighted standard deviations or variances of zero
+inflated count data}
 \usage{
 \S4method{rowWeightedSds}{Zi}(
   x,
@@ -24,23 +27,49 @@
   ...,
   useNames = NA
 )
+
+\S4method{rowWeightedVars}{Zi}(
+  x,
+  w = NULL,
+  rows = NULL,
+  cols = NULL,
+  na.rm = FALSE,
+  ...,
+  useNames = NA
+)
+
+\S4method{colWeightedVars}{Zi}(
+  x,
+  w = NULL,
+  rows = NULL,
+  cols = NULL,
+  na.rm = FALSE,
+  ...,
+  useNames = NA
+)
 }
 \arguments{
-\item{x}{An Object of class "Zi", input matrix will be used to calculate the
-row weighted Standard Deviation taking structural zero weights into account}
+\item{x}{A "Zi"-class object}
 
-\item{w}{a numerical vector of weight the same length as x giving the weights
-to use for elements of x}
+\item{w}{a numerical vector of weights either of length = rows or length = cols
+giving the weights to use for elements of x}
 
-\item{...}{}
+\item{...}{\link[matrixStats]{weightedSd}}
 }
 \value{
 a numeric vector of length N(K)
 }
 \description{
-Calculates the row weighted mean for each row (column) of a matrix-like object.
+Calculate row and column standard deviations or variances of
+zero inflated count data, additionally taking weights for structural zeros
+into account.
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
 rowWeightedSds(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
 colWeightedSds(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
+rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
+colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
+
 }

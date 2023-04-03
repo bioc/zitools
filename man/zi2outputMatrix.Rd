@@ -2,18 +2,24 @@
 % Please edit documentation in R/helper.R
 \name{zi2outputMatrix}
 \alias{zi2outputMatrix}
-\title{Access the output matrix of an 'Zi'-class object}
+\title{Access the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object}
 \usage{
 zi2outputMatrix(ZiObject)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 matrix
 }
 \description{
-extract the output matrix of an 'Zi'-class object. The
+extract the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object. The
 output matrix is a count matrix (column = sample, row = feature) where
 predicted structural zeros are replaced with NA
+}
+\examples{
+data(mtx)
+Zi <- ziMain(mtx)
+zi2outputMatrix(Zi)
+
 }

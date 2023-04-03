@@ -7,12 +7,12 @@
 \S4method{assays}{Zi}(x, withDimnames = TRUE, ...)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 list
 }
 \description{
-access  assays of an 'Zi'-class object if the inputdata is an
+access  assays of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 object of the class SummarizedExperiment
 }

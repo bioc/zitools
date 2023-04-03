@@ -7,10 +7,10 @@
 \S4method{log1p}{Zi}(x)
 }
 \arguments{
-\item{x}{'Zi'-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
 }
 \description{
-log1p(x) computs log(1+x) of all 'matrix' objects of a 'Zi'-class
+Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
 object
 }
 \seealso{

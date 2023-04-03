@@ -7,12 +7,12 @@
 \S4method{rowData}{Zi}(x, use.names = TRUE, ...)
 }
 \arguments{
-\item{ZiObject}{'Zi'-class object}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 DFrame
 }
 \description{
-access the rowData of an 'Zi'-class object if the inputdata
+access the rowData of an \code{\linkS4class{Zi}}-class object if the inputdata
 is an object of the class SummarizedExperiment
 }

@@ -8,7 +8,7 @@
 \method{quantile}{Zi}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{A 'Zi'-class object}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 
 \item{na.rm}{logical, default = TRUE, NAs are excluded}
 

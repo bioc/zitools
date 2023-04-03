@@ -1,3 +1,6 @@
+#'@include zi_function.R
+NULL
+
 #'@name boxplot
 #'@title Create boxplots of a 'Zi'-class object
 #'@description Create boxplots of a 'Zi'-class object.

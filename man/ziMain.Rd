@@ -38,7 +38,7 @@ count matrix per default = 0 and weights = 1)}
 \item{...}{additional parameters to describe the model, see \link[pscl]{zeroinfl}}
 }
 \value{
-'Zi'-class object
+\code{\linkS4class{Zi}}-class object
 }
 \description{
 This function fits a zero-inflated negative binomial model to count data and calculates
