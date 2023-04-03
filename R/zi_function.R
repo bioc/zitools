@@ -97,13 +97,25 @@ setGeneric("ziMain", function(inputdata,
                               zeroRows.rm = FALSE,
                               ...)
 {
+
   mtx <- as.matrix(inputdata)
+
   if(is.null(rownames(mtx))) {
     rownames(mtx) <- c(1:nrow(mtx))
   }
   if(is.null(colnames(mtx))) {
     colnames(mtx) <- c(1:ncol(mtx))
   }
+  if (any(mtx == 0) == FALSE) {
+    result <- new(
+      Class = "Zi",
+      inputdata = inputdata,
+      countmatrix = mtx,
+      ZiModel = vector(mode = "list"),
+      output = mtx,
+      weights = matrix(1, nrow = nrow(mtx), ncol = ncol(mtx)))
+  }
+  else{
   rownames <- rownames(mtx)
   colnames <- colnames(mtx)
   mtx_new <- mtx[rowSums(mtx[]) > 0,] #remove rows that contain only 0
@@ -148,7 +160,7 @@ setGeneric("ziMain", function(inputdata,
     ZiModel = ziModel,
     output = ziOutput,
     weights = weights
-  )
+  )}
   return(result)
 })
 
