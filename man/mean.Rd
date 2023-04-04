@@ -5,12 +5,12 @@
 \alias{mean.Zi}
 \title{Arithmetic Mean}
 \usage{
-\method{mean}{Zi}(zi_result, ...)
+\method{mean}{Zi}(x, ...)
 }
 \arguments{
-\item{...}{\link[base]{mean.default}}
-
 \item{x}{A \code{\linkS4class{Zi}}-class object}
+
+\item{...}{\link[base]{mean.default}}
 }
 \value{
 value

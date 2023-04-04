@@ -40,7 +40,7 @@ heatmap <- function(x, ...) {
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'heatmap(Zi) # error because too many NA
+#'#heatmap(Zi) # error because too many NA
 #'heatmap(Zi, Rowv=NA) # no clustering of rows
 #'heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
 #'
@@ -59,6 +59,7 @@ heatmap.Zi <- function(x, ...) {
 #'@returns heatmap
 #'
 #'@import ggplot2
+#'@importFrom RColorBrewer brewer.pal
 #'@importFrom reshape2 melt
 
 MissingValueHeatmap <- function(ZiObject,title = "", xlab = "", ylab = "") {
@@ -93,6 +94,8 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 #'@importFrom stats cor
 #'@export
 #'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
 #'cor(Zi)
 setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
   my_vector <- numeric()

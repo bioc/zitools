@@ -22,7 +22,7 @@ matrix (drawn structural zeros) to produce a heatmap. NA values are white
 \examples{
 data(mtx)
 Zi <- ziMain(mtx)
-heatmap(Zi) # error because too many NA
+#heatmap(Zi) # error because too many NA
 heatmap(Zi, Rowv=NA) # no clustering of rows
 heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
 

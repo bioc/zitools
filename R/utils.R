@@ -12,6 +12,7 @@ NULL
 #'
 #'@returns a dataframe (long format), 3 columns: count, sample, "feature"
 #'@importFrom tibble rownames_to_column
+#'@importFrom magrittr %>%
 #'@importFrom tidyr gather
 #'@noRd
 reshape_zi <- function(mtx, feature = "") {
@@ -33,13 +34,14 @@ reshape_zi <- function(mtx, feature = "") {
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns a dataframe(long format), columns: count, sample, "feature",
-#'@import pscl
+#'@importFrom magrittr %>%
 #'@importFrom dplyr bind_cols
 #'@importFrom dplyr mutate
 #'@importFrom stats rbinom
 #'@importFrom dplyr filter
 #'@importFrom dplyr sample_n
 #'@importFrom tidyr replace_na
+#'@import pscl
 #'@noRd
 
 omit_str_zero <- function(zi, zi_input, feature = "") {
@@ -106,6 +108,7 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'@importFrom dplyr select
 #'@importFrom tidyr spread
 #'@importFrom tibble column_to_rownames
+#'@importFrom magrittr %>%
 #'@noRd
 #'
 #function to calculate weights - formula: w=(1-pi)*fnb/fzinb
@@ -221,6 +224,7 @@ subset_mtx <- function(mtx)
 #'@import pscl
 #'@importFrom tidyr spread
 #'@importFrom tibble column_to_rownames
+#'@importFrom magrittr %>%
 #'@noRd
 #'
 zi_core <- function(input, feature = "",  formula, dist, link, ...)

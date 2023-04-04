@@ -5,7 +5,7 @@
 \alias{quantile.Zi}
 \title{Calculate the quantiles of zero-deinflated count data}
 \usage{
-\method{quantile}{Zi}(x, na.rm = TRUE, ...)
+\method{quantile}{Zi}(x, probs = seq(0, 1, 0.25), na.rm = TRUE, ...)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}

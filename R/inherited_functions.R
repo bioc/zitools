@@ -200,9 +200,10 @@ setMethod("colQuantiles", "Zi", function(x,
 #'mean(Zi)
 #'
 
-mean.Zi <- function(zi_result, ...) {
-  x <- zi_result@countmatrix
-  w <- zi_result@weights
+mean.Zi <- function(x, ...) {
+  Zi <- x
+  x <- Zi@countmatrix
+  w <- Zi@weights
   mean <- weighted.mean(x, w, ...)
   return(mean)
 }
