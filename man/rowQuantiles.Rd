@@ -13,7 +13,7 @@
   na.rm = TRUE,
   type = 7L,
   ...,
-  useNames = NA,
+  useNames = TRUE,
   drop = TRUE
 )
 
@@ -30,26 +30,25 @@
 )
 }
 \arguments{
-\item{x}{A 'Zi'-class obbject}
+\item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{rows, }{A vector indicating the subset of rows (and/or columns) to operate}
+\item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows
+and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting is done}
 
-\item{cols}{over. If NULL, no subsetting is done}
+\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in \link{0,1}}
 
-\item{probs}{A numeric vector of J probabilities in \link{0,1}}
-
-\item{na.rm}{logical, default = TRUE, NAs are excluded}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}}
 
 \item{type}{An integer specifying the type of estimator}
 
 \item{...}{Additional arguments passed to specific methods
 \link[MatrixGenerics]{rowQuantiles}}
 
-\item{useNames}{If NA, the default behavior of the function about naming support
-is remained. If FALSE, no naming support is done. Else if TRUE, names
-attributes of result are set.}
+\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
+attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
 
-\item{drop}{If TRUE a vector is returned if J == 1.}
+\item{drop}{If \code{\link{TRUE}} a \code{\link[base]{vector}} is returned if J == 1.}
 }
 \description{
 Calculate the row or column quantiles of  zero-deinflated data of a

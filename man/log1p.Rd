@@ -11,7 +11,7 @@
 }
 \description{
 Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
-object
+object, log calculates by default natural logarithms
 }
 \seealso{
 \link[base]{log1p}

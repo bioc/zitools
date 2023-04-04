@@ -4,12 +4,13 @@
 \alias{var}
 \title{Variance of zero inflated count data}
 \usage{
-\S4method{var}{Zi}(x)
+\S4method{var}{Zi}(x, na.rm = FALSE)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{...}{see \link[matrixStats]{weightedVar}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
+are excluded, otherwise not. default = \code{\link{FALSE}}}
 }
 \value{
 value

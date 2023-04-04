@@ -4,12 +4,13 @@
 \alias{sd}
 \title{Standard Deviation of zero inflated count data}
 \usage{
-\S4method{sd}{Zi}(x)
+\S4method{sd}{Zi}(x, na.rm = FALSE)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{...}{\link[stats]{sd} or \link[matrixStats]{weightedSd}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
+are excluded, otherwise not. default = \code{\link{FALSE}}}
 }
 \value{
 value

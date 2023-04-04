@@ -5,24 +5,22 @@
 \alias{rowMedians}
 \title{Calculate the row or column median of zero-deinflated count data}
 \usage{
-\S4method{colMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
+\S4method{colMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = TRUE)
 
-\S4method{rowMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = NA)
+\S4method{rowMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = TRUE)
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 
-\item{rows, }{A vector indicating the subset of rows (and/or columns) to operate}
+\item{rows, }{A  \code{\link[base]{vector}} indicating the subset of rows (and/or columns) to operate}
 
-\item{cols}{over. If NULL, no subsetting is done}
+\item{cols}{over. If  \code{\link{NULL}}, no subsetting is done}
 
-\item{na.rm}{logical, default = TRUE, NAs are excluded}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
+not. default = \code{\link{TRUE}}}
 
-\item{...}{\code{\link[MatrixGenerics]{colMedians}}}
-
-\item{useNames}{If NA, the default behavior of the function about naming support
-is remained. If FALSE, no naming support is done. Else if TRUE, names
-attributes of result are set.}
+\item{useNames}{\code{\link[base]{logical}}.  If \code{\link{TRUE}} (default), names
+attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
 }
 \value{
 returns a numeric vector of row/column length

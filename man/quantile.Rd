@@ -10,7 +10,8 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{na.rm}{logical, default = TRUE, NAs are excluded}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
+not. default = \code{\link{TRUE}}}
 
 \item{...}{\link[stats]{quantile}}
 }
@@ -18,8 +19,9 @@
 quantile values
 }
 \description{
-Caluclate the quantiles of  zero-deinflated data of a 'Zi'-class
-object. To calculate the quantiles, the output matrix will be extracted.
+Calculate the quantiles of  zero-deinflated data of a
+\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output
+matrix will be extracted.
 }
 \examples{
 data(mtx)

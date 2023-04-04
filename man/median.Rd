@@ -10,7 +10,8 @@
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 
-\item{na.rm}{logical, default = TRUE, NAs are excluded}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
+not. default = \code{\link{TRUE}}}
 
 \item{...}{see \link[stats]{median.default}}
 }

@@ -9,8 +9,8 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{w}{a numerical vector of weight the same length as x giving the weights
-to use for elements of x}
+\item{w}{a numerical \code{\link[base]{vector}} of weight the same length as
+x giving the weights to use for elements of x}
 
 \item{...}{\link[stats]{weighted.mean}}
 }

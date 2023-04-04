@@ -9,11 +9,20 @@ weightedVar(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL, ...)
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{w}{a vector of weights the same length as x giving the weights to use for
-each element of x}
+\item{w}{a numerical \code{\link[base]{vector}} of weight the same length as
+x giving the weights to use for elements of x}
+
+\item{idxs}{A \code{\link[base]{vector}} indicating subset of elements to
+operate over. If \code{\link{NULL}}, no subsetting is done.}
+
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
+not. default = \code{\link{FALSE}}}
+
+\item{center}{\code{\link{numeric}} scalar specifying the center location of
+the data. If \code{\link{NULL}}, it is estimated from data.}
 }
 \value{
-a numeric scalar
+a \code{\link{numeric}} scalar
 }
 \description{
 Calculate a weighted variance of zero inflated count data,
@@ -23,5 +32,5 @@ additionally taking weights for structural zeros into account
 data(mtx)
 Zi <- ziMain(mtx)
 weight <- runif(length(Zi@countmatrix), 0.1, 1)
-weighted.mean(Zi, w= weight)
+weightedVar(Zi, w= weight)
 }

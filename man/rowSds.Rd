@@ -5,15 +5,24 @@
 \alias{colSds}
 \title{Row and Column Standard Deviations of zero inflated count data}
 \usage{
-\S4method{rowSds}{Zi}(x)
+\S4method{rowSds}{Zi}(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE)
 
-\S4method{colSds}{Zi}(x)
+\S4method{colSds}{Zi}(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
+
+\item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
+operate over. If \code{\link{NULL}} (default), no subsetting is done}
+
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
+are excluded, otherwise not. default = \code{\link{FALSE}}}
+
+\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
+attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
 }
 \value{
-a vector of row/col length
+a \code{\link[base]{vector}} of row/column length
 }
 \description{
 Calculate row and column standard deviations of zero inflated
