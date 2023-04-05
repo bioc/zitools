@@ -2,6 +2,7 @@
 % Please edit documentation in R/inherited_functions.R
 \name{weightedVar}
 \alias{weightedVar}
+\alias{weightedVar,Zi-method}
 \title{Weighted Variance and weighted Standard Deviation}
 \usage{
 weightedVar(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL, ...)
@@ -20,6 +21,8 @@ not. default = \code{\link{FALSE}}}
 
 \item{center}{\code{\link{numeric}} scalar specifying the center location of
 the data. If \code{\link{NULL}}, it is estimated from data.}
+
+\item{...}{\code{\link[matrixStats]{weightedVar}}}
 }
 \value{
 a \code{\link{numeric}} scalar

@@ -2,7 +2,9 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowSds}
 \alias{rowSds}
+\alias{rowSds,Zi-method}
 \alias{colSds}
+\alias{colSds,Zi-method}
 \title{Row and Column Standard Deviations of zero inflated count data}
 \usage{
 \S4method{rowSds}{Zi}(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE)

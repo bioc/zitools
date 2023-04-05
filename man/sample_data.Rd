@@ -2,12 +2,13 @@
 % Please edit documentation in R/helper.R
 \name{sample_data}
 \alias{sample_data}
+\alias{sample_data,Zi-method}
 \title{Access the sample data}
 \usage{
 \S4method{sample_data}{Zi}(object)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{object}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 sample_data

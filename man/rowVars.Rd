@@ -2,7 +2,9 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowVars}
 \alias{rowVars}
+\alias{rowVars,Zi-method}
 \alias{colVars}
+\alias{colVars,Zi-method}
 \title{Row and Column Variances of zero inflated count data}
 \usage{
 \S4method{rowVars}{Zi}(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE)

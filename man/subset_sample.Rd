@@ -2,12 +2,11 @@
 % Please edit documentation in R/helper.R
 \name{subset_sample}
 \alias{subset_sample}
-\alias{subset_feature}
 \title{Subset a \code{\linkS4class{Zi}}-class object based on sample data}
 \usage{
 subset_sample(Zi, ...)
 
-subset_feature(Zi, ...)
+subset_sample(Zi, ...)
 }
 \arguments{
 \item{Zi}{\code{\linkS4class{Zi}}-class object}

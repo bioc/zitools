@@ -2,9 +2,13 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowWeightedSds}
 \alias{rowWeightedSds}
+\alias{rowWeightedSds,Zi-method}
 \alias{colWeightedSds}
+\alias{colWeightedSds,Zi-method}
 \alias{rowWeightedVars}
+\alias{rowWeightedVars,Zi-method}
 \alias{colWeightedVars}
+\alias{colWeightedVars,Zi-method}
 \title{Row and column weighted standard deviations or variances of zero
 inflated count data}
 \usage{
@@ -45,6 +49,6 @@ Zi <- ziMain(mtx)
 rowWeightedSds(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
 colWeightedSds(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
 rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
-colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
+colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
 
 }

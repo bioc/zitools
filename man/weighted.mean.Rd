@@ -2,6 +2,7 @@
 % Please edit documentation in R/inherited_functions.R
 \name{weighted.mean}
 \alias{weighted.mean}
+\alias{weighted.mean,Zi-method}
 \title{Weighted Arithmetic Mean of zero inflated count data}
 \usage{
 \S4method{weighted.mean}{Zi}(x, w, ...)

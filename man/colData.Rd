@@ -2,12 +2,15 @@
 % Please edit documentation in R/helper.R
 \name{colData}
 \alias{colData}
+\alias{colData,Zi-method}
 \title{Access the col Data}
 \usage{
 \S4method{colData}{Zi}(x, ...)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{...}{\code{\link[SummarizedExperiment]{colData}}}
 }
 \value{
 DFrame
@@ -15,4 +18,7 @@ DFrame
 \description{
 access the colData of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 object of the class SummarizedExperiment
+}
+\seealso{
+\code{\link[SummarizedExperiment]{colData}}
 }

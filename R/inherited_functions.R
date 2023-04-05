@@ -28,7 +28,7 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 
 #'@export
 #'@name colMedians
-#'
+#'@aliases colMedians,Zi-method
 #'@title Calculate the row or column median of zero-deinflated count data
 #'@description Calculate the row or column median of  zero-deinflated data of a
 #' \code{\linkS4class{Zi}}-class object. To calculate the median, the output matrix will be extracted
@@ -39,6 +39,7 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 #'not. default = \code{\link{TRUE}}
 #'@param  useNames  \code{\link[base]{logical}}.  If \code{\link{TRUE}} (default), names
 #'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#'@param ... see \code{\link[MatrixGenerics]{colMedians}}
 #'
 #'@returns returns a numeric vector of row/column length
 #'@importFrom MatrixGenerics colMedians
@@ -65,6 +66,7 @@ setMethod("colMedians", "Zi" , function(x,
 })
 
 #'@name rowMedians
+#'@aliases rowMedians,Zi-method
 #'@export
 #'@rdname colMedians
 #'@importFrom MatrixGenerics rowMedians
@@ -91,6 +93,7 @@ setMethod("rowMedians", "Zi", function(x,
 #'@param x A \code{\linkS4class{Zi}}-class object
 #'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
 #'not. default = \code{\link{TRUE}}
+#'@param probs A numeric \code{\link[base]{vector}} of J probabilities in \[0,1\]
 #'@param ... \link[stats]{quantile}
 #'@description Calculate the quantiles of  zero-deinflated data of a
 #'\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output
@@ -109,12 +112,13 @@ quantile.Zi <- function(x, probs = seq(0, 1, 0.25), na.rm = TRUE, ...) {
 
 #'@export
 #'@name rowQuantiles
+#'@aliases rowQuantiles,Zi-method
 #'@title Calculate the row or column quantiles of zero-deinflated count data
 #'
 #'@param  x         A \code{\linkS4class{Zi}}-class object
 #'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows
 #'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param  probs     A numeric \code{\link[base]{vector}} of J probabilities in [0,1]
+#'@param  probs     A numeric \code{\link[base]{vector}} of J probabilities in \[0,1\]
 #'@param  na.rm     \code{\link[base]{logical}} If \code{\link{TRUE}}
 #'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}
 #'@param  type      An integer specifying the type of estimator
@@ -131,7 +135,7 @@ quantile.Zi <- function(x, probs = seq(0, 1, 0.25), na.rm = TRUE, ...) {
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'rowQuantile(Zi, useNames = TRUE)
+#'rowQuantiles(Zi, useNames = TRUE)
 #'colQuantiles(Zi)
 
 setMethod("rowQuantiles", "Zi", function(x,
@@ -157,6 +161,7 @@ setMethod("rowQuantiles", "Zi", function(x,
 })
 
 #'@name colQuantiles
+#'@aliases colQuantiles,Zi-method
 #'@export
 #'@rdname rowQuantiles
 #'@importFrom MatrixGenerics colQuantiles
@@ -211,7 +216,7 @@ mean.Zi <- function(x, ...) {
 #'@export
 #'@name colMeans2
 #'@title Calculate the row or column means of zero-inflated count data
-#'
+#'@aliases colMeans2,Zi-method
 #'@param  x   A \code{\linkS4class{Zi}}-class object
 #'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
 #'operate over. If \code{\link{NULL}} (default), no subsetting is done
@@ -247,6 +252,7 @@ setMethod("colMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 })
 
 #'@name rowMeans2
+#'@aliases rowMeans2,Zi-method
 #'@export
 #'@rdname colMeans2
 #'@importFrom stats weighted.mean
@@ -267,6 +273,7 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 
 #'@export
 #'@name sd
+#'@aliases sd,Zi-method
 #'@title Standard Deviation of zero inflated count data
 #'@param x  A \code{\linkS4class{Zi}}-class object
 #'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
@@ -290,6 +297,7 @@ setMethod("sd", "Zi", function(x, na.rm = FALSE) {
 
 #'@export
 #'@name rowSds
+#'@aliases rowSds,Zi-method
 #'@title Row and Column Standard Deviations of zero inflated count data
 #'
 #'@param  x   A \code{\linkS4class{Zi}}-class object
@@ -323,6 +331,7 @@ setMethod("rowSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 })
 
 #'@name colSds
+#'@aliases colSds,Zi-method
 #'@export
 #'@rdname rowSds
 #'@importFrom matrixStats weightedSd
@@ -341,6 +350,7 @@ setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 
 #'@export
 #'@name var
+#'@aliases var,Zi-method
 #'@title Variance of zero inflated count data
 #'@param x  A \code{\linkS4class{Zi}}-class object
 #'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
@@ -364,6 +374,7 @@ setMethod("var", "Zi", function(x, na.rm = FALSE) {
 
 #'@export
 #'@name rowVars
+#'@aliases rowVars,Zi-method
 #'@title Row and Column Variances of zero inflated count data
 #'
 #'@param  x   A \code{\linkS4class{Zi}}-class object
@@ -397,6 +408,7 @@ setMethod("rowVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, 
 })
 
 #'@name colVars
+#'@aliases colVars,Zi-method
 #'@export
 #'@rdname rowVars
 #'@importFrom matrixStats weightedVar
@@ -415,6 +427,7 @@ setMethod("colVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, 
 
 #'@export
 #'@name weighted.mean
+#'@aliases weighted.mean,Zi-method
 #'@title Weighted Arithmetic Mean of zero inflated count data
 #'
 #'@param x A \code{\linkS4class{Zi}}-class object
@@ -440,6 +453,7 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 
 #'@export
 #'@name rowWeightedMeans
+#'@aliases rowWeightedMeans,Zi-method
 #'@title Row and Column weighted means of zero inflated count data
 #'
 #'@param x A \code{\linkS4class{Zi}}-class object
@@ -487,6 +501,7 @@ setMethod("rowWeightedMeans", "Zi", function(x,
 
 
 #'@name colWeightedMeans
+#'@aliases colWeightedMeans,Zi-method
 #'@export
 #'@rdname rowWeightedMeans
 #'@importFrom stats weighted.mean
@@ -509,6 +524,7 @@ setMethod("colWeightedMeans", "Zi", function(x, w, rows = NULL, cols = NULL, na.
 
 #'@export
 #'@name rowWeightedSds
+#'@aliases rowWeightedSds,Zi-method
 #'@title Row and column weighted standard deviations or variances of zero
 #'inflated count data
 #'
@@ -534,7 +550,7 @@ setMethod("colWeightedMeans", "Zi", function(x, w, rows = NULL, cols = NULL, na.
 #'rowWeightedSds(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
 #'colWeightedSds(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
 #'rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
-#'colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1)
+#'colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
 #'
 
 setMethod("rowWeightedSds", "Zi", function(x,
@@ -559,6 +575,7 @@ setMethod("rowWeightedSds", "Zi", function(x,
 })
 
 #'@name colWeightedSds
+#'@aliases colWeightedSds,Zi-method
 #'@export
 #'@rdname rowWeightedSds
 #'@importFrom matrixStats weightedSd
@@ -577,6 +594,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 
 #'@export
 #'@name weightedVar
+#'@aliases weightedVar,Zi-method
 #'@title Weighted Variance and weighted Standard Deviation
 #'
 #'@param x A \code{\linkS4class{Zi}}-class object
@@ -588,6 +606,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 #'not. default = \code{\link{FALSE}}
 #'@param center	 \code{\link{numeric}} scalar specifying the center location of
 #' the data. If \code{\link{NULL}}, it is estimated from data.
+#' @param ... \code{\link[matrixStats]{weightedVar}}
 #'@description  Calculate a weighted variance of zero inflated count data,
 #'additionally taking weights for structural zeros into account
 #'@returns a \code{\link{numeric}} scalar
@@ -608,6 +627,7 @@ setMethod("weightedVar", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center
 
 #'@export
 #'@name rowWeightedVars
+#'@aliases rowWeightedVars,Zi-method
 #'@rdname rowWeightedSds
 #'@importFrom matrixStats weightedVar
 #'@importFrom MatrixGenerics rowWeightedVars
@@ -634,6 +654,7 @@ setMethod("rowWeightedVars", "Zi", function(x,
 })
 
 #'@name colWeightedVars
+#'@aliases colWeightedVars,Zi-method
 #'@export
 #'@rdname rowWeightedSds
 #'@importFrom matrixStats weightedVar
@@ -653,6 +674,7 @@ setMethod("colWeightedVars", "Zi", function(x, w, rows = NULL, cols = NULL, na.r
 
 
 #'@name log1p
+#'@aliases log1p,Zi-method
 #'@title log(1+x)
 #'@description Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
 #'object, log calculates by default natural logarithms

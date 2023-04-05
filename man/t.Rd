@@ -2,12 +2,13 @@
 % Please edit documentation in R/helper.R
 \name{t}
 \alias{t}
+\alias{t,Zi-method}
 \title{Transpose a \code{\linkS4class{Zi}}-class object}
 \usage{
 \S4method{t}{Zi}(x)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 \code{\linkS4class{Zi}}-class object

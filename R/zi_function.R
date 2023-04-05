@@ -23,7 +23,8 @@ setClass(
 )
 
 #'@name ziMain
-#'
+#'@aliases ziMain,SummarizedExperiment-method
+#'@aliases ziMain,phyloseq-method
 #'@title  ziMain
 #'@param inputdata phyloseq object, SummarizedExperiment object, or matrix (rows
 #'=features, columns=samples)
@@ -42,9 +43,11 @@ setClass(
 #'@param ... additional parameters to describe the model, see \link[pscl]{zeroinfl}
 #'
 #'@description
-#'This function fits a zero-inflated negative binomial model to count data and calculates
+#'This function fits a zero-inflated mixture model (either
+#'Poisson or negative binomial distribution) to count data and calculates
 #'weights for all zeros indicating whether a zero is a real count (weight close to 1)
-#'or whether it is a structural zeros (weight close to 0).
+#'or whether it is a structural zeros (weight close to 0). The default model is
+#'a zero inflated negative binomial model.
 #'
 #'The input inputdata of the ziMain function is either a phyloseq
 #'object, SummarizedExperiment object or count matrix.
@@ -69,7 +72,7 @@ setClass(
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
 #'@slot ZiModel list. The result of fitting a zero inflated model using
-#'pscl::zeroinfl
+#'\code{\link[pscl]{zeroinfl}}
 #'@slot output matrix. The matrix where predicted structural zeros are omitted
 #'and stored as NA values
 #'@slot weights matrix. A matrix containing weights for zero counts

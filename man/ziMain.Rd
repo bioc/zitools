@@ -2,6 +2,8 @@
 % Please edit documentation in R/zi_function.R
 \name{ziMain}
 \alias{ziMain}
+\alias{ziMain,SummarizedExperiment-method}
+\alias{ziMain,phyloseq-method}
 \title{ziMain}
 \usage{
 ziMain(
@@ -41,9 +43,11 @@ count matrix per default = 0 and weights = 1)}
 \code{\linkS4class{Zi}}-class object
 }
 \description{
-This function fits a zero-inflated negative binomial model to count data and calculates
+This function fits a zero-inflated mixture model (either
+Poisson or negative binomial distribution) to count data and calculates
 weights for all zeros indicating whether a zero is a real count (weight close to 1)
-or whether it is a structural zeros (weight close to 0).
+or whether it is a structural zeros (weight close to 0). The default model is
+a zero inflated negative binomial model.
 
 The input inputdata of the ziMain function is either a phyloseq
 object, SummarizedExperiment object or count matrix.
@@ -76,7 +80,7 @@ The result of the ziMain function can be used to analyze zero inflated count dat
 \item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
 
 \item{\code{ZiModel}}{list. The result of fitting a zero inflated model using
-pscl::zeroinfl}
+\code{\link[pscl]{zeroinfl}}}
 
 \item{\code{output}}{matrix. The matrix where predicted structural zeros are omitted
 and stored as NA values}

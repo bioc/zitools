@@ -2,12 +2,19 @@
 % Please edit documentation in R/helper.R
 \name{assays}
 \alias{assays}
+\alias{assays,Zi-method}
 \title{Access assays}
 \usage{
 \S4method{assays}{Zi}(x, withDimnames = TRUE, ...)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{withDimnames}{A \code{logical}, indicating whether the dimnames of the
+SummarizedExperiment object should be applied (i.e. copied) to the extracted
+assays. see \code{\link[SummarizedExperiment]{assays}}}
+
+\item{...}{see \code{\link[SummarizedExperiment]{assays}}}
 }
 \value{
 list

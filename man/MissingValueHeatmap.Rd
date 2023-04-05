@@ -8,6 +8,12 @@ MissingValueHeatmap(ZiObject, title = "", xlab = "", ylab = "")
 }
 \arguments{
 \item{ZiObject}{ZiObject, result of the ziMain function}
+
+\item{title}{Title of the plot .}
+
+\item{xlab}{Title of the x axis.}
+
+\item{ylab}{Title of the y axis.}
 }
 \value{
 heatmap

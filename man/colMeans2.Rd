@@ -2,7 +2,9 @@
 % Please edit documentation in R/inherited_functions.R
 \name{colMeans2}
 \alias{colMeans2}
+\alias{colMeans2,Zi-method}
 \alias{rowMeans2}
+\alias{rowMeans2,Zi-method}
 \title{Calculate the row or column means of zero-inflated count data}
 \usage{
 \S4method{colMeans2}{Zi}(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE)

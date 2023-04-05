@@ -2,12 +2,13 @@
 % Please edit documentation in R/helper.R
 \name{tax_table}
 \alias{tax_table}
+\alias{tax_table,Zi-method}
 \title{Access the taxonomy table}
 \usage{
 \S4method{tax_table}{Zi}(object)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{object}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 tax_table

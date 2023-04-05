@@ -2,6 +2,7 @@
 % Please edit documentation in R/inherited_functions.R
 \name{log1p}
 \alias{log1p}
+\alias{log1p,Zi-method}
 \title{log(1+x)}
 \usage{
 \S4method{log1p}{Zi}(x)

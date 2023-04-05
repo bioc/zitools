@@ -2,12 +2,17 @@
 % Please edit documentation in R/helper.R
 \name{rowData}
 \alias{rowData}
+\alias{rowData,Zi-method}
 \title{Access the row data}
 \usage{
-\S4method{rowData}{Zi}(x, use.names = TRUE, ...)
+\S4method{rowData}{Zi}(x, useNames = TRUE, ...)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{useNames}{returns a rowData dataframe with rownames}
+
+\item{...}{\code{\link[SummarizedExperiment]{rowData}}}
 }
 \value{
 DFrame

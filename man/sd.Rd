@@ -2,6 +2,7 @@
 % Please edit documentation in R/inherited_functions.R
 \name{sd}
 \alias{sd}
+\alias{sd,Zi-method}
 \title{Standard Deviation of zero inflated count data}
 \usage{
 \S4method{sd}{Zi}(x, na.rm = FALSE)

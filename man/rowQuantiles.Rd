@@ -2,7 +2,9 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowQuantiles}
 \alias{rowQuantiles}
+\alias{rowQuantiles,Zi-method}
 \alias{colQuantiles}
+\alias{colQuantiles,Zi-method}
 \title{Calculate the row or column quantiles of zero-deinflated count data}
 \usage{
 \S4method{rowQuantiles}{Zi}(
@@ -35,7 +37,7 @@
 \item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows
 and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting is done}
 
-\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in \link{0,1}}
+\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in [0,1]}
 
 \item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
 \code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}}
@@ -57,6 +59,6 @@ Calculate the row or column quantiles of  zero-deinflated data of a
 \examples{
 data(mtx)
 Zi <- ziMain(mtx)
-rowQuantile(Zi, useNames = TRUE)
+rowQuantiles(Zi, useNames = TRUE)
 colQuantiles(Zi)
 }

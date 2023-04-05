@@ -2,12 +2,13 @@
 % Please edit documentation in R/helper.R
 \name{phy_tree}
 \alias{phy_tree}
+\alias{phy_tree,Zi-method}
 \title{Access the phylogenetic tree}
 \usage{
 \S4method{phy_tree}{Zi}(physeq)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{physeq}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 phy_tree

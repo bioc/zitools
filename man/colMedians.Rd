@@ -2,7 +2,9 @@
 % Please edit documentation in R/inherited_functions.R
 \name{colMedians}
 \alias{colMedians}
+\alias{colMedians,Zi-method}
 \alias{rowMedians}
+\alias{rowMedians,Zi-method}
 \title{Calculate the row or column median of zero-deinflated count data}
 \usage{
 \S4method{colMedians}{Zi}(x, rows = NULL, cols = NULL, na.rm = TRUE, ..., useNames = TRUE)
@@ -18,6 +20,8 @@
 
 \item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
 not. default = \code{\link{TRUE}}}
+
+\item{...}{see \code{\link[MatrixGenerics]{colMedians}}}
 
 \item{useNames}{\code{\link[base]{logical}}.  If \code{\link{TRUE}} (default), names
 attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}

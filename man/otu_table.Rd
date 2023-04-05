@@ -2,12 +2,13 @@
 % Please edit documentation in R/helper.R
 \name{otu_table}
 \alias{otu_table}
+\alias{otu_table,Zi-method}
 \title{Access the otu table}
 \usage{
 \S4method{otu_table}{Zi}(object)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object}
+\item{object}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
 otu_table

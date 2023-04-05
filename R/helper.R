@@ -59,8 +59,8 @@ zi2countmatrix <- function(ZiObject) {
 
 #'@name tax_table
 #'@title Access the taxonomy table
-#'
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@aliases tax_table,Zi-method
+#'@param object \code{\linkS4class{Zi}}-class object
 #'@description access the taxonomy table of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq tax_table
@@ -74,8 +74,9 @@ setMethod("tax_table", signature = "Zi", function(object){
 })
 
 #'@name sample_data
+#'@aliases sample_data,Zi-method
 #'@title Access the sample data
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param object \code{\linkS4class{Zi}}-class object
 #'@description access the sample_data of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq sample_data
@@ -90,8 +91,9 @@ setMethod("sample_data", signature = "Zi", function(object){
 })
 
 #'@name otu_table
+#'@aliases otu_table,Zi-method
 #'@title Access the otu table
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param object \code{\linkS4class{Zi}}-class object
 #'@description access the otu_table of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@returns otu_table
@@ -106,8 +108,9 @@ setMethod("otu_table", signature = "Zi", function(object){
 })
 
 #'@name phy_tree
+#'@aliases phy_tree,Zi-method
 #'@title Access the phylogenetic tree
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param physeq \code{\linkS4class{Zi}}-class object
 #'@description access the phylogenetic tree (phy_tree) of an object of the class
 #'"Zi" if the inputdata slot is a phyloseq object
 #'@returns phy_tree
@@ -122,8 +125,11 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 })
 
 #'@name rowData
+#'@aliases rowData,Zi-method
 #'@title Access the row data
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param useNames returns a rowData dataframe with rownames
+#'@param ... \code{\link[SummarizedExperiment]{rowData}}
 #'@description access the rowData of an \code{\linkS4class{Zi}}-class object if the inputdata
 #'is an object of the class SummarizedExperiment
 #'@returns DFrame
@@ -132,33 +138,42 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 #'@export
 #'
 
-setMethod("rowData", signature = "Zi", function(x, ...){
-  rowData <- rowData(x@inputdata, ...)
+setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
+  rowData <- rowData(x@inputdata, useNames = useNames, ...)
   return(rowData)
 })
 
 #'@name assays
+#'@aliases assays,Zi-method
 #'@title Access assays
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param withDimnames A \code{logical}, indicating whether the dimnames of the
+#'SummarizedExperiment object should be applied (i.e. copied) to the extracted
+#'assays. see \code{\link[SummarizedExperiment]{assays}}
+#'@param ... see \code{\link[SummarizedExperiment]{assays}}
 #'@description access  assays of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment assays
 #'@returns list
 #'@export
 
-setMethod("assays", signature = "Zi", function(x, ...){
-  assays <- assays(x@inputdata, ...)
+
+setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
+  assays <- assays(x@inputdata, withDimnames=withDimnames, ...)
   return(assays)
 })
 
 
 #'@name colData
+#'@aliases colData,Zi-method
 #'@title Access the col Data
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param ... \code{\link[SummarizedExperiment]{colData}}
 #'@description access the colData of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment colData
 #'@returns DFrame
+#'@seealso \code{\link[SummarizedExperiment]{colData}}
 #'
 #'@export
 
@@ -168,8 +183,9 @@ setMethod("colData", signature = "Zi", function(x, ...){
 })
 
 #'@name t
+#'@aliases t,Zi-method
 #'@title Transpose a \code{\linkS4class{Zi}}-class object
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
+#'@param x \code{\linkS4class{Zi}}-class object
 #'@description transpose all matrizes of a \code{\linkS4class{Zi}}-class object
 #'@returns \code{\linkS4class{Zi}}-class object
 #'@export
@@ -286,7 +302,7 @@ subset_sample <- function(Zi, ...){
 #'@importFrom SummarizedExperiment colData
 #'
 
-subset_feature <- function(Zi, ...){
+subset_sample <- function(Zi, ...){
   if (is(Zi@inputdata, "phyloseq") == TRUE){
     newDF <- subset(as(tax_table(Zi@inputdata), "data.frame"), ...)
     rownames <- rownames(newDF)

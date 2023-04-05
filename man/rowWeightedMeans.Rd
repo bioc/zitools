@@ -2,7 +2,9 @@
 % Please edit documentation in R/inherited_functions.R
 \name{rowWeightedMeans}
 \alias{rowWeightedMeans}
+\alias{rowWeightedMeans,Zi-method}
 \alias{colWeightedMeans}
+\alias{colWeightedMeans,Zi-method}
 \title{Row and Column weighted means of zero inflated count data}
 \usage{
 \S4method{rowWeightedMeans}{Zi}(

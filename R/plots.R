@@ -21,7 +21,8 @@ boxplot.Zi <- function(x, ...)
 {
   boxplot(x@output, ...)
 }
-
+#'@export
+#'@importFrom stats heatmap
 heatmap <- function(x, ...) {
   UseMethod("heatmap")
 }
@@ -40,7 +41,7 @@ heatmap <- function(x, ...) {
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'#heatmap(Zi) # error because too many NA
+#'#heatmap(Zi) # Error, clustering not possible
 #'heatmap(Zi, Rowv=NA) # no clustering of rows
 #'heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
 #'
@@ -55,6 +56,9 @@ heatmap.Zi <- function(x, ...) {
 #'@description Missing Value Heatmap
 #'
 #'@param ZiObject ZiObject, result of the ziMain function
+#'@param title Title of the plot .
+#'@param ylab Title of the y axis.
+#'@param xlab Title of the x axis.
 #'
 #'@returns heatmap
 #'
@@ -83,6 +87,8 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
                            method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
 
 #'@name cor
+#'@aliases cor,Zi-method
+#'@aliases cor,ANY-method
 #'@title Calculate weighted Pearson Correlation coeffiecients
 #'@description calculate the weighted pearson correlation coefficients of a
 #'count matrix of an Zi object taking weights for zero counts into account

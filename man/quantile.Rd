@@ -10,6 +10,8 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
+\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in [0,1]}
+
 \item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
 not. default = \code{\link{TRUE}}}
 
