@@ -1,10 +1,10 @@
-
 # zitools
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-The goal of zitools is to ...
+The goal of zitools is to analyse zero inflated count data by fitting a zero inflated mixture model and accounting for excess of zeros by downweighting them.
 
 ## Installation
 
@@ -23,4 +23,3 @@ This is a basic example which shows you how to solve a common problem:
 library(zitools)
 ## basic example code
 ```
-
