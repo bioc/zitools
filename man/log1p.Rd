@@ -14,6 +14,11 @@
 Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
 object, log calculates by default natural logarithms
 }
+\examples{
+data(mtx)
+Zi <- ziMain(mtx)
+log1p(Zi)
+}
 \seealso{
 \link[base]{log1p}
 }
