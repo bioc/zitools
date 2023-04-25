@@ -14,7 +14,7 @@
 are excluded, otherwise not. default = \code{\link{FALSE}}}
 }
 \value{
-value
+standard deviation value
 }
 \description{
 Calculate the standard deviation of zero inflated count data
@@ -24,4 +24,7 @@ taking weights for structural zeros into account.
 data(mtx)
 Zi <- ziMain(mtx)
 sd(Zi)
+}
+\seealso{
+\link[matrixStats]{weightedSd}, \link[zitools]{rowSds}, \link[zitools]{colSds}
 }

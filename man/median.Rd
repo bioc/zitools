@@ -27,3 +27,6 @@ data(mtx)
 Zi <- ziMain(mtx)
 median(Zi)
 }
+\seealso{
+\link[stats]{median}, \link[zitools]{colMedians}, \link[zitools]{rowMedians}
+}

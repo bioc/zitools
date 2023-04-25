@@ -13,7 +13,7 @@
 \item{...}{\link[base]{mean.default}}
 }
 \value{
-value
+mean value
 }
 \description{
 Calculate the arithmetic mean of zero inflated data taking weights
@@ -24,4 +24,7 @@ data(mtx)
 Zi <- ziMain(mtx)
 mean(Zi)
 
+}
+\seealso{
+\link[stats]{weighted.mean}, \link[zitools]{colMeans2}, \link[zitools]{rowMeans2}
 }

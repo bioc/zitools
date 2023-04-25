@@ -20,5 +20,5 @@ Zi <- ziMain(mtx)
 log1p(Zi)
 }
 \seealso{
-\link[base]{log1p}
+\link[base]{log1p}, \link[zitools]{log2p}
 }

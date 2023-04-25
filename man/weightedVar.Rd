@@ -37,3 +37,6 @@ Zi <- ziMain(mtx)
 weight <- runif(length(Zi@countmatrix), 0.1, 1)
 weightedVar(Zi, w= weight)
 }
+\seealso{
+\link[matrixStats]{weightedVar}, \link[zitools]{rowWeightedVars}, \link[zitools]{colWeightedVars}
+}

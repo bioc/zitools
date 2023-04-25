@@ -16,7 +16,7 @@ x giving the weights to use for elements of x}
 \item{...}{\link[stats]{weighted.mean}}
 }
 \value{
-value
+weighted mean value
 }
 \description{
 Calculate a weighted mean of zero inflated count data, additionally
@@ -27,4 +27,7 @@ data(mtx)
 Zi <- ziMain(mtx)
 weight <- runif(length(Zi@countmatrix), 0.1, 1)
 weighted.mean(Zi, w= weight)
+}
+\seealso{
+\link[stats]{weighted.mean}, \link[zitools]{rowWeightedMeans}, \link[zitools]{colWeightedMeans}
 }

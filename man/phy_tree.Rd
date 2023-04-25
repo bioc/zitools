@@ -14,6 +14,6 @@
 phy_tree
 }
 \description{
-access the phylogenetic tree (phy_tree) of an object of the class
+access the phylogenetic tree (\link[phyloseq]{phy_tree}) of an object of the class
 "Zi" if the inputdata slot is a phyloseq object
 }

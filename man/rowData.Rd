@@ -18,6 +18,6 @@
 DFrame
 }
 \description{
-access the rowData of an \code{\linkS4class{Zi}}-class object if the inputdata
+access the \link[SummarizedExperiment]{rowData} of an \code{\linkS4class{Zi}}-class object if the inputdata
 is an object of the class SummarizedExperiment
 }

@@ -14,6 +14,6 @@
 tax_table
 }
 \description{
-access the taxonomy table of an \code{\linkS4class{Zi}}-class object if the
+access the taxonomy table (\link[phyloseq]{tax_table}) of an \code{\linkS4class{Zi}}-class object if the
 inputdata slot is a phyloseq object
 }

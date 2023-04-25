@@ -16,7 +16,7 @@
 DFrame
 }
 \description{
-access the colData of an \code{\linkS4class{Zi}}-class object if the inputdata is an
+access the \link[SummarizedExperiment]{colData} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 object of the class SummarizedExperiment
 }
 \seealso{

@@ -18,7 +18,7 @@ not. default = \code{\link{TRUE}}}
 \item{...}{\link[stats]{quantile}}
 }
 \value{
-quantile values
+quantile value
 }
 \description{
 Calculate the quantiles of  zero-deinflated data of a
@@ -29,4 +29,7 @@ matrix will be extracted.
 data(mtx)
 Zi <- ziMain(mtx)
 quantile(Zi)
+}
+\seealso{
+\link[stats]{quantile}, \link[zitools]{rowQuantiles}, \link[zitools]{colQuantiles}
 }

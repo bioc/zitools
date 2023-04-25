@@ -14,6 +14,6 @@
 otu_table
 }
 \description{
-access the otu_table of an \code{\linkS4class{Zi}}-class object if the
+access the \link[phyloseq]{otu_table} of an \code{\linkS4class{Zi}}-class object if the
 inputdata slot is a phyloseq object
 }

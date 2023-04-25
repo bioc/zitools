@@ -20,6 +20,6 @@ assays. see \code{\link[SummarizedExperiment]{assays}}}
 list
 }
 \description{
-access  assays of an \code{\linkS4class{Zi}}-class object if the inputdata is an
+access  \link[SummarizedExperiment]{assays} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 object of the class SummarizedExperiment
 }

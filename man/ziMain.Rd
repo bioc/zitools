@@ -4,7 +4,8 @@
 \alias{ziMain}
 \alias{ziMain,SummarizedExperiment-method}
 \alias{ziMain,phyloseq-method}
-\title{ziMain}
+\title{ziMain, function to fit a zero inflation model and calculate weights
+for structural zeros}
 \usage{
 ziMain(
   inputdata,
@@ -20,7 +21,8 @@ ziMain(
 \item{inputdata}{phyloseq object, SummarizedExperiment object, or matrix (rows
 =features, columns=samples)}
 
-\item{feature}{"feature", "gene", "OTU", "phylum", etc.}
+\item{feature}{"feature", "gene", "OTU", "phylum", etc. By default, rownames
+are labelled as feature1, feature2, ...}
 
 \item{formula}{formula to fit the zero inflated model
 y ~ x1 + x2 + ..., default = count ~ sample + feature.
@@ -28,13 +30,12 @@ A different set of regressors can be specified using y ~ x1 +x2 + ...|z1 + z2 + 
 where the first part describes the count data model and the second part
 describes the zero inflation model}
 
-\item{dist}{= distribution, either poisson, negative binomial ("negbin") or
-geometric}
+\item{dist}{= distribution, either poisson ("poisson"), negative binomial ("negbin")}
 
 \item{link}{= link function, either "logit", "probit", "cloglog", "cauchit"}
 
-\item{zeroRows.rm}{= logical, TRUE if rows that only contain zeros should be removed
-or not (they are removed to fit a zero inflated model and will be added afterwards
+\item{zeroRows.rm}{= logical, indicating whether rows that only contain zeros should be removed (\code{\link{TRUE}})
+or not (\code{\link{FALSE}}) (they are removed to fit a zero inflated model and will be added afterwards
 count matrix per default = 0 and weights = 1)}
 
 \item{...}{additional parameters to describe the model, see \link[pscl]{zeroinfl}}
@@ -46,7 +47,7 @@ count matrix per default = 0 and weights = 1)}
 This function fits a zero-inflated mixture model (either
 Poisson or negative binomial distribution) to count data and calculates
 weights for all zeros indicating whether a zero is a real count (weight close to 1)
-or whether it is a structural zeros (weight close to 0). The default model is
+or whether it is a structural zero (weight close to 0). The default model is
 a zero inflated negative binomial model.
 
 The input inputdata of the ziMain function is either a phyloseq
@@ -54,15 +55,16 @@ object, SummarizedExperiment object or count matrix.
 
 In order to reduce calculation times, the count matrix is divided into
 blocks of around 5000 count values. Then, a zero inflation model (either
-Poisson or negative binomial distribution) is fitted to the data. Using the
-fitted zero inflated model, probabilities given that a zero in the count matrix
-is a structural zero are predicted. Those probabilities are used in two ways:
+Poisson or negative binomial distribution) is fitted to the data. The response
+variable abundance is estimated using the predictor variables sample(rows) and
+feature(columns). Using the fitted zero inflated model, probabilities given
+that a zero in the count matrix is a structural zero are predicted. Those probabilities are used in two ways:
 \enumerate{
 \item A zero-deinflated count matrix is generated where a appropriate proportion
 of zeros are randomly replaced by NA. This count matrix can be used for analysis
 methods which cannot deal with weights.
 \item Weights
-#'\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
+\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
 (see Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
 are calculated in order to down-weight structrual zeros in analyses
 which can account for weighting of individual data points.
@@ -82,8 +84,8 @@ The result of the ziMain function can be used to analyze zero inflated count dat
 \item{\code{ZiModel}}{list. The result of fitting a zero inflated model using
 \code{\link[pscl]{zeroinfl}}}
 
-\item{\code{output}}{matrix. The matrix where predicted structural zeros are omitted
-and stored as NA values}
+\item{\code{output}}{matrix. A matrix where zero counts are randomly replaced according
+to the estimated probability of being a structural zero}
 
 \item{\code{weights}}{matrix. A matrix containing weights for zero counts}
 }}
@@ -97,6 +99,7 @@ Zi <- ziMain(mtx)
 data(enterotype)
 data(GlobalPatterns)
 data(esophagus)
+ziMain(esophagus)
 data(soilrep)
 }
 \references{

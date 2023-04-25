@@ -14,7 +14,7 @@
 are excluded, otherwise not. default = \code{\link{FALSE}}}
 }
 \value{
-value
+variance value
 }
 \description{
 Calculate the variance of zero inflated count data taking weights
@@ -24,4 +24,7 @@ for structural zeros into account.
 data(mtx)
 Zi <- ziMain(mtx)
 var(Zi)
+}
+\seealso{
+\link[matrixStats]{weightedVar}, \link[zitools]{rowVars}, \link[zitools]{colVars}
 }
