@@ -61,7 +61,7 @@ zi2countmatrix <- function(ZiObject) {
 #'@title Access the taxonomy table
 #'@aliases tax_table,Zi-method
 #'@param object \code{\linkS4class{Zi}}-class object
-#'@description access the taxonomy table of an \code{\linkS4class{Zi}}-class object if the
+#'@description access the taxonomy table (\link[phyloseq]{tax_table}) of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq tax_table
 #'@returns tax_table
@@ -69,7 +69,12 @@ zi2countmatrix <- function(ZiObject) {
 
 
 setMethod("tax_table", signature = "Zi", function(object){
-  tax_table <- tax_table(object@inputdata)
+  if("phyloseq" %in% class(x@inputdata)) {
+  tax_table <- tax_table(object@inputdata)}
+  if("matrix" %in% class(x@inputdata)){
+    tax_table <- NULL}
+  if("SummarizedExperiment" %in% class(x@inputdata)){
+    tax_table <- NULL}
   return(tax_table)
 })
 
@@ -77,7 +82,7 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'@aliases sample_data,Zi-method
 #'@title Access the sample data
 #'@param object \code{\linkS4class{Zi}}-class object
-#'@description access the sample_data of an \code{\linkS4class{Zi}}-class object if the
+#'@description access the \link[phyloseq]{sample_data} of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq sample_data
 #'@returns sample_data
@@ -86,7 +91,12 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'
 
 setMethod("sample_data", signature = "Zi", function(object){
-  sample_data <- sample_data(object@inputdata)
+  if("phyloseq" %in% class(x@inputdata)) {
+  sample_data <- sample_data(object@inputdata)}
+  if("matrix" %in% class(x@inputdata)){
+    sample_data <- NULL}
+  if("SummarizedExperiment" %in% class(x@inputdata)){
+    sample_data <- NULL}
   return(sample_data)
 })
 
@@ -94,7 +104,7 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'@aliases otu_table,Zi-method
 #'@title Access the otu table
 #'@param object \code{\linkS4class{Zi}}-class object
-#'@description access the otu_table of an \code{\linkS4class{Zi}}-class object if the
+#'@description access the \link[phyloseq]{otu_table} of an \code{\linkS4class{Zi}}-class object if the
 #'inputdata slot is a phyloseq object
 #'@returns otu_table
 #'@importFrom phyloseq otu_table
@@ -103,7 +113,12 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'
 
 setMethod("otu_table", signature = "Zi", function(object){
-  otu_table <- otu_table(object@inputdata)
+  if("phyloseq" %in% class(x@inputdata)) {
+  otu_table <- otu_table(object@inputdata)}
+  if("matrix" %in% class(x@inputdata)){
+    otu_table <- NULL}
+  if("SummarizedExperiment" %in% class(x@inputdata)){
+    otu_table <- NULL}
   return(otu_table)
 })
 
@@ -111,7 +126,7 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'@aliases phy_tree,Zi-method
 #'@title Access the phylogenetic tree
 #'@param physeq \code{\linkS4class{Zi}}-class object
-#'@description access the phylogenetic tree (phy_tree) of an object of the class
+#'@description access the phylogenetic tree (\link[phyloseq]{phy_tree}) of an object of the class
 #'"Zi" if the inputdata slot is a phyloseq object
 #'@returns phy_tree
 #'@importFrom phyloseq phy_tree
@@ -120,7 +135,12 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'
 
 setMethod("phy_tree", signature = "Zi", function(physeq){
-  phy_tree <- phy_tree(physeq@inputdata)
+  if("phyloseq" %in% class(x@inputdata)) {
+  phy_tree <- phy_tree(physeq@inputdata)}
+  if("matrix" %in% class(x@inputdata)){
+    phy_tree <- NULL}
+  if("SummarizedExperiment" %in% class(x@inputdata)){
+    phy_tree <- NULL}
   return(phy_tree)
 })
 
@@ -130,7 +150,7 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param useNames returns a rowData dataframe with rownames
 #'@param ... \code{\link[SummarizedExperiment]{rowData}}
-#'@description access the rowData of an \code{\linkS4class{Zi}}-class object if the inputdata
+#'@description access the \link[SummarizedExperiment]{rowData} of an \code{\linkS4class{Zi}}-class object if the inputdata
 #'is an object of the class SummarizedExperiment
 #'@returns DFrame
 #'@importFrom SummarizedExperiment rowData
@@ -139,7 +159,12 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 #'
 
 setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
-  rowData <- rowData(x@inputdata, useNames = useNames, ...)
+  if("SummarizedExperiment" %in% class(x@inputdata)) {
+  rowData <- rowData(x@inputdata, useNames = useNames, ...)}
+  if("matrix" %in% class(x@inputdata)){
+  rowData <- NULL}
+  if("phyloseq" %in% class(x@inputdata)){
+  rowData <- NULL}
   return(rowData)
 })
 
@@ -151,7 +176,7 @@ setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
 #'SummarizedExperiment object should be applied (i.e. copied) to the extracted
 #'assays. see \code{\link[SummarizedExperiment]{assays}}
 #'@param ... see \code{\link[SummarizedExperiment]{assays}}
-#'@description access  assays of an \code{\linkS4class{Zi}}-class object if the inputdata is an
+#'@description access  \link[SummarizedExperiment]{assays} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment assays
 #'@returns list
@@ -159,7 +184,12 @@ setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
 
 
 setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
-  assays <- assays(x@inputdata, withDimnames=withDimnames, ...)
+  if("SummarizedExperiment" %in% class(x@inputdata)) {
+  assays <- assays(x@inputdata, withDimnames=withDimnames, ...)}
+  if("matrix" %in% class(x@inputdata)){
+    assays <- NULL}
+  if("phyloseq" %in% class(x@inputdata)){
+    assays <- NULL}
   return(assays)
 })
 
@@ -169,7 +199,7 @@ setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
 #'@title Access the col Data
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param ... \code{\link[SummarizedExperiment]{colData}}
-#'@description access the colData of an \code{\linkS4class{Zi}}-class object if the inputdata is an
+#'@description access the \link[SummarizedExperiment]{colData} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment colData
 #'@returns DFrame
@@ -178,7 +208,12 @@ setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
 #'@export
 
 setMethod("colData", signature = "Zi", function(x, ...){
-  colData <- colData(x@inputdata, ...)
+  if("SummarizedExperiment" %in% class(x@inputdata)) {
+  colData <- colData(x@inputdata, ...)}
+  if("matrix" %in% class(x@inputdata)){
+    colData <- NULL}
+  if("phyloseq" %in% class(x@inputdata)){
+    colData <- NULL}
   return(colData)
 })
 

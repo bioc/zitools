@@ -18,7 +18,7 @@ NULL
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'median(Zi)
-#'@seealso \link[zitools]{colMedians}, \link[zitools]{rowMedians}
+#'@seealso \link[stats]{median}, \link[zitools]{colMedians}, \link[zitools]{rowMedians}
 
 median.Zi <- function(x, na.rm = TRUE, ...)
 {
@@ -100,8 +100,9 @@ setMethod("rowMedians", "Zi", function(x,
 #'\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output
 #'matrix will be extracted.
 #'
-#'@returns quantile values
+#'@returns quantile value
 #'@importFrom stats quantile
+#'@seealso \link[stats]{quantile}, \link[zitools]{rowQuantiles}, \link[zitools]{colQuantiles}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -199,7 +200,8 @@ setMethod("colQuantiles", "Zi", function(x,
 #'@description  Calculate the arithmetic mean of zero inflated data taking weights
 #'for structural zeros into account
 #'
-#'@returns value
+#'@returns mean value
+#'@seealso \link[stats]{weighted.mean}, \link[zitools]{colMeans2}, \link[zitools]{rowMeans2}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -284,7 +286,8 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 #'taking weights for structural zeros into account.
 #'@importFrom matrixStats weightedSd
 #'@importFrom stats sd
-#'@returns value
+#'@returns standard deviation value
+#'@seealso \link[matrixStats]{weightedSd}, \link[zitools]{rowSds}, \link[zitools]{colSds}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -360,8 +363,9 @@ setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 #'@description  Calculate the variance of zero inflated count data taking weights
 #'for structural zeros into account.
 #'
-#'@returns value
+#'@returns variance value
 #'@importFrom matrixStats weightedVar
+#'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowVars}, \link[zitools]{colVars}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -438,8 +442,9 @@ setMethod("colVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, 
 #'
 #'@description Calculate a weighted mean of zero inflated count data, additionally
 #' taking weights for structural zeros into account
-#'@returns value
+#'@returns weighted mean value
 #'@importFrom stats weighted.mean
+#'@seealso \link[stats]{weighted.mean}, \link[zitools]{rowWeightedMeans}, \link[zitools]{colWeightedMeans}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -612,6 +617,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 #'additionally taking weights for structural zeros into account
 #'@returns a \code{\link{numeric}} scalar
 #'@importFrom matrixStats weightedVar
+#'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowWeightedVars}, \link[zitools]{colWeightedVars}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -681,7 +687,7 @@ setMethod("colWeightedVars", "Zi", function(x, w, rows = NULL, cols = NULL, na.r
 #'object, log calculates by default natural logarithms
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@export
-#'@seealso \link[base]{log1p}
+#'@seealso \link[base]{log1p}, \link[zitools]{log2p}
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
