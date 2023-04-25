@@ -18,6 +18,7 @@ NULL
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'median(Zi)
+#'@seealso \link[zitools]{colMedians}, \link[zitools]{rowMedians}
 
 median.Zi <- function(x, na.rm = TRUE, ...)
 {
@@ -681,8 +682,11 @@ setMethod("colWeightedVars", "Zi", function(x, w, rows = NULL, cols = NULL, na.r
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@export
 #'@seealso \link[base]{log1p}
-#'
-#'
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'log1p(Zi)
+
 setMethod("log1p", signature ="Zi", definition = function(x){
   countmatrix <- log1p(x@countmatrix)
   output <- log1p(x@output)
@@ -694,4 +698,34 @@ setMethod("log1p", signature ="Zi", definition = function(x){
     ZiModel = x@ZiModel,
     output = output,
     weights = weights)
+})
+
+#'@name log2p
+#'@aliases log2,Zi-method
+#'@title log2(x+1)
+#'@description Calculate log2(x+1) of all 'matrix' objects of a 'Zi'-class
+#'object
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'log2p(Zi)
+#'
+setGeneric("log2p", function(x){
+  log2(x+1)
+})
+
+setMethod("log2p", signature ="Zi",definition = function(x){
+countmatrix <- log2p(x@countmatrix)
+output <- log2p(x@output)
+weights <- log2p(x@weights)
+result <- new(
+  Class = "Zi",
+  inputdata = x@inputdata,
+  countmatrix = countmatrix,
+  ZiModel = x@ZiModel,
+  output = output,
+  weights = weights)
+return(result)
 })
