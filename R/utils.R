@@ -1,5 +1,6 @@
-#'@include zi_function.R
+#'@include ziMain.R
 NULL
+
 
 #'@name reshape_zi
 #'@title Reshape a given matrix into long format
@@ -239,6 +240,6 @@ zi_core <- function(input, feature = "",  formula, dist, link, ...)
     column_to_rownames(var = feature)%>%
     as.matrix()
   weights <- calcWeights(zi_input, zi, feature, dist = dist)
-  result <- list(ziInput = matrix, ziModel = zi, ziOutput = zi_prediction_wide, weights = weights)
+  result <- list(ziInput = matrix, model = zi, ziOutput = zi_prediction_wide, weights = weights)
   return(result)
 }

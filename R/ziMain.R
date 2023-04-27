@@ -4,7 +4,7 @@
 #'zero inflated data analysis
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
-#'@slot ZiModel list. The result of fitting a zero inflated model using
+#'@slot model list. The result of fitting a zero inflated model using
 #'\link[pscl]{zeroinfl}
 #'@slot output matrix. The matrix where predicted structural zeros are omitted
 #'and stored as NA values
@@ -17,7 +17,7 @@ setClass(
   slots = list(
     inputdata = "ANY",
     countmatrix = "matrix",
-    ZiModel = "list",
+    model = "list",
     output = "matrix",
     weights = "matrix")
 )
@@ -25,7 +25,7 @@ setClass(
 #'@name ziMain
 #'@aliases ziMain,SummarizedExperiment-method
 #'@aliases ziMain,phyloseq-method
-#'@title  ziMain, function to fit a zero inflation model and calculate weights
+#'@title  ziMain - main function to fit a zero inflation model and calculate weights
 #'for structural zeros
 #'@param inputdata phyloseq object, SummarizedExperiment object, or matrix (rows
 #'=features, columns=samples)
@@ -73,7 +73,7 @@ setClass(
 #'The result of the ziMain function can be used to analyze zero inflated count data.
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
 #'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
-#'@slot ZiModel list. The result of fitting a zero inflated model using
+#'@slot model list. The result of fitting a zero inflated model using
 #'\code{\link[pscl]{zeroinfl}}
 #'@slot output matrix. A matrix where zero counts are randomly replaced according
 #'to the estimated probability of being a structural zero
@@ -120,7 +120,7 @@ setGeneric("ziMain", function(inputdata,
       Class = "Zi",
       inputdata = inputdata,
       countmatrix = mtx,
-      ZiModel = vector(mode = "list"),
+      model = vector(mode = "list"),
       output = mtx,
       weights = matrix(1, nrow = nrow(mtx), ncol = ncol(mtx)))
   }
@@ -143,7 +143,7 @@ setGeneric("ziMain", function(inputdata,
       )
   }
   ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
-  ziModel <- lapply(list_core, '[[', "ziModel")
+  model <- lapply(list_core, '[[', "model")
   ziOutput <- do.call(rbind, lapply(list_core, '[[', "ziOutput"))
   weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
   if (zeroRows.rm == FALSE) {
@@ -166,7 +166,7 @@ setGeneric("ziMain", function(inputdata,
     Class = "Zi",
     inputdata = inputdata,
     countmatrix = mtx_new,
-    ZiModel = ziModel,
+    model = model,
     output = ziOutput,
     weights = weights
   )}
@@ -202,7 +202,7 @@ setMethod(
       Class = "Zi",
       inputdata = inputdata,
       countmatrix = zi_result@countmatrix,
-      ZiModel = zi_result@ZiModel,
+      model = zi_result@model,
       output = zi_result@output,
       weights = zi_result@weights
     )
@@ -236,7 +236,7 @@ setMethod(
       Class = "Zi",
       inputdata = inputdata,
       countmatrix = zi_result@countmatrix,
-      ZiModel = zi_result@ZiModel,
+      model = zi_result@model,
       output = zi_result@output,
       weights = zi_result@weights
     )

@@ -1,5 +1,6 @@
-#'@include zi_function.R
+#'@include ziMain.R
 NULL
+
 
 #'@name replace_phyloseq
 #'@title Replace the otu table of a phyloseq object
@@ -91,11 +92,11 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'
 
 setMethod("sample_data", signature = "Zi", function(object){
-  if("phyloseq" %in% class(x@inputdata)) {
+  if("phyloseq" %in% class(object@inputdata)) {
   sample_data <- sample_data(object@inputdata)}
-  if("matrix" %in% class(x@inputdata)){
+  if("matrix" %in% class(object@inputdata)){
     sample_data <- NULL}
-  if("SummarizedExperiment" %in% class(x@inputdata)){
+  if("SummarizedExperiment" %in% class(object@inputdata)){
     sample_data <- NULL}
   return(sample_data)
 })
@@ -234,7 +235,7 @@ setMethod("t", signature = "Zi", definition = function(x){
     Class = "Zi",
     inputdata = x@inputdata,
     countmatrix = countmatrix,
-    ZiModel = x@ZiModel,
+    model = x@model,
     output = output,
     weights = weights
   )
@@ -314,7 +315,7 @@ subset_sample <- function(Zi, ...){
     Class = "Zi",
     inputdata = Zi@inputdata,
     countmatrix = countmatrix,
-    ZiModel = Zi@ZiModel,
+    model = Zi@model,
     output = output,
     weights = weights
   )
@@ -355,7 +356,7 @@ subset_sample <- function(Zi, ...){
     Class = "Zi",
     inputdata = Zi@inputdata,
     countmatrix = countmatrix,
-    ZiModel = Zi@ZiModel,
+    model = Zi@model,
     output = output,
     weights = weights
   )
@@ -396,9 +397,22 @@ subset_feature <- function(Zi, ...){
     Class = "Zi",
     inputdata = Zi@inputdata,
     countmatrix = countmatrix,
-    ZiModel = Zi@ZiModel,
+    model = Zi@model,
     output = output,
     weights = weights
   )
   return(result)
 }
+
+#resample_output <- function(x, feature = "feature"){
+  #rownames <- rownames(x@countmatrix)
+  #colnames <- colnames(x@countmatrix)
+  #for(i in 1:length(x@model)){
+  #row_sub <- x@model[[1]][[feature = feature]]
+  #count_sub <- x@countmatrix[row_sub,]
+  #count_long <-
+  #}
+  #mtx <- x@countmatrix
+  #mtx_long <- reshape_zi(mtx, "feature")
+
+#}

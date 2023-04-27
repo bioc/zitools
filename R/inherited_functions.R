@@ -1,4 +1,4 @@
-#'@include zi_function.R
+#'@include ziMain.R
 NULL
 
 #'@export
