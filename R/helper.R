@@ -404,15 +404,47 @@ subset_feature <- function(Zi, ...){
   return(result)
 }
 
-#resample_output <- function(x, feature = "feature"){
-  #rownames <- rownames(x@countmatrix)
-  #colnames <- colnames(x@countmatrix)
-  #for(i in 1:length(x@model)){
-  #row_sub <- x@model[[1]][[feature = feature]]
-  #count_sub <- x@countmatrix[row_sub,]
-  #count_long <-
-  #}
-  #mtx <- x@countmatrix
-  #mtx_long <- reshape_zi(mtx, "feature")
 
-#}
+#'@name resample_output
+#'@title Resample a \code{\linkS4class{Zi}}-class object
+#'
+#'@description Resample the output matrix of an \code{\linkS4class{Zi}}-class object.
+#'Resampling is done by drawing from a binomial distribution with a given probability
+#'that a count value (zero and non-zero) is a structural zero.
+#'
+#'
+#'@param x \code{\linkS4class{Zi}}-class object
+#'
+#'@export
+
+resample_output <- function(x) {
+  mtx <- x@countmatrix
+  mtx_new <- mtx[rowSums(mtx[]) > 0,]
+  feature <- colnames(x@model[[1]][["model"]])[3]
+  rownames <- rownames(mtx)
+  colnames <- colnames(mtx)
+  list_output <- list()
+  for(i in 1:length(x@model)){
+    vec <- x@model[[i]][["model"]][, 3]
+    vec <- vec[1:(length(vec) / ncol(mtx_new))]
+    count_sub <- mtx_new[vec, ]
+    count_long <- reshape_zi(count_sub, feature = feature)
+    new_output <-
+      omit_str_zero(x@model[[i]], count_long, feature = feature)
+    new_output <- new_output %>%
+      spread(key = "sample", value = "count") %>%
+      column_to_rownames(var = feature) %>%
+      as.matrix()
+    list_output[[i]] <- new_output
+  }
+  output <- do.call(rbind, list_output)
+  output <- rbind(output, mtx[rowSums(mtx[])==0,])
+  output <- output[rownames,colnames]
+  result <- new(Class = "Zi",
+                inputdata = x@inputdata,
+                countmatrix = x@countmatrix,
+                model = x@model,
+                output = output,
+                weights = x@weights)
+  return(result)
+}
