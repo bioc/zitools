@@ -701,7 +701,7 @@ setMethod("log1p", signature ="Zi", definition = function(x){
     Class = "Zi",
     inputdata = x@inputdata,
     countmatrix = countmatrix,
-    ZiModel = x@ZiModel,
+    model = x@model,
     output = output,
     weights = weights)
 })
@@ -730,7 +730,7 @@ result <- new(
   Class = "Zi",
   inputdata = x@inputdata,
   countmatrix = countmatrix,
-  ZiModel = x@ZiModel,
+  model = x@model,
   output = output,
   weights = weights)
 return(result)

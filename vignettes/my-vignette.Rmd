@@ -19,12 +19,11 @@ library(zitools)
 ```
 
 ```{r}
-data(mtx)
-Zi <- ziMain(mtx)
+
 
 
 ```
 
 ```{r}
-boxplot(log1p(Zi))
+
 ```

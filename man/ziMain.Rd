@@ -96,11 +96,11 @@ data(mtx)
 # calling ziMain function:
 Zi <- ziMain(mtx)
 #Example Data Sets from other R packages
-data(enterotype)
-data(GlobalPatterns)
-data(esophagus)
-ziMain(esophagus)
-data(soilrep)
+#data(enterotype)
+#data(GlobalPatterns)
+#data(esophagus)
+#ziMain(esophagus)
+#data(soilrep)
 }
 \references{
 Van den Berge, K., Perraudeau, F., Soneson, C. et al. Observation weights
