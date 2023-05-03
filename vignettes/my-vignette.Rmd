@@ -1,5 +1,5 @@
 ---
-title: "my-vignette"
+title: "An Introduction to zitools"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{my-vignette}
@@ -14,16 +14,40 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+# Installation
+
+You can install the development version of zitools from GitHub with:
+
+```{r, eval = FALSE}
+devtools::install_github("kreutz-lab/zitools")
+```
+
+# Introduction 
+
+This vignette provides an introductory example on how to work with the 'zitools' package, which implements a weighting strategy based on a fitted zero inflated mixture model.
+
+Step one: load required packages
+
+```{r}
 library(zitools)
 ```
 
-```{r}
+## ziMain function 
 
+zitools is a ... tool to analyse zero inflated count data, especially microbiome data. As per default the counts are estimated given the predictor variables sample (columns) and feature(rows) when fitting a zero inflated poisson or zero inflated negative binomial model.
+
+```{r}
+data(mtx)
+Zi <- ziMain(mtx)
 
 
 ```
 
-```{r}
+### Plots 
 
+```{r}
+boxplot(Zi)
+boxplot(Zi@countmatrix)
+
+heatmap(Zi, Rowv=NULL)
 ```
