@@ -56,8 +56,8 @@ object, SummarizedExperiment object or count matrix.
 In order to reduce calculation times, the count matrix is divided into
 blocks of around 5000 count values. Then, a zero inflation model (either
 Poisson or negative binomial distribution) is fitted to the data. The response
-variable abundance is estimated using the predictor variables sample(rows) and
-feature(columns). Using the fitted zero inflated model, probabilities given
+variable count is estimated using the predictor variables sample(columns) and
+feature(rows). Using the fitted zero inflated model, probabilities given
 that a zero in the count matrix is a structural zero are predicted. Those probabilities are used in two ways:
 \enumerate{
 \item A zero-deinflated count matrix is generated where a appropriate proportion

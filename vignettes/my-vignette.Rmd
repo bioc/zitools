@@ -22,7 +22,7 @@ You can install the development version of zitools from GitHub with:
 devtools::install_github("kreutz-lab/zitools")
 ```
 
-# Introduction 
+# Introduction
 
 This vignette provides an introductory example on how to work with the 'zitools' package, which implements a weighting strategy based on a fitted zero inflated mixture model.
 
@@ -30,24 +30,68 @@ Step one: load required packages
 
 ```{r}
 library(zitools)
+library(phyloseq)
 ```
 
-## ziMain function 
+## ziMain function
 
 zitools is a ... tool to analyse zero inflated count data, especially microbiome data. As per default the counts are estimated given the predictor variables sample (columns) and feature(rows) when fitting a zero inflated poisson or zero inflated negative binomial model.
 
 ```{r}
-data(mtx)
-Zi <- ziMain(mtx)
+ps <- readRDS("C:/Users/meyerinc/Masterarbeit/cdi_schubert_results.rds")
+ps <- filter_taxa(ps, function(x) sum(x > 0) > (0.2*length(x)), TRUE)
+otu_table(ps) <- otu_table(ps)[,1:168]
+otu_table(ps) <- otu_table(ps)[rowSums(otu_table(ps))>0,]
 
+res_ps <- ziMain(ps, feature = "OTU", formula = count ~ sample + OTU, dist = "negbin", link = "logit", zeroRows.rm = TRUE)
 
 ```
 
-### Plots 
+### Boxplots
 
 ```{r}
-boxplot(Zi)
-boxplot(Zi@countmatrix)
+boxplot(log1p(res_ps))
+boxplot(log1p(res_ps@countmatrix))
 
-heatmap(Zi, Rowv=NULL)
+heatmap(res_ps, Rowv=NULL, Colv=NULL)
+```
+
+### Differential Abundance Analysis - with weights
+
+```{r}
+deseq_zi <- zi_to_deseq2(res_ps, ~disease_stat)
+dds_zi <-  DESeq(dds_zi, test = "Wald", fitType = "local", sfType = "poscounts")
+
+plotMA(dds_zi)
+plotDispEsts(dds_zi)
+
+res_zi <- results(dds_zi, cooksCutoff = FALSE)
+res_zi
+
+df_res_zi <- cbind(as(res_zi, "data.frame"), as(tax_table(ps)[rownames(res_zi), ], "matrix"))
+df_res_zi <- df_res_zi %>%
+  rownames_to_column(var = "OTU") %>%
+  arrange(padj)
+
+(fdr_otu_zi <- df_res_zi %>%
+  dplyr::filter(padj < 0.1)) 
+```
+
+### Differential Abundance Analysis - without weights
+
+```{r}
+deseq <- phyloseq_to_deseq2(ps, ~disease_stat)
+dds <-  DESeq(deseq, test = "Wald", fitType = "local", sfType = "poscounts")
+
+res <- results(dds, cooksCutoff = FALSE)
+res
+
+df_res<- cbind(as(res, "data.frame"), as(tax_table(ps)[rownames(res), ], "matrix"))
+df_res <- df_res %>%
+  rownames_to_column(var = "OTU") %>%
+  arrange(padj)
+df_res
+
+(fdr_otu <- df_res %>%
+  dplyr::filter(padj < 0.1)) 
 ```

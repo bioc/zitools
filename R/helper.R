@@ -21,7 +21,7 @@ replace_phyloseq <- function(ZiObject)
   return(ps)
 }
 
-#'@name zi2outputMatrix
+#'@name zi2output
 #'@title Access the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object
 #'
 #'@param  ZiObject \code{\linkS4class{Zi}}-class object
@@ -30,13 +30,13 @@ replace_phyloseq <- function(ZiObject)
 #'predicted structural zeros are replaced with NA
 #'
 #'@returns matrix
-#'@export
+#'@exportde
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'zi2outputMatrix(Zi)
 #'
-zi2outputMatrix <- function(ZiObject) {
+zi2output <- function(ZiObject) {
   ZiObject@output
 }
 
@@ -242,7 +242,7 @@ setMethod("t", signature = "Zi", definition = function(x){
   return(result)
 })
 
-#'@name zi_to_deseq2
+#'@name zi2deseq2
 #'@title Convert a \code{\linkS4class{Zi}}-class object to a DESeq2 dds object
 #'@description A \code{\linkS4class{Zi}}-class object is converted to a DESeqDataSet object, which
 #'can be used for DESeq2 analysis. Both, weight and count matrices will be
@@ -265,9 +265,9 @@ setMethod("t", signature = "Zi", definition = function(x){
 #'@importFrom DESeq2 DESeqDataSet
 #'@importFrom DESeq2 DESeqDataSetFromMatrix
 #'@importFrom SummarizedExperiment assays<-
-#'
+#'@export
 
-zi_to_deseq2 <- function(ZiObject, design, colData, ... ){
+zi2deseq2 <- function(ZiObject, design, colData, ... ){
   if (is(ZiObject@inputdata, "phyloseq") == TRUE) {
     dds <- phyloseq_to_deseq2(ZiObject@inputdata, design = design, ...)
   }
