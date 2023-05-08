@@ -22,7 +22,7 @@ quantile value
 }
 \description{
 Calculate the quantiles of  zero-deinflated data of a
-\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output
+\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts
 matrix will be extracted.
 }
 \examples{

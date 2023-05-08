@@ -20,7 +20,7 @@ NULL
 
 boxplot.Zi <- function(x, ...)
 {
-  boxplot(x@output, ...)
+  boxplot(x@deinflatedcounts, ...)
 }
 #'@export
 #'@importFrom stats heatmap
@@ -32,7 +32,7 @@ heatmap <- function(x, ...) {
 #'@title Draw a Heat Map
 #'@param x 'Zi'-class object
 #'@param ... see \link[stats]{heatmap}
-#'@description draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the output
+#'@description draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the deinflatedcounts
 #'matrix (drawn structural zeros) to produce a heatmap. NA values are white
 #'@returns heatmap
 #'@importFrom dplyr filter_all
@@ -47,7 +47,7 @@ heatmap <- function(x, ...) {
 #'heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
 #'
 heatmap.Zi <- function(x, ...) {
-  df <- as.data.frame(x@output)
+  df <- as.data.frame(x@deinflatedcounts)
   mtx <- as.matrix(df)
   stats::heatmap(mtx, ...)
 }
@@ -69,7 +69,7 @@ heatmap.Zi <- function(x, ...) {
 
 MissingValueHeatmap <- function(ZiObject,title = "", xlab = "", ylab = "") {
 
-  mtx <- ZiObject@output
+  mtx <- ZiObject@deinflatedcounts
   mtx.heatmap.sorted <- data.frame(mtx[order(-rowSums(is.na(mtx)), rowMeans(mtx, na.rm = TRUE)),])
   mtx.heatmap.sorted$Feature <- row.names(mtx.heatmap.sorted)
   mtx.heatmap.sorted$FeatureIdx <- seq(1, nrow(mtx.heatmap.sorted))
@@ -107,7 +107,7 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
   my_vector <- numeric()
   wx <- x@weights
-  cx <- x@countmatrix
+  cx <- x@inputcounts
   if (is.null(y)) {
     y <- cx
     wy <- wx

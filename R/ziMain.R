@@ -3,10 +3,10 @@
 #'Objects of this class store all the results of the ZiMain function to continue
 #'zero inflated data analysis
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
-#'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
+#'@slot inputcounts matrix. The count matrix, features as rows, samples as columns
 #'@slot model list. The result of fitting a zero inflated model using
 #'\link[pscl]{zeroinfl}
-#'@slot output matrix. The matrix where predicted structural zeros are omitted
+#'@slot deinflatedcounts matrix. The matrix where predicted structural zeros are omitted
 #'and stored as NA values
 #'@slot weights matrix. A matrix containing weights for zero counts
 #'@exportClass Zi
@@ -16,9 +16,9 @@ setClass(
   Class = "Zi",
   slots = list(
     inputdata = "ANY",
-    countmatrix = "matrix",
+    inputcounts = "matrix",
     model = "list",
-    output = "matrix",
+    deinflatedcounts = "matrix",
     weights = "matrix")
 )
 
@@ -72,10 +72,10 @@ setClass(
 #'
 #'The result of the ziMain function can be used to analyze zero inflated count data.
 #'@slot inputdata a matrix, phyloseq or SummarizedExperiment object.
-#'@slot countmatrix matrix. The count matrix, features as rows, samples as columns
+#'@slot inputcounts matrix. The count matrix, features as rows, samples as columns
 #'@slot model list. The result of fitting a zero inflated model using
 #'\code{\link[pscl]{zeroinfl}}
-#'@slot output matrix. A matrix where zero counts are randomly replaced according
+#'@slot deinflatedcounts matrix. A matrix where zero counts are randomly replaced according
 #'to the estimated probability of being a structural zero
 #'@slot weights matrix. A matrix containing weights for zero counts
 #'@references
@@ -119,9 +119,9 @@ setGeneric("ziMain", function(inputdata,
     result <- new(
       Class = "Zi",
       inputdata = inputdata,
-      countmatrix = mtx,
+      inputcounts = mtx,
       model = vector(mode = "list"),
-      output = mtx,
+      deinflatedcounts = mtx,
       weights = matrix(1, nrow = nrow(mtx), ncol = ncol(mtx)))
   }
   else{
@@ -144,11 +144,11 @@ setGeneric("ziMain", function(inputdata,
   }
   ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
   model <- lapply(list_core, '[[', "model")
-  ziOutput <- do.call(rbind, lapply(list_core, '[[', "ziOutput"))
+  zideinflatedcounts <- do.call(rbind, lapply(list_core, '[[', "zideinflatedcounts"))
   weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
   if (zeroRows.rm == FALSE) {
     mtx_new <- mtx
-    ziOutput <- rbind(ziOutput, mtx[rowSums(mtx[]) == 0,])
+    zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx[]) == 0,])
     zero_weights <- mtx[rowSums(mtx[]) == 0,]
     zero_weights[] <- 1
     weights <- rbind(weights, zero_weights)
@@ -159,15 +159,15 @@ setGeneric("ziMain", function(inputdata,
   }
   mtx_new <- mtx_new[rownames,colnames]
   mode(mtx_new) <- "integer"
-  ziOutput <- ziOutput[rownames,colnames]
-  mode(ziOutput) <- "integer"
+  zideinflatedcounts <- zideinflatedcounts[rownames,colnames]
+  mode(zideinflatedcounts) <- "integer"
   weights <- weights[rownames,colnames]
   result <- new(
     Class = "Zi",
     inputdata = inputdata,
-    countmatrix = mtx_new,
+    inputcounts = mtx_new,
     model = model,
-    output = ziOutput,
+    deinflatedcounts = zideinflatedcounts,
     weights = weights
   )}
   return(result)
@@ -201,9 +201,9 @@ setMethod(
     result <- new(
       Class = "Zi",
       inputdata = inputdata,
-      countmatrix = zi_result@countmatrix,
+      inputcounts = zi_result@inputcounts,
       model = zi_result@model,
-      output = zi_result@output,
+      deinflatedcounts = zi_result@deinflatedcounts,
       weights = zi_result@weights
     )
     return(result)
@@ -235,9 +235,9 @@ setMethod(
     result <- new(
       Class = "Zi",
       inputdata = inputdata,
-      countmatrix = zi_result@countmatrix,
+      inputcounts = zi_result@inputcounts,
       model = zi_result@model,
-      output = zi_result@output,
+      deinflatedcounts = zi_result@deinflatedcounts,
       weights = zi_result@weights
     )
     return(result)

@@ -31,7 +31,7 @@ returns a numeric vector of row/column length
 }
 \description{
 Calculate the row or column median of  zero-deinflated data of a
-\code{\linkS4class{Zi}}-class object. To calculate the median, the output matrix will be extracted
+\code{\linkS4class{Zi}}-class object. To calculate the median, the deinflatedcounts matrix will be extracted
 }
 \examples{
 data(mtx)

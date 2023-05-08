@@ -46,9 +46,9 @@ into account.
 \examples{
 data(mtx)
 Zi <- ziMain(mtx)
-rowWeightedSds(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
-colWeightedSds(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
-rowWeightedVars(Zi, w = runif(ncol(Zi@countmatrix), 0.1,1))
-colWeightedVars(Zi, w = runif(nrow(Zi@countmatrix), 0.1,1))
+rowWeightedSds(Zi, w = runif(ncol(Zi@inputcounts), 0.1,1))
+colWeightedSds(Zi, w = runif(nrow(Zi@inputcounts), 0.1,1))
+rowWeightedVars(Zi, w = runif(ncol(Zi@inputcounts), 0.1,1))
+colWeightedVars(Zi, w = runif(nrow(Zi@inputcounts), 0.1,1))
 
 }

@@ -43,4 +43,4 @@ Collate:
 Depends: R (>= 2.10), 
           methods
 LazyData: true
-VignetteBuilder: knitr
+VignetteBuilder: rmarkdown

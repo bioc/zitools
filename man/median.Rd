@@ -20,7 +20,7 @@ median value
 }
 \description{
 Caluclate the median of  zero-deinflated data of a 'Zi'-class
-object. To calculate the median, the output matrix will be extracted
+object. To calculate the median, the deinflatedcounts matrix will be extracted
 }
 \examples{
 data(mtx)

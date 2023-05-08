@@ -79,12 +79,12 @@ The result of the ziMain function can be used to analyze zero inflated count dat
 \describe{
 \item{\code{inputdata}}{a matrix, phyloseq or SummarizedExperiment object.}
 
-\item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
+\item{\code{inputcounts}}{matrix. The count matrix, features as rows, samples as columns}
 
 \item{\code{model}}{list. The result of fitting a zero inflated model using
 \code{\link[pscl]{zeroinfl}}}
 
-\item{\code{output}}{matrix. A matrix where zero counts are randomly replaced according
+\item{\code{deinflatedcounts}}{matrix. A matrix where zero counts are randomly replaced according
 to the estimated probability of being a structural zero}
 
 \item{\code{weights}}{matrix. A matrix containing weights for zero counts}

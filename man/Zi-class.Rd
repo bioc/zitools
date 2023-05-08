@@ -13,12 +13,12 @@ zero inflated data analysis
 \describe{
 \item{\code{inputdata}}{a matrix, phyloseq or SummarizedExperiment object.}
 
-\item{\code{countmatrix}}{matrix. The count matrix, features as rows, samples as columns}
+\item{\code{inputcounts}}{matrix. The count matrix, features as rows, samples as columns}
 
 \item{\code{model}}{list. The result of fitting a zero inflated model using
 \link[pscl]{zeroinfl}}
 
-\item{\code{output}}{matrix. The matrix where predicted structural zeros are omitted
+\item{\code{deinflatedcounts}}{matrix. The matrix where predicted structural zeros are omitted
 and stored as NA values}
 
 \item{\code{weights}}{matrix. A matrix containing weights for zero counts}

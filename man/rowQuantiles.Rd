@@ -54,7 +54,7 @@ attributes of result are set. Else if \code{\link{FALSE}}, no naming support is 
 }
 \description{
 Calculate the row or column quantiles of  zero-deinflated data of a
-\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the output matrix will be extracted
+\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts matrix will be extracted
 }
 \examples{
 data(mtx)

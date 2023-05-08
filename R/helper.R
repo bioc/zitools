@@ -16,31 +16,31 @@ NULL
 replace_phyloseq <- function(ZiObject)
 {
   ps <- ZiObject@inputdata
-  new_otu <- otu_table(ZiObject@output, taxa_are_rows(ZiObject@inputdata))
+  new_otu <- otu_table(ZiObject@deinflatedcounts, taxa_are_rows(ZiObject@inputdata))
   otu_table(ps)<-new_otu
   return(ps)
 }
 
-#'@name zi2output
+#'@name zi2deinflatedcounts
 #'@title Access the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object
 #'
 #'@param  ZiObject \code{\linkS4class{Zi}}-class object
 #'@description extract the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object. The
-#'output matrix is a count matrix (column = sample, row = feature) where
+#'deinflatedcounts matrix is a count matrix (column = sample, row = feature) where
 #'predicted structural zeros are replaced with NA
 #'
 #'@returns matrix
-#'@exportde
+#'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'zi2outputMatrix(Zi)
+#'zi2deinflatedcounts(Zi)
 #'
-zi2output <- function(ZiObject) {
-  ZiObject@output
+zi2deinflatedcounts <- function(ZiObject) {
+  ZiObject@deinflatedcounts
 }
 
-#'@name zi2countmatrix
+#'@name zi2inputcounts
 #'@title Access the count matrix of an \code{\linkS4class{Zi}}-class object
 #'
 #'@param ZiObject \code{\linkS4class{Zi}}-class object
@@ -52,10 +52,10 @@ zi2output <- function(ZiObject) {
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'zi2countmatrix(Zi)
+#'zi2inputcounts(Zi)
 
-zi2countmatrix <- function(ZiObject) {
-  ZiObject@countmatrix
+zi2inputcounts <- function(ZiObject) {
+  ZiObject@inputcounts
 }
 
 #'@name tax_table
@@ -228,15 +228,15 @@ setMethod("colData", signature = "Zi", function(x, ...){
 #'
 
 setMethod("t", signature = "Zi", definition = function(x){
-  countmatrix <- t(x@countmatrix)
-  output <- t(x@output)
+  inputcounts <- t(x@inputcounts)
+  deinflatedcounts <- t(x@deinflatedcounts)
   weights <- t(x@weights)
   result <- new(
     Class = "Zi",
     inputdata = x@inputdata,
-    countmatrix = countmatrix,
+    inputcounts = inputcounts,
     model = x@model,
-    output = output,
+    deinflatedcounts = deinflatedcounts,
     weights = weights
   )
   return(result)
@@ -275,7 +275,7 @@ zi2deseq2 <- function(ZiObject, design, colData, ... ){
     dds <- DESeqDataSet(ZiObject@inputdata, design = design, ...)
   }
   if (is(ZiObject@inputdata, "matrix") == TRUE){
-    dds <- DESeqDataSetFromMatrix(ZiObject@countmatrix, colData = colData, design = design, ...)
+    dds <- DESeqDataSetFromMatrix(ZiObject@inputcounts, colData = colData, design = design, ...)
   }
   assays(dds)[["weights"]] <- ZiObject@weights
   return(dds)
@@ -308,15 +308,15 @@ subset_sample <- function(Zi, ...){
     colnames <- rownames(newDF)
     Zi@inputdata <- Zi@inputdata[,colnames]
   }
-  countmatrix <- Zi@countmatrix[,colnames]
-  output <- Zi@output[,colnames]
+  inputcounts <- Zi@inputcounts[,colnames]
+  deinflatedcounts <- Zi@deinflatedcounts[,colnames]
   weights <- Zi@weights[,colnames]
   result <- new(
     Class = "Zi",
     inputdata = Zi@inputdata,
-    countmatrix = countmatrix,
+    inputcounts = inputcounts,
     model = Zi@model,
-    output = output,
+    deinflatedcounts = deinflatedcounts,
     weights = weights
   )
   return(result)
@@ -349,15 +349,15 @@ subset_sample <- function(Zi, ...){
     colnames <- rownames(newDF)
     Zi@inputdata <- Zi@inputdata[,colnames]
   }
-  countmatrix <- Zi@countmatrix[,colnames]
-  output <- Zi@output[,colnames]
+  inputcounts <- Zi@inputcounts[,colnames]
+  deinflatedcounts <- Zi@deinflatedcounts[,colnames]
   weights <- Zi@weights[,colnames]
   result <- new(
     Class = "Zi",
     inputdata = Zi@inputdata,
-    countmatrix = countmatrix,
+    inputcounts = inputcounts,
     model = Zi@model,
-    output = output,
+    deinflatedcounts = deinflatedcounts,
     weights = weights
   )
   return(result)
@@ -390,25 +390,25 @@ subset_feature <- function(Zi, ...){
     rownames <- rownames(newDF)
     Zi@inputdata <- Zi@inputdata[rownames,]
   }
-  countmatrix <- Zi@countmatrix[rownames,]
-  output <- Zi@output[rownames,]
+  inputcounts <- Zi@inputcounts[rownames,]
+  deinflatedcounts <- Zi@deinflatedcounts[rownames,]
   weights <- Zi@weights[rownames,]
   result <- new(
     Class = "Zi",
     inputdata = Zi@inputdata,
-    countmatrix = countmatrix,
+    inputcounts = inputcounts,
     model = Zi@model,
-    output = output,
+    deinflatedcounts = deinflatedcounts,
     weights = weights
   )
   return(result)
 }
 
 
-#'@name resample_output
+#'@name resample_deinflatedcounts
 #'@title Resample a \code{\linkS4class{Zi}}-class object
 #'
-#'@description Resample the output matrix of an \code{\linkS4class{Zi}}-class object.
+#'@description Resample the deinflatedcounts matrix of an \code{\linkS4class{Zi}}-class object.
 #'Resampling is done by drawing from a binomial distribution with a given probability
 #'that a count value (zero and non-zero) is a structural zero.
 #'
@@ -417,34 +417,34 @@ subset_feature <- function(Zi, ...){
 #'
 #'@export
 
-resample_output <- function(x) {
-  mtx <- x@countmatrix
+resample_deinflatedcounts <- function(x) {
+  mtx <- x@inputcounts
   mtx_new <- mtx[rowSums(mtx[]) > 0,]
   feature <- colnames(x@model[[1]][["model"]])[3]
   rownames <- rownames(mtx)
   colnames <- colnames(mtx)
-  list_output <- list()
+  list_deinflatedcounts <- list()
   for(i in 1:length(x@model)){
     vec <- x@model[[i]][["model"]][, 3]
     vec <- vec[1:(length(vec) / ncol(mtx_new))]
     count_sub <- mtx_new[vec, ]
     count_long <- reshape_zi(count_sub, feature = feature)
-    new_output <-
+    new_deinflatedcounts <-
       omit_str_zero(x@model[[i]], count_long, feature = feature)
-    new_output <- new_output %>%
+    new_deinflatedcounts <- new_deinflatedcounts %>%
       spread(key = "sample", value = "count") %>%
       column_to_rownames(var = feature) %>%
       as.matrix()
-    list_output[[i]] <- new_output
+    list_deinflatedcounts[[i]] <- new_deinflatedcounts
   }
-  output <- do.call(rbind, list_output)
-  output <- rbind(output, mtx[rowSums(mtx[])==0,])
-  output <- output[rownames,colnames]
+  deinflatedcounts <- do.call(rbind, list_deinflatedcounts)
+  deinflatedcounts <- rbind(deinflatedcounts, mtx[rowSums(mtx[])==0,])
+  deinflatedcounts <- deinflatedcounts[rownames,colnames]
   result <- new(Class = "Zi",
                 inputdata = x@inputdata,
-                countmatrix = x@countmatrix,
+                inputcounts = x@inputcounts,
                 model = x@model,
-                output = output,
+                deinflatedcounts = deinflatedcounts,
                 weights = x@weights)
   return(result)
 }

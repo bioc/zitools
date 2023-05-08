@@ -3,7 +3,7 @@ title: "An Introduction to zitools"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{my-vignette}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{rmarkdown::render}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -51,7 +51,7 @@ res_ps <- ziMain(ps, feature = "OTU", formula = count ~ sample + OTU, dist = "ne
 
 ```{r}
 boxplot(log1p(res_ps))
-boxplot(log1p(res_ps@countmatrix))
+boxplot(log1p(res_ps@inputcounts))
 
 heatmap(res_ps, Rowv=NULL, Colv=NULL)
 ```
