@@ -70,11 +70,11 @@ zi2inputcounts <- function(ZiObject) {
 
 
 setMethod("tax_table", signature = "Zi", function(object){
-  if("phyloseq" %in% class(x@inputdata)) {
+  if("phyloseq" %in% class(object@inputdata)) {
   tax_table <- tax_table(object@inputdata)}
-  if("matrix" %in% class(x@inputdata)){
+  if("matrix" %in% class(object@inputdata)){
     tax_table <- NULL}
-  if("SummarizedExperiment" %in% class(x@inputdata)){
+  if("SummarizedExperiment" %in% class(object@inputdata)){
     tax_table <- NULL}
   return(tax_table)
 })
@@ -114,11 +114,11 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'
 
 setMethod("otu_table", signature = "Zi", function(object){
-  if("phyloseq" %in% class(x@inputdata)) {
+  if("phyloseq" %in% class(object@inputdata)) {
   otu_table <- otu_table(object@inputdata)}
-  if("matrix" %in% class(x@inputdata)){
+  if("matrix" %in% class(object@inputdata)){
     otu_table <- NULL}
-  if("SummarizedExperiment" %in% class(x@inputdata)){
+  if("SummarizedExperiment" %in% class(object@inputdata)){
     otu_table <- NULL}
   return(otu_table)
 })
@@ -136,11 +136,11 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'
 
 setMethod("phy_tree", signature = "Zi", function(physeq){
-  if("phyloseq" %in% class(x@inputdata)) {
+  if("phyloseq" %in% class(physeq@inputdata)) {
   phy_tree <- phy_tree(physeq@inputdata)}
-  if("matrix" %in% class(x@inputdata)){
+  if("matrix" %in% class(physeq@inputdata)){
     phy_tree <- NULL}
-  if("SummarizedExperiment" %in% class(x@inputdata)){
+  if("SummarizedExperiment" %in% class(physeq@inputdata)){
     phy_tree <- NULL}
   return(phy_tree)
 })

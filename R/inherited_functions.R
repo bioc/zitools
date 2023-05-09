@@ -274,7 +274,7 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 })
 
 
-#'@export
+
 #'@name sd
 #'@aliases sd,Zi-method
 #'@title Standard Deviation of zero inflated count data
@@ -288,6 +288,7 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 #'@importFrom stats sd
 #'@returns standard deviation value
 #'@seealso \link[matrixStats]{weightedSd}, \link[zitools]{rowSds}, \link[zitools]{colSds}
+#'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
