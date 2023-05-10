@@ -3,7 +3,7 @@
 \name{weights}
 \alias{weights}
 \alias{weights,Zi-method}
-\title{Access the model}
+\title{Access the weights}
 \usage{
 weights(x)
 

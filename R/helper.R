@@ -126,7 +126,7 @@ setMethod("deinflatedcounts<-", "Zi", function(x, value) {
 })
 
 #'@name weights
-#'@title Access the model
+#'@title Access the weights
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value replacement of deinflatedcounts
 #'@description access the weights of an \code{\linkS4class{Zi}}-class object
