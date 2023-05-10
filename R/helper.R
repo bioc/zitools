@@ -21,42 +21,135 @@ replace_phyloseq <- function(ZiObject)
   return(ps)
 }
 
-#'@name zi2deinflatedcounts
-#'@title Access the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object
-#'
-#'@param  ZiObject \code{\linkS4class{Zi}}-class object
-#'@description extract the zero de-inflated matrix of an \code{\linkS4class{Zi}}-class object. The
-#'deinflatedcounts matrix is a count matrix (column = sample, row = feature) where
-#'predicted structural zeros are replaced with NA
-#'
-#'@returns matrix
+#'@name inputdata
+#'@title Access the inputdata
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value replacement of inputdata
+#'@description access the inputdata of an \code{\linkS4class{Zi}}-class object
+#'@returns inputdata
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'zi2deinflatedcounts(Zi)
-#'
-zi2deinflatedcounts <- function(ZiObject) {
-  ZiObject@deinflatedcounts
-}
+#'inputdata(Zi)
 
-#'@name zi2inputcounts
-#'@title Access the count matrix of an \code{\linkS4class{Zi}}-class object
+setGeneric("inputdata", function(x) standardGeneric("inputdata"))
+setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
+
+#'@name inputdata
+#'@aliases inputdata,Zi-method
+#'@export
+#'@rdname inputdata
 #'
-#'@param ZiObject \code{\linkS4class{Zi}}-class object
-#'@description extract the count matrix (column = sample, row = feature), that
-#'has been used to fit a zero inflation model
 #'
-#'@returns matrix
+setMethod("inputdata", "Zi", function(x) x@inputdata)
+setMethod("inputdata<-", "Zi", function(x, value) {
+  x@inputdata <- value
+  x
+})
+#'@name inputcounts
+#'@title Access the inputcounts
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value replacement of inputcounts
+#'@description access the inputcounts of an \code{\linkS4class{Zi}}-class object
+#'@returns inputcounts
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'zi2inputcounts(Zi)
+#'inputcounts(Zi)
 
-zi2inputcounts <- function(ZiObject) {
-  ZiObject@inputcounts
-}
+setGeneric("inputcounts", function(x) standardGeneric("inputcounts"))
+setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
+
+#'@name inputcounts
+#'@aliases inputcounts,Zi-method
+#'@export
+#'@rdname inputcounts
+
+setMethod("inputcounts", "Zi", function(x) x@inputcounts)
+setMethod("inputcounts<-", "Zi", function(x, value) {
+  x@inputcounts <- value
+  x
+})
+
+#'@name model
+#'@title Access the model
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value replacement of model
+#'@description access the model of an \code{\linkS4class{Zi}}-class object
+#'@returns model
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'model(Zi)
+
+setGeneric("model", function(x) standardGeneric("model"))
+setGeneric("model<-", function(x, value) standardGeneric("model<-"))
+
+#'@name model
+#'@aliases model,Zi-method
+#'@export
+#'@rdname model
+
+setMethod("model", "Zi", function(x) x@model)
+setMethod("model<-", "Zi", function(x, value) {
+  x@model <- value
+  x
+})
+
+#'@name deinflatedcounts
+#'@title Access the model
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value replacement of deinflatedcounts
+#'@description access the deinflatedcounts of an \code{\linkS4class{Zi}}-class object
+#'@returns deinflatedcounts
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'deinflatedcounts(Zi)
+
+setGeneric("deinflatedcounts", function(x) standardGeneric("deinflatedcounts"))
+setGeneric("deinflatedcounts<-", function(x, value) standardGeneric("deinflatedcounts<-"))
+
+#'@name deinflatedcounts
+#'@aliases deinflatedcounts,Zi-method
+#'@export
+#'@rdname deinflatedcounts
+
+setMethod("deinflatedcounts", "Zi", function(x) x@deinflatedcounts)
+setMethod("deinflatedcounts<-", "Zi", function(x, value) {
+  x@deinflatedcounts <- value
+  x
+})
+
+#'@name weights
+#'@title Access the model
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value replacement of deinflatedcounts
+#'@description access the weights of an \code{\linkS4class{Zi}}-class object
+#'@returns weights
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'weights(Zi)
+
+setGeneric("weights", function(x) standardGeneric("weights"))
+setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
+
+#'@name weights
+#'@aliases weights,Zi-method
+#'@export
+#'@rdname weights
+
+setMethod("weights", "Zi", function(x) x@weights)
+setMethod("weights<-", "Zi", function(x, value) {
+  x@weights <- value
+  x
+})
 
 #'@name tax_table
 #'@title Access the taxonomy table
