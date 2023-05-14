@@ -736,3 +736,107 @@ result <- new(
   weights = weights)
 return(result)
 })
+
+
+#'@name +
+#'@aliases +,Zi-method
+#'@title Arithmetic Operators
+#'@description Arithmetic operators for a Zi-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object
+#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'Zi+Zi
+setMethod("+", signature = "Zi", definition = function(e1,e2){
+  adinputcounts <- e1@inputcounts + e2@inputcounts
+  addeinflatedcounts <- e1@deinflatedcounts + e2@deinflatedcounts
+  adweights <- e1@weights + e2@weights
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
+
+#'@name -
+#'@aliases -,Zi-method
+#'@title Arithmetic Operators
+#'@description Arithmetic operators for a Zi-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object
+#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'Zi-Zi
+#'
+setMethod("-", signature = "Zi", definition = function(e1,e2){
+  adinputcounts <- e1@inputcounts - e2@inputcounts
+  addeinflatedcounts <- e1@deinflatedcounts - e2@deinflatedcounts
+  adweights <- e1@weights - e2@weights
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
+
+#'@name *
+#'@aliases *,Zi-method
+#'@title Arithmetic Operators
+#'@description Arithmetic operators for a Zi-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object
+#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'Zi*Zi
+#'
+setMethod("*", signature = "Zi", definition = function(e1,e2){
+  adinputcounts <- e1@inputcounts*e2@inputcounts
+  addeinflatedcounts <- e1@deinflatedcounts*e2@deinflatedcounts
+  adweights <- e1@weights*e2@weights
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
+
+#'@name /
+#'@aliases /,Zi-method
+#'@title Arithmetic Operators
+#'@description Arithmetic operators for a Zi-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object
+#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'Zi/Zi
+#'
+setMethod("/", signature = "Zi", definition = function(e1,e2){
+  adinputcounts <- e1@inputcounts/e2@inputcounts
+  addeinflatedcounts <- e1@deinflatedcounts/e2@deinflatedcounts
+  adweights <- e1@weights/e2@weights
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
