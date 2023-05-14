@@ -29,3 +29,9 @@ A \code{\linkS4class{Zi}}-class object is converted to a DESeqDataSet object, wh
 can be used for DESeq2 analysis. Both, weight and count matrices will be
 stored in assays of the DESeqDataSet.
 }
+\examples{
+data(mtx)
+Zi <- ziMain(mtx)
+colData <- data.frame(group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+zi2deseq2(Zi, ~group, colData)
+}

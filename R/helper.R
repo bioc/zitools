@@ -359,6 +359,11 @@ setMethod("t", signature = "Zi", definition = function(x){
 #'@importFrom DESeq2 DESeqDataSetFromMatrix
 #'@importFrom SummarizedExperiment assays<-
 #'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'colData <- data.frame(group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'zi2deseq2(Zi, ~group, colData)
 
 zi2deseq2 <- function(ZiObject, design, colData, ... ){
   if (is(ZiObject@inputdata, "phyloseq") == TRUE) {
