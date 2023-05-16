@@ -66,6 +66,7 @@ heatmap.Zi <- function(x, ...) {
 #'@import ggplot2
 #'@importFrom RColorBrewer brewer.pal
 #'@importFrom reshape2 melt
+#'@export
 
 MissingValueHeatmap <- function(ZiObject,title = "", xlab = "", ylab = "") {
 

@@ -22,6 +22,8 @@ setClass(
     weights = "matrix")
 )
 
+
+
 #'@name ziMain
 #'@aliases ziMain,SummarizedExperiment-method
 #'@aliases ziMain,phyloseq-method
