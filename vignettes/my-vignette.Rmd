@@ -48,6 +48,7 @@ res_ps <- ziMain(ps, feature = "OTU", formula = count ~ sample + OTU, dist = "ne
 ```
 
 ### Boxplots
+
 The generic boxplot function is overloaded and plots zero-deinflated counts (by default along columns, i.e. one box is plotted for each sample.
 
 Plotting the zero-inflated input counts for comparison illustrates the effect of zero-deinflation.
@@ -59,19 +60,22 @@ boxplot(log2p(res_ps@inputcounts)) # plotting zero-inflated counts
 heatmap(res_ps, Rowv=NULL, Colv=NULL)
 ```
 
-Plotting boxes for each feature can easily be done by applying transpose 
+Plotting boxes for each feature can easily be done by applying transpose
+
 ```{r}
 boxplot(t(res_ps))
 boxplot(t(res_ps@deinflatedcounts)) # equivalent
 ```
 
 Individual data points can be plotted by the overloaded generic plot function:
+
 ```{r}
 plot(res_ps)
 plot(res_ps,xlab="First sample [counts]",ylab="Second sample [counts]") # equivalent
 ```
 
 Plotting all data points:
+
 ```{r}
 plot(as.vector(Zi@deinflatedcounts),xlab="Index",ylab="counts")
 ```
@@ -86,8 +90,6 @@ princomp(covmat=cor(Zi@inputdata))[["sdev"]]-princomp(Zi@inputdata,cor=T)[["sdev
 # PCA with downweighting structrual zeros:
 princomp(covmat=cor(Zi))  
 ```
-
-
 
 ### Differential Abundance Analysis - with weights
 

@@ -525,9 +525,20 @@ setMethod("colWeightedMeans", "Zi", function(x, w, rows = NULL, cols = NULL, na.
     as.data.frame(x@weights*w)[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
 })
 
-#setMethod("weightedSd", "Zi", function(x, w, ...) {
-  #sqrt(weightedVar(x=x,w=w,...))
-#})
+#'@export
+#'@name weightedSd
+#'@aliases weightedSd,Zi-method
+#'@rdname weightedVar
+#'@importFrom matrixStats weightedSd
+
+setGeneric("weightedSd", function(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL,
+                                   ...) standardGeneric("weightedSd"))
+
+setMethod("weightedSd", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center = NULL, ...) {
+  sqrt(weightedVar(x = x@inputcounts,
+              w = w * x@weights, idxs = idxs, na.rm = na.rm, center = NULL, ...))
+})
+
 
 #'@export
 #'@name rowWeightedSds
@@ -614,7 +625,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 #'@param center	 \code{\link{numeric}} scalar specifying the center location of
 #' the data. If \code{\link{NULL}}, it is estimated from data.
 #' @param ... \code{\link[matrixStats]{weightedVar}}
-#'@description  Calculate a weighted variance of zero inflated count data,
+#'@description  Calculate a weighted variance and standard deviation of zero inflated count data,
 #'additionally taking weights for structural zeros into account
 #'@returns a \code{\link{numeric}} scalar
 #'@importFrom matrixStats weightedVar
@@ -624,6 +635,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 #'Zi <- ziMain(mtx)
 #'weight <- runif(length(Zi@inputcounts), 0.1, 1)
 #'weightedVar(Zi, w= weight)
+#'weightedSd(Zi, w = weight)
 
 setGeneric("weightedVar", function(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL,
                                    ...) standardGeneric("weightedVar"))
@@ -991,4 +1003,188 @@ setMethod("show", "Zi" , function(object) {
       formel[2]," ",formel[1]," ",formel[3],"\n"))
   str(object, list.len = 10,max.level = 2)
   cat("Use str(object) to inspect the whole object structure.")
+})
+
+#'@name tax_table
+#'@title Access the taxonomy table
+#'@aliases tax_table,Zi-method
+#'@param object \code{\linkS4class{Zi}}-class object
+#'@description access the taxonomy table (\link[phyloseq]{tax_table}) of an \code{\linkS4class{Zi}}-class object if the
+#'inputdata slot is a phyloseq object
+#'@importFrom phyloseq tax_table
+#'@returns tax_table
+#'@export
+
+
+setMethod("tax_table", signature = "Zi", function(object){
+  if("phyloseq" %in% class(object@inputdata)) {
+    tax_table <- tax_table(object@inputdata)}
+  if("matrix" %in% class(object@inputdata)){
+    tax_table <- NULL}
+  if("SummarizedExperiment" %in% class(object@inputdata)){
+    tax_table <- NULL}
+  return(tax_table)
+})
+
+#'@name sample_data
+#'@aliases sample_data,Zi-method
+#'@title Access the sample data
+#'@param object \code{\linkS4class{Zi}}-class object
+#'@description access the \link[phyloseq]{sample_data} of an \code{\linkS4class{Zi}}-class object if the
+#'inputdata slot is a phyloseq object
+#'@importFrom phyloseq sample_data
+#'@returns sample_data
+#'
+#'@export
+#'
+
+setMethod("sample_data", signature = "Zi", function(object){
+  if("phyloseq" %in% class(object@inputdata)) {
+    sample_data <- sample_data(object@inputdata)}
+  if("matrix" %in% class(object@inputdata)){
+    sample_data <- NULL}
+  if("SummarizedExperiment" %in% class(object@inputdata)){
+    sample_data <- NULL}
+  return(sample_data)
+})
+
+#'@name otu_table
+#'@aliases otu_table,Zi-method
+#'@title Access the otu table
+#'@param object \code{\linkS4class{Zi}}-class object
+#'@description access the \link[phyloseq]{otu_table} of an \code{\linkS4class{Zi}}-class object if the
+#'inputdata slot is a phyloseq object
+#'@returns otu_table
+#'@importFrom phyloseq otu_table
+#'
+#'@export
+#'
+
+setMethod("otu_table", signature = "Zi", function(object){
+  if("phyloseq" %in% class(object@inputdata)) {
+    otu_table <- otu_table(object@inputdata)}
+  if("matrix" %in% class(object@inputdata)){
+    otu_table <- NULL}
+  if("SummarizedExperiment" %in% class(object@inputdata)){
+    otu_table <- NULL}
+  return(otu_table)
+})
+
+#'@name phy_tree
+#'@aliases phy_tree,Zi-method
+#'@title Access the phylogenetic tree
+#'@param physeq \code{\linkS4class{Zi}}-class object
+#'@description access the phylogenetic tree (\link[phyloseq]{phy_tree}) of an object of the class
+#'"Zi" if the inputdata slot is a phyloseq object
+#'@returns phy_tree
+#'@importFrom phyloseq phy_tree
+#'
+#'@export
+#'
+
+setMethod("phy_tree", signature = "Zi", function(physeq){
+  if("phyloseq" %in% class(physeq@inputdata)) {
+    phy_tree <- phy_tree(physeq@inputdata)}
+  if("matrix" %in% class(physeq@inputdata)){
+    phy_tree <- NULL}
+  if("SummarizedExperiment" %in% class(physeq@inputdata)){
+    phy_tree <- NULL}
+  return(phy_tree)
+})
+
+#'@name rowData
+#'@aliases rowData,Zi-method
+#'@title Access the row data
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param useNames returns a rowData dataframe with rownames
+#'@param ... \code{\link[SummarizedExperiment]{rowData}}
+#'@description access the \link[SummarizedExperiment]{rowData} of an \code{\linkS4class{Zi}}-class object if the inputdata
+#'is an object of the class SummarizedExperiment
+#'@returns DFrame
+#'@importFrom SummarizedExperiment rowData
+#'
+#'@export
+#'
+
+setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
+  if("SummarizedExperiment" %in% class(x@inputdata)) {
+    rowData <- rowData(x@inputdata, useNames = useNames, ...)}
+  if("matrix" %in% class(x@inputdata)){
+    rowData <- NULL}
+  if("phyloseq" %in% class(x@inputdata)){
+    rowData <- NULL}
+  return(rowData)
+})
+
+#'@name assays
+#'@aliases assays,Zi-method
+#'@title Access assays
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param withDimnames A \code{logical}, indicating whether the dimnames of the
+#'SummarizedExperiment object should be applied (i.e. copied) to the extracted
+#'assays. see \code{\link[SummarizedExperiment]{assays}}
+#'@param ... see \code{\link[SummarizedExperiment]{assays}}
+#'@description access  \link[SummarizedExperiment]{assays} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
+#'object of the class SummarizedExperiment
+#'@importFrom SummarizedExperiment assays
+#'@returns list
+#'@export
+
+
+setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
+  if("SummarizedExperiment" %in% class(x@inputdata)) {
+    assays <- assays(x@inputdata, withDimnames=withDimnames, ...)}
+  if("matrix" %in% class(x@inputdata)){
+    assays <- NULL}
+  if("phyloseq" %in% class(x@inputdata)){
+    assays <- NULL}
+  return(assays)
+})
+
+
+#'@name colData
+#'@aliases colData,Zi-method
+#'@title Access the col Data
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param ... \code{\link[SummarizedExperiment]{colData}}
+#'@description access the \link[SummarizedExperiment]{colData} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
+#'object of the class SummarizedExperiment
+#'@importFrom SummarizedExperiment colData
+#'@returns DFrame
+#'@seealso \code{\link[SummarizedExperiment]{colData}}
+#'
+#'@export
+
+setMethod("colData", signature = "Zi", function(x, ...){
+  if("SummarizedExperiment" %in% class(x@inputdata)) {
+    colData <- colData(x@inputdata, ...)}
+  if("matrix" %in% class(x@inputdata)){
+    colData <- NULL}
+  if("phyloseq" %in% class(x@inputdata)){
+    colData <- NULL}
+  return(colData)
+})
+
+#'@name t
+#'@aliases t,Zi-method
+#'@title Transpose a \code{\linkS4class{Zi}}-class object
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@description transpose all matrizes of a \code{\linkS4class{Zi}}-class object
+#'@returns \code{\linkS4class{Zi}}-class object
+#'@export
+#'
+
+setMethod("t", signature = "Zi", definition = function(x){
+  inputcounts <- t(x@inputcounts)
+  deinflatedcounts <- t(x@deinflatedcounts)
+  weights <- t(x@weights)
+  result <- new(
+    Class = "Zi",
+    inputdata = x@inputdata,
+    inputcounts = inputcounts,
+    model = x@model,
+    deinflatedcounts = deinflatedcounts,
+    weights = weights
+  )
+  return(result)
 })
