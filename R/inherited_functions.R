@@ -742,17 +742,46 @@ return(result)
 #'@aliases +,Zi-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
-#'@param e1 \code{\linkS4class{Zi}}-class object
-#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
+#'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'Zi+Zi
+#'Zi+2
+#'
 setMethod("+", signature = "Zi", definition = function(e1,e2){
-  adinputcounts <- e1@inputcounts + e2@inputcounts
-  addeinflatedcounts <- e1@deinflatedcounts + e2@deinflatedcounts
-  adweights <- e1@weights + e2@weights
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1 + values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1+values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+
   result <- new(
     Class = "Zi",
     inputdata = e1@inputdata,
@@ -767,18 +796,49 @@ setMethod("+", signature = "Zi", definition = function(e1,e2){
 #'@aliases -,Zi-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
-#'@param e1 \code{\linkS4class{Zi}}-class object
-#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
+#'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'Zi-Zi
+#'Zi-2
+#'
 #'
 setMethod("-", signature = "Zi", definition = function(e1,e2){
-  adinputcounts <- e1@inputcounts - e2@inputcounts
-  addeinflatedcounts <- e1@deinflatedcounts - e2@deinflatedcounts
-  adweights <- e1@weights - e2@weights
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1-values2
+  if(sum(adinputcounts<0,na.rm=T)>0)
+    warning("Negative counts produced.")
+
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1-values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+
   result <- new(
     Class = "Zi",
     inputdata = e1@inputdata,
@@ -793,18 +853,46 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
 #'@aliases *,Zi-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
-#'@param e1 \code{\linkS4class{Zi}}-class object
-#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
+#'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'Zi*Zi
+#'Zi*2
 #'
 setMethod("*", signature = "Zi", definition = function(e1,e2){
-  adinputcounts <- e1@inputcounts*e2@inputcounts
-  addeinflatedcounts <- e1@deinflatedcounts*e2@deinflatedcounts
-  adweights <- e1@weights*e2@weights
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1*values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1*values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+
   result <- new(
     Class = "Zi",
     inputdata = e1@inputdata,
@@ -819,18 +907,47 @@ setMethod("*", signature = "Zi", definition = function(e1,e2){
 #'@aliases /,Zi-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
-#'@param e1 \code{\linkS4class{Zi}}-class object
-#'@param e2 \code{\linkS4class{Zi}}-class object
+#'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
+#'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'Zi/Zi
+#'Zi/2
+#'
 #'
 setMethod("/", signature = "Zi", definition = function(e1,e2){
-  adinputcounts <- e1@inputcounts/e2@inputcounts
-  addeinflatedcounts <- e1@deinflatedcounts/e2@deinflatedcounts
-  adweights <- e1@weights/e2@weights
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1/values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1/values2
+
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+
   result <- new(
     Class = "Zi",
     inputdata = e1@inputdata,
@@ -839,4 +956,39 @@ setMethod("/", signature = "Zi", definition = function(e1,e2){
     deinflatedcounts = addeinflatedcounts,
     weights = adweights)
   return(result)
+})
+
+
+
+
+#'@export
+#'@name show
+#'@aliases show,Zi-method
+#'@title Show summary of Zi object
+#'@description Message printed at command line
+#'@param  object        \code{\linkS4class{Zi}}-class object
+#'
+#'@returns returns a numeric vector of row/column length
+#'@importFrom methods show
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'Zi
+#'show(Zi)
+#'
+setMethod("show", "Zi" , function(object) {
+  dims <- dim(object@inputdata)
+  formel <- as.character(Zi@model[[1]]$formula)
+  anz <- length(object@inputcounts) # data points
+  anz0 <- sum(object@inputcounts==0,na.rm=T) # zeros
+  anz00 <- sum(is.na(object@deinflatedcounts)) # structural zeros
+
+  cat("Formal class 'Zi' [package \"zitools\"]\n")
+  cat(" ",dims[1],"features (rows),",dims[2],"samples (columns)\n")
+  cat(paste0(" ",anz," data points, ",
+      anz0, "(",round(anz0/anz*100,3),"%) zeros, ",
+      anz00,"(",round(anz00/anz*100,3),"%) structual zeros estimated with ",
+      formel[2]," ",formel[1]," ",formel[3],"\n"))
+  str(object, list.len = 10,max.level = 2)
+  cat("Use str(object) to inspect the whole object structure.")
 })

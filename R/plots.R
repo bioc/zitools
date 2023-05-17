@@ -106,6 +106,11 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 #'Zi <- ziMain(mtx)
 #'cor(Zi)
 setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
+  if(use!="everything")
+    stop("zitools::cor only implemented so far for use=\"everything\"")
+  if(method!="pearson")
+    stop("zitools::cor only implemented so far for Pearson Correlation.")
+
   my_vector <- numeric()
   wx <- x@weights
   cx <- x@inputcounts
@@ -134,7 +139,70 @@ setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", met
   mtx <- matrix(my_vector, ncol(cx))
   colnames(mtx) <- colnames
   rownames(mtx) <- rownames
-  print(message("Currently implemented only for Pearson Correlation"))
   return(mtx)
+})
+
+#'@name cov
+#'@aliases cov,Zi-method
+#'@aliases cov,ANY-method
+#'@title Calculate weighted Covariance
+#'@description calculate the weighted covariance of the columns of the
+#'count matrix of an Zi object taking weights for possible structural zero counts into account
+#'@param x    'Zi'-class object
+#'@param y    'Zi'-class object
+#'@importFrom stats cor
+#'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'cov(Zi)
+setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
+  if(use!="everything")
+    stop("zitools::cor only implemented so far for use=\"everything\"")
+  my_vector <- numeric()
+  wx <- x@weights
+  cx <- x@inputcounts
+  nc <- ncol(cx)
+  C <- matrix(nrow = nc,ncol = nc) # empty matrix, correct size
+
+  for (a in (1:(nc-1))) {
+    C[a,a] <- 1
+    for (b in ((a+1):nc)) {
+      col_a <- cx[,a]
+      col_b <- cx[,b]
+      weights_a <- wx[,a]
+      weights_b <- wx[,b]
+      mean_a <- sum(weights_a*col_a)/(sum(weights_a))
+      mean_b <- sum(weights_b*col_b)/(sum(weights_b))
+      var_a <- sum(weights_a*(col_a-mean_a)^2)/(sum(weights_a)-1)
+      var_b <- sum(weights_b*(col_b-mean_b)^2)/(sum(weights_b)-1)
+      C[a,b] <-
+        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b)) / sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
+      C[b,a] <- C[a,b]
+    }
+  }
+  C[nc,nc] <- 1
+  colnames(C) <- colnames(cx)
+  rownames(C) <- colnames(cx)
+  return(C)
+})
+
+
+#'@export
+#'@name plot
+#'@aliases plot,Zi-method
+#'@title Plotting
+#'@description plot
+#'@param  object      \code{\linkS4class{Zi}}-class object
+#'
+#'@returns returns plot object
+#'@importFrom methods plot
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'plot(Zi)
+#'
+setMethod("plot", "Zi" , function(x=object,...) {
+  plot(x=object@deinflatedcounts,...)
 })
 

@@ -35,7 +35,7 @@ library(phyloseq)
 
 ## ziMain function
 
-zitools is a ... tool to analyse zero inflated count data, especially microbiome data. As per default the counts are estimated given the predictor variables sample (columns) and feature(rows) when fitting a zero inflated poisson or zero inflated negative binomial model.
+zitools is a package to analyse zero inflated count data, such as microbiome data. As default structural zeros are estimated from counts using features (=rows) and samples (=columns) as factorial predictor variables when fitting a zero inflated poisson or zero inflated negative binomial model.
 
 ```{r}
 ps <- readRDS("C:/Users/meyerinc/Masterarbeit/cdi_schubert_results.rds")
@@ -48,13 +48,46 @@ res_ps <- ziMain(ps, feature = "OTU", formula = count ~ sample + OTU, dist = "ne
 ```
 
 ### Boxplots
+The generic boxplot function is overloaded and plots zero-deinflated counts (by default along columns, i.e. one box is plotted for each sample.
+
+Plotting the zero-inflated input counts for comparison illustrates the effect of zero-deinflation.
 
 ```{r}
-boxplot(log1p(res_ps))
-boxplot(log1p(res_ps@inputcounts))
+boxplot(log2p(res_ps)) # deinflated counts
+boxplot(log2p(res_ps@inputcounts)) # plotting zero-inflated counts
 
 heatmap(res_ps, Rowv=NULL, Colv=NULL)
 ```
+
+Plotting boxes for each feature can easily be done by applying transpose 
+```{r}
+boxplot(t(res_ps))
+boxplot(t(res_ps@deinflatedcounts)) # equivalent
+```
+
+Individual data points can be plotted by the overloaded generic plot function:
+```{r}
+plot(res_ps)
+plot(res_ps,xlab="First sample [counts]",ylab="Second sample [counts]") # equivalent
+```
+
+Plotting all data points:
+```{r}
+plot(as.vector(Zi@deinflatedcounts),xlab="Index",ylab="counts")
+```
+
+### Principal component analysis (PCA)
+
+Zero-inflation can be accounted in PCA by calculating correlations with weights and then calculating principal components from these correlations.
+
+```{r}
+# compare 2 possible calls of princomp:
+princomp(covmat=cor(Zi@inputdata))[["sdev"]]-princomp(Zi@inputdata,cor=T)[["sdev"]] # same
+# PCA with downweighting structrual zeros:
+princomp(covmat=cor(Zi))  
+```
+
+
 
 ### Differential Abundance Analysis - with weights
 
