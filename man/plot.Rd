@@ -12,6 +12,8 @@
 
 \item{y}{the y coordinates of points in the plot, optional if x is an appropriate
 structure}
+
+\item{...}{Arguments to be passed to plot}
 }
 \value{
 returns plot object

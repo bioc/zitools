@@ -27,7 +27,8 @@ Imports: phyloseq,
           RColorBrewer,
           rlang,
           magrittr,
-          methods
+          methods, 
+          BiocGenerics
 Suggests: 
     knitr,
     rmarkdown,

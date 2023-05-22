@@ -193,7 +193,10 @@ setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
 #'@aliases plot,Zi-method
 #'@title Plotting
 #'@description plot
-#'@param  object      \code{\linkS4class{Zi}}-class object
+#'@param  x      \code{\linkS4class{Zi}}-class object
+#'@param y the y coordinates of points in the plot, optional if x is an appropriate
+#'structure
+#'@param ... Arguments to be passed to plot
 #'
 #'@returns returns plot object
 #'@examples
@@ -201,7 +204,7 @@ setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
 #'Zi <- ziMain(mtx)
 #'plot(Zi)
 #'
-setMethod("plot", "Zi" , function(x=object,...) {
-  plot(x=object@deinflatedcounts,...)
+setMethod("plot", "Zi" , function(x, y, ...) {
+  plot(x@deinflatedcounts, y = NULL, ...)
 })
 
