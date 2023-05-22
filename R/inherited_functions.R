@@ -295,7 +295,7 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 #'sd(Zi)
 
 setMethod("sd", "Zi", function(x, na.rm = FALSE) {
-  sd <- weightedSd(x = x@inputcounts,
+  sd <- matrixStats::weightedSd(x = x@inputcounts,
                                 w = x@weights, na.rm = na.rm)
   return(sd)
 })
