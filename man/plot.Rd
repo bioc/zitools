@@ -8,7 +8,10 @@
 \S4method{plot}{Zi,ANY}(x, y, ...)
 }
 \arguments{
-\item{object}{\code{\linkS4class{Zi}}-class object}
+\item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{y}{the y coordinates of points in the plot, optional if x is an appropriate
+structure}
 }
 \value{
 returns plot object

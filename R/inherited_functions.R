@@ -285,7 +285,7 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 #'@description  Calculate the standard deviation of zero inflated count data
 #'taking weights for structural zeros into account.
 #'@importFrom matrixStats weightedSd
-#'@importFrom stats sd
+#'@importFrom BiocGenerics sd
 #'@returns standard deviation value
 #'@seealso \link[matrixStats]{weightedSd}, \link[zitools]{rowSds}, \link[zitools]{colSds}
 #'@export
@@ -366,6 +366,7 @@ setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 #'
 #'@returns variance value
 #'@importFrom matrixStats weightedVar
+#'@importFrom BiocGenerics var
 #'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowVars}, \link[zitools]{colVars}
 #'@examples
 #'data(mtx)

@@ -196,7 +196,6 @@ setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
 #'@param  object      \code{\linkS4class{Zi}}-class object
 #'
 #'@returns returns plot object
-#'@importFrom methods plot
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)

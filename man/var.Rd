@@ -5,7 +5,7 @@
 \alias{var,Zi-method}
 \title{Variance of zero inflated count data}
 \usage{
-\S4method{var}{Zi}(x, na.rm = FALSE)
+\S4method{var}{Zi,ANY}(x, na.rm = FALSE)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
