@@ -2,7 +2,7 @@
 NULL
 
 
-#'@name replace_phyloseq
+#'@name zi2phyloseq
 #'@title Replace the otu table of a phyloseq object
 #'@param ZiObject \code{\linkS4class{Zi}}-class object with a phyloseq object as input
 #'@description Replace the OTU table of a phyloseq object with the OTU table
@@ -13,7 +13,7 @@ NULL
 #'@importFrom phyloseq taxa_are_rows
 #'@export
 
-replace_phyloseq <- function(ZiObject)
+zi2phyloseq <- function(ZiObject)
 {
   ps <- ZiObject@inputdata
   new_otu <- otu_table(ZiObject@deinflatedcounts, taxa_are_rows(ZiObject@inputdata))
