@@ -176,6 +176,7 @@ calcWeights <-
 #'@returns randomly sorted matrix
 #'@noRd
 preprocess_mtx <- function(mtx) {
+  set.seed(123)
   mtx <- mtx[rowSums(mtx[]) > 0,]
   seed <- .Random.seed
   set.seed(seed)
