@@ -2,8 +2,8 @@
 % Please edit documentation in R/inherited_functions.R
 \name{log2p}
 \alias{log2p}
-\alias{log2,Zi-method}
-\title{log2(x+1)}
+\alias{log2p,Zi-method}
+\title{log2p(x+1)}
 \usage{
 log2p(x)
 }

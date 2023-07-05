@@ -38,7 +38,7 @@ describes the zero inflation model}
 or not (\code{\link{FALSE}}) (they are removed to fit a zero inflated model and will be added afterwards
 count matrix per default = 0 and weights = 1)}
 
-\item{...}{additional parameters to describe the model, see \link[pscl]{zeroinfl}}
+\item{...}{additional parameters to describe the model, see \code{\link[pscl]{zeroinfl}}}
 }
 \value{
 \code{\linkS4class{Zi}}-class object
@@ -108,5 +108,5 @@ unlock bulk RNA-seq tools for zero inflation and single-cell applications.
 Genome Biol 19, 24 (2018). https://doi.org/10.1186/s13059-018-1406-4
 }
 \seealso{
-\code{\link{pscl::zeroinfl}}
+\code{\link[pscl]{zeroinfl}}
 }

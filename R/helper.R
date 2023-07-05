@@ -34,7 +34,7 @@ zi2phyloseq <- function(ZiObject)
 #'inputdata(Zi)
 
 setGeneric("inputdata", function(x) standardGeneric("inputdata"))
-setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
+#setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
 
 #'@name inputdata
 #'@aliases inputdata,Zi-method
@@ -43,10 +43,10 @@ setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
 #'
 #'
 setMethod("inputdata", "Zi", function(x) x@inputdata)
-setMethod("inputdata<-", "Zi", function(x, value) {
-  x@inputdata <- value
-  x
-})
+# #setMethod("inputdata<-", "Zi", function(x, value) {
+#   x@inputdata <- value
+#   x
+# })
 #'@name inputcounts
 #'@title Access the inputcounts
 #'@param x \code{\linkS4class{Zi}}-class object
@@ -60,7 +60,7 @@ setMethod("inputdata<-", "Zi", function(x, value) {
 #'inputcounts(Zi)
 
 setGeneric("inputcounts", function(x) standardGeneric("inputcounts"))
-setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
+#setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
 
 #'@name inputcounts
 #'@aliases inputcounts,Zi-method
@@ -68,10 +68,10 @@ setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
 #'@rdname inputcounts
 
 setMethod("inputcounts", "Zi", function(x) x@inputcounts)
-setMethod("inputcounts<-", "Zi", function(x, value) {
-  x@inputcounts <- value
-  x
-})
+# #setMethod("inputcounts<-", "Zi", function(x, value) {
+#   x@inputcounts <- value
+#   x
+# })
 
 #'@name model
 #'@title Access the model
@@ -86,7 +86,7 @@ setMethod("inputcounts<-", "Zi", function(x, value) {
 #'model(Zi)
 
 setGeneric("model", function(x) standardGeneric("model"))
-setGeneric("model<-", function(x, value) standardGeneric("model<-"))
+#setGeneric("model<-", function(x, value) standardGeneric("model<-"))
 
 #'@name model
 #'@aliases model,Zi-method
@@ -94,10 +94,10 @@ setGeneric("model<-", function(x, value) standardGeneric("model<-"))
 #'@rdname model
 
 setMethod("model", "Zi", function(x) x@model)
-setMethod("model<-", "Zi", function(x, value) {
-  x@model <- value
-  x
-})
+# #setMethod("model<-", "Zi", function(x, value) {
+#   x@model <- value
+#   x
+# })
 
 #'@name deinflatedcounts
 #'@title Access the model
@@ -112,7 +112,7 @@ setMethod("model<-", "Zi", function(x, value) {
 #'deinflatedcounts(Zi)
 
 setGeneric("deinflatedcounts", function(x) standardGeneric("deinflatedcounts"))
-setGeneric("deinflatedcounts<-", function(x, value) standardGeneric("deinflatedcounts<-"))
+#setGeneric("deinflatedcounts<-", function(x, value) standardGeneric("deinflatedcounts<-"))
 
 #'@name deinflatedcounts
 #'@aliases deinflatedcounts,Zi-method
@@ -120,10 +120,10 @@ setGeneric("deinflatedcounts<-", function(x, value) standardGeneric("deinflatedc
 #'@rdname deinflatedcounts
 
 setMethod("deinflatedcounts", "Zi", function(x) x@deinflatedcounts)
-setMethod("deinflatedcounts<-", "Zi", function(x, value) {
-  x@deinflatedcounts <- value
-  x
-})
+# #setMethod("deinflatedcounts<-", "Zi", function(x, value) {
+#   x@deinflatedcounts <- value
+#   x
+# })
 
 #'@name weights
 #'@title Access the weights
@@ -138,7 +138,7 @@ setMethod("deinflatedcounts<-", "Zi", function(x, value) {
 #'weights(Zi)
 
 setGeneric("weights", function(x) standardGeneric("weights"))
-setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
+#setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
 
 #'@name weights
 #'@aliases weights,Zi-method
@@ -146,10 +146,10 @@ setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
 #'@rdname weights
 
 setMethod("weights", "Zi", function(x) x@weights)
-setMethod("weights<-", "Zi", function(x, value) {
-  x@weights <- value
-  x
-})
+# #setMethod("weights<-", "Zi", function(x, value) {
+#   x@weights <- value
+#   x
+# })
 
 
 #'@name zi2deseq2

@@ -39,7 +39,10 @@ library(DESeq2)
 zitools is a package to analyse zero inflated count data, such as microbiome data. As default structural zeros are estimated from counts using features (=rows) and samples (=columns) as factorial predictor variables when fitting a zero inflated poisson or zero inflated negative binomial model.
 
 ```{r}
-ps <- readRDS("C:/Users/meyerinc/Masterarbeit/cdi_schubert_results.rds")
+data(enterotype, package = "phyloseq")
+enterotype
+
+
 ps <- filter_taxa(ps, function(x) sum(x > 0) > (0.2*length(x)), TRUE)
 otu_table(ps) <- otu_table(ps)[,1:168]
 otu_table(ps) <- otu_table(ps)[rowSums(otu_table(ps))>0,]

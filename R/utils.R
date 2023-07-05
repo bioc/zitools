@@ -223,7 +223,7 @@ subset_mtx <- function(mtx)
 #'
 #'@returns list including the input matrix, the zero inflation model, the matrix
 #'where predicted structural zeros are replaced with NA, and the weight matrix
-#'@import pscl
+#'@importFrom pscl zeroinfl
 #'@importFrom tidyr spread
 #'@importFrom tibble column_to_rownames
 #'@importFrom magrittr %>%
@@ -233,7 +233,7 @@ zi_core <- function(input, feature = "",  formula, dist, link, ...)
 {
   matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)
-  zi <- zeroinfl(formula, data = zi_input, dist = dist,
+  zi <- pscl::zeroinfl(formula, data = zi_input, dist = dist,
                  link = link,...)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
