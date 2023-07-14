@@ -65,7 +65,7 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
              NA,
              str_zero$count)
     str_zero$na <- ifelse(is.na(str_zero$count), 1, 0)
-    if (sum(str_zero$na) >= round(sum(str_zero$p_str_zero), digit = 0)) {
+    if (sum(str_zero$na) >= round(sum(str_zero$p_str_zero), digits = 0)) {
       break
     }
   }

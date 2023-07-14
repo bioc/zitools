@@ -1086,6 +1086,41 @@ setMethod("/", signature = "Zi", definition = function(e1, e2) {
   return(result)
 })
 
+#setMethod("Arith", c("Zi", "numeric"),
+#          function(e1, e2) {
+#            is_Zi_e1 <- is(e1, "Zi")
+#            is_Zi_e2 <- is(e2, "Zi")
+
+#            values1 <- if (is_Zi_e1) e1@inputcounts else e1
+#            values2 <- if (is_Zi_e2) e2@inputcounts else e2
+#            adinputcounts <- values1 / values2
+
+#            values1 <- if (is_Zi_e1) e1@deinflatedcounts else e1
+#            values2 <- if (is_Zi_e2) e2@deinflatedcounts else e2
+#            addeinflatedcounts <- values1 / values2
+
+#            values1 <- if (is_Zi_e1) e1@weights else e1
+#            values2 <- if (is_Zi_e2) e2@weights else e2
+#            adweights <- pmin(values1, values2) # Use 'pmin' for point-wise min
+
+#            result <- new(
+#              Class = "Zi",
+#              inputdata = e1@inputdata,
+#              inputcounts = adinputcounts,
+#              model = e1@model,
+#              deinflatedcounts = addeinflatedcounts,
+#              weights = adweights
+#            )
+
+#            return(result)
+#          })
+
+#setMethod("Arith", c("numeric", "Zi"),
+#          function(e1, e2) {
+#            e2@y <- callGeneric(e1, e2@y)
+#            e2
+#          })
+
 
 #'@export
 #'@name show

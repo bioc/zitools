@@ -2,8 +2,8 @@
 title: "An Introduction to zitools"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
-  %\VignetteEngine{rmarkdown::render}
+  %\VignetteIndexEntry{An Introduction to zitools}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -14,12 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 # Installation
 
 You can install the development version of zitools from GitHub with:
 
-```{r, eval = FALSE}
-devtools::install_github("kreutz-lab/zitools")
+```{r}
+library(zitools)
 ```
 
 # Introduction
@@ -29,108 +30,169 @@ This vignette provides an introductory example on how to work with the 'zitools'
 Step one: load required packages
 
 ```{r}
-library(zitools)
 library(phyloseq)
 library(DESeq2)
+library(tidyverse)
 ```
 
 ## ziMain function
 
 zitools is a package to analyse zero inflated count data, such as microbiome data. As default structural zeros are estimated from counts using features (=rows) and samples (=columns) as factorial predictor variables when fitting a zero inflated poisson or zero inflated negative binomial model.
 
+
+In a first step, the dataset is loaded. The example dataset is the ME/CFS dataset (described above).
+
+```{r Dataset}
+phyloseq <- readRDS("C:/Users/meyerinc/Masterarbeit/ps_giloteaux_2016.rds")
+```
+
+```{r, echo = FALSE}
+str(phyloseq, max.level = 3)
+```
+
+After loading the dataset, a zero inflated negative binomial model is fitted to the data and based on the model a deinflated count matrix as well as weights for structural zeros are calculated by executing the \texttt{ziMain} function.
+
+```{r ziMain}
+Zi <- ziMain(phyloseq)
+print(Zi)
+```
+
+## Basic Statistic Quantities
+
+Following the OOP concept of polymorphism, already implemented functions can be called with an \texttt{Zi}-object without further arguments.
+
 ```{r}
-data(enterotype, package = "phyloseq")
-enterotype
+mean(Zi)
+sd(Zi)
+var(Zi)
 
+median(Zi)
+quantile(Zi)
+```
 
-ps <- filter_taxa(ps, function(x) sum(x > 0) > (0.2*length(x)), TRUE)
-otu_table(ps) <- otu_table(ps)[,1:168]
-otu_table(ps) <- otu_table(ps)[rowSums(otu_table(ps))>0,]
+## Boxplots
 
-res_ps <- ziMain(ps, feature = "OTU", formula = count ~ sample + OTU, dist = "negbin", link = "logit", zeroRows.rm = TRUE)
+Batch effects of the dataset can be observed when visualizing the data with a boxplot.
+
+```{r boxplot, echo=TRUE}
+boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", main = "ZI considered")
+```
+
+```{r repeat plot}
+i <- 1
+repeat {
+  Zi <- resample_deinflatedcounts(Zi)
+  print(boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)"))
+  i = i+1
+  if(i==6){
+    break
+  }
+} 
+
 
 ```
 
-### Boxplots
+## Differential Abundance Analysis
 
-The generic boxplot function is overloaded and plots zero-deinflated counts (by default along columns, i.e. one box is plotted for each sample.
+To identify differentially abundant taxa between the two groups (Patient vs Control) of the dataset, differential abundance analysis of the DESeq2 package can be performed. First, the object of a Zi-class is transformed in a DESeqDataSet object to perform DESeq analysis of the DESeq2 package. Thereby, weights given that a zero count is a structural zero, are included in the DESeqDataSet object and are included in the calculation of differentially abundant taxa.
 
-Plotting the zero-inflated input counts for comparison illustrates the effect of zero-deinflation.
-
-```{r}
-boxplot(log2p(res_ps)) # deinflated counts
-boxplot(log2p(inputcounts(res_ps))) # plotting zero-inflated counts
-
-heatmap(res_ps, Rowv=NULL, Colv=NULL)
+```{r DDS}
+DDS <- zi2deseq2(Zi, ~Subject)
+DDS$Subject <- relevel(DDS$Subject, ref = "Patient")
+DDS <-  DESeq(DDS, test = "Wald", fitType = "local", sfType = "poscounts")
 ```
 
-Plotting boxes for each feature can easily be done by applying transpose
+```{r, echo=TRUE}
+(result <- results(DDS, cooksCutoff = FALSE))
 
-```{r}
-boxplot(t(res_ps))
-boxplot(t(deinflatedcounts(res_ps))) # equivalent
+result <- as.data.frame(result)
+round(result, digits = 3)
+
+class(result)
 ```
 
-Individual data points can be plotted by the overloaded generic plot function:
-
-```{r}
-plot(res_ps)
-plot(res_ps,xlab="First sample [counts]",ylab="Second sample [counts]") # equivalent
-```
-
-Plotting all data points:
-
-```{r}
-plot(as.vector(deinflatedcounts(res_ps)),xlab="Index",ylab="counts")
-```
-
-### Principal component analysis (PCA)
-
-Zero-inflation can be accounted in PCA by calculating correlations with weights and then calculating principal components from these correlations.
-
-```{r}
-# compare 2 possible calls of princomp:
-princomp(covmat=cor(Zi@inputdata))[["sdev"]]-princomp(Zi@inputdata,cor=T)[["sdev"]] # same
-# PCA with downweighting structrual zeros:
-princomp(covmat=cor(Zi))  
-```
-
-### Differential Abundance Analysis - with weights
-
-```{r}
-dds_zi <- zi2deseq2(res_ps, ~DiseaseState)
-dds_zi <-  DESeq(dds_zi, test = "Wald", fitType = "local", sfType = "poscounts")
-
-plotMA(dds_zi)
-plotDispEsts(dds_zi)
-
-res_zi <- results(dds_zi, cooksCutoff = FALSE)
-res_zi
-
-df_res_zi <- cbind(as(res_zi, "data.frame"), as(tax_table(ps)[rownames(res_zi), ], "matrix"))
-df_res_zi <- df_res_zi %>%
+```{r df, echo=FALSE, eval=TRUE}
+result_df<- cbind(as(result, "data.frame"), as(tax_table(phyloseq)[rownames(result), ], "matrix"))
+result_df <- result_df %>%
   rownames_to_column(var = "OTU") %>%
   arrange(padj)
 
-(fdr_otu_zi <- df_res_zi %>%
-  dplyr::filter(padj < 0.1)) 
+result_df$diffexpressed[result_df$log2FoldChange > 1 & result_df$pvalue < 0.05] <- result_df$Genus
+result_df$diffexpressed[result_df$log2FoldChange < -1 & result_df$pvalue < 0.05] <- result_df$Genus
+
+result_df <- data.frame("OTU" = result_df$OTU, "log2FoldChange" = result_df$log2FoldChange, "pvalue" = result_df$pvalue, "Genus" = result_df$diffexpressed)
+
 ```
 
-### Differential Abundance Analysis - without weights
+## Plot Differential Abundance Result
+
+```{r, echo = TRUE}
+suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, y=-log10(pvalue), color = Genus)) +
+  geom_point()+
+  theme_minimal()+
+  xlim(-6,6)+
+  ylim(-0.5,4)+
+  ylab("-log10(pvalue)\n")+
+  xlab("\nLog2FoldChange")+
+  geom_vline(xintercept=c(-1, 1), col="black") +
+  geom_hline(yintercept=-log10(0.05), col="black")+
+  theme(text = element_text(size = 20))+
+  theme(panel.spacing.x = unit(2, "lines"))))
+```
+
+## Missing Value Heatmap
+
+```{r, eval = TRUE, echo = FALSE}
+Zi2 <- Zi
+mat <- deinflatedcounts(Zi2)
+mat[mat > 500] <- 500
+Zi2@deinflatedcounts <- mat
+```
+
+```{r heatmap}
+MissingValueHeatmap(Zi2, xlab = "Sample")
+```
+
+## Principal Component Analysis
+
+By calculating a weighted correlation as well as a weighted scaling, a weighted Principal Component Analysis can be performed
 
 ```{r}
-deseq <- phyloseq_to_deseq2(ps, ~DiseaseState)
-dds <-  DESeq(deseq, test = "Wald", fitType = "local", sfType = "poscounts")
+PCA <- princomp(covmat = cor(t(Zi)), cor = FALSE)
+centered_data <- (inputcounts(t(Zi))-colMeans2(t(Zi)))/sqrt(colVars(t(Zi)))
+loadings <- PCA$loadings
+scores <- centered_data %*% loadings
+PCA$scores <- scores
 
-res <- results(dds, cooksCutoff = FALSE)
-res
-
-df_res<- cbind(as(res, "data.frame"), as(tax_table(ps)[rownames(res), ], "matrix"))
-df_res <- df_res %>%
-  rownames_to_column(var = "OTU") %>%
-  arrange(padj)
-df_res
-
-(fdr_otu <- df_res %>%
-  dplyr::filter(padj < 0.1)) 
+df_PCA <- data.frame("PC1" = PCA[["scores"]][,1], "PC2" = PCA[["scores"]][,2], "Subject" = sample_data(Zi)$Subject)
+summary(PCA)
 ```
+
+```{r plot PCA, echo=FALSE}
+suppressWarnings(print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = Subject))+
+  geom_point()+
+  xlim(-200,100)+
+  ylim(-250,260)+
+  xlab("PC1 6.0%")+
+  ylab("PC2 4.8%")))
+```
+
+## Interaction with the phyloseq package
+
+```{r}
+new_phyloseq <- zi2phyloseq(Zi)
+```
+
+```{r}
+str(new_phyloseq@otu_table, max.level = 3)
+```
+
+```{r}
+subset <- subset_taxa(new_phyloseq, Kingdom=="Bacteria")
+subset <- prune_taxa(names(sort(taxa_sums(subset),TRUE)[1:300]), subset)
+plot_heatmap(subset, sample.label="Sample_Name_s")
+
+plot_richness(new_phyloseq, measures = c("Chao1"), color = sample_data(new_phyloseq)$Subject)+
+  theme(axis.text.x = element_blank())
+```
+

@@ -11,8 +11,6 @@ inputcounts(x)
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
-
-\item{value}{replacement of inputcounts}
 }
 \value{
 inputcounts

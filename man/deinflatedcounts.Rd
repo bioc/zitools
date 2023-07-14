@@ -11,8 +11,6 @@ deinflatedcounts(x)
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
-
-\item{value}{replacement of deinflatedcounts}
 }
 \value{
 deinflatedcounts

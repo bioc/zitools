@@ -1,2 +1,4 @@
 ^zitools\.Rproj$
 ^\.Rproj\.user$
+^doc$
+^Meta$

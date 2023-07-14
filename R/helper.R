@@ -24,7 +24,6 @@ zi2phyloseq <- function(ZiObject)
 #'@name inputdata
 #'@title Access the inputdata
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@param value replacement of inputdata
 #'@description access the inputdata of an \code{\linkS4class{Zi}}-class object
 #'@returns inputdata
 #'@export
@@ -34,23 +33,17 @@ zi2phyloseq <- function(ZiObject)
 #'inputdata(Zi)
 
 setGeneric("inputdata", function(x) standardGeneric("inputdata"))
-#setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
 
 #'@name inputdata
 #'@aliases inputdata,Zi-method
 #'@export
 #'@rdname inputdata
-#'
-#'
+
 setMethod("inputdata", "Zi", function(x) x@inputdata)
-# #setMethod("inputdata<-", "Zi", function(x, value) {
-#   x@inputdata <- value
-#   x
-# })
+
 #'@name inputcounts
 #'@title Access the inputcounts
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@param value replacement of inputcounts
 #'@description access the inputcounts of an \code{\linkS4class{Zi}}-class object
 #'@returns inputcounts
 #'@export
@@ -60,7 +53,6 @@ setMethod("inputdata", "Zi", function(x) x@inputdata)
 #'inputcounts(Zi)
 
 setGeneric("inputcounts", function(x) standardGeneric("inputcounts"))
-#setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
 
 #'@name inputcounts
 #'@aliases inputcounts,Zi-method
@@ -68,15 +60,11 @@ setGeneric("inputcounts", function(x) standardGeneric("inputcounts"))
 #'@rdname inputcounts
 
 setMethod("inputcounts", "Zi", function(x) x@inputcounts)
-# #setMethod("inputcounts<-", "Zi", function(x, value) {
-#   x@inputcounts <- value
-#   x
-# })
+
 
 #'@name model
 #'@title Access the model
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@param value replacement of model
 #'@description access the model of an \code{\linkS4class{Zi}}-class object
 #'@returns model
 #'@export
@@ -86,7 +74,6 @@ setMethod("inputcounts", "Zi", function(x) x@inputcounts)
 #'model(Zi)
 
 setGeneric("model", function(x) standardGeneric("model"))
-#setGeneric("model<-", function(x, value) standardGeneric("model<-"))
 
 #'@name model
 #'@aliases model,Zi-method
@@ -94,15 +81,10 @@ setGeneric("model", function(x) standardGeneric("model"))
 #'@rdname model
 
 setMethod("model", "Zi", function(x) x@model)
-# #setMethod("model<-", "Zi", function(x, value) {
-#   x@model <- value
-#   x
-# })
 
 #'@name deinflatedcounts
 #'@title Access the model
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@param value replacement of deinflatedcounts
 #'@description access the deinflatedcounts of an \code{\linkS4class{Zi}}-class object
 #'@returns deinflatedcounts
 #'@export
@@ -112,7 +94,6 @@ setMethod("model", "Zi", function(x) x@model)
 #'deinflatedcounts(Zi)
 
 setGeneric("deinflatedcounts", function(x) standardGeneric("deinflatedcounts"))
-#setGeneric("deinflatedcounts<-", function(x, value) standardGeneric("deinflatedcounts<-"))
 
 #'@name deinflatedcounts
 #'@aliases deinflatedcounts,Zi-method
@@ -120,15 +101,11 @@ setGeneric("deinflatedcounts", function(x) standardGeneric("deinflatedcounts"))
 #'@rdname deinflatedcounts
 
 setMethod("deinflatedcounts", "Zi", function(x) x@deinflatedcounts)
-# #setMethod("deinflatedcounts<-", "Zi", function(x, value) {
-#   x@deinflatedcounts <- value
-#   x
-# })
+
 
 #'@name weights
 #'@title Access the weights
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@param value replacement of deinflatedcounts
 #'@description access the weights of an \code{\linkS4class{Zi}}-class object
 #'@returns weights
 #'@export
@@ -138,7 +115,6 @@ setMethod("deinflatedcounts", "Zi", function(x) x@deinflatedcounts)
 #'weights(Zi)
 
 setGeneric("weights", function(x) standardGeneric("weights"))
-#setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
 
 #'@name weights
 #'@aliases weights,Zi-method
@@ -146,10 +122,7 @@ setGeneric("weights", function(x) standardGeneric("weights"))
 #'@rdname weights
 
 setMethod("weights", "Zi", function(x) x@weights)
-# #setMethod("weights<-", "Zi", function(x, value) {
-#   x@weights <- value
-#   x
-# })
+
 
 
 #'@name zi2deseq2
