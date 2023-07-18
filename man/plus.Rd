@@ -2,7 +2,7 @@
 % Please edit documentation in R/inherited_functions.R
 \name{+}
 \alias{+}
-\alias{+,Zi-method}
+\alias{+,Zi,ANY-method}
 \title{Arithmetic Operators}
 \usage{
 \S4method{+}{Zi,ANY}(e1, e2)

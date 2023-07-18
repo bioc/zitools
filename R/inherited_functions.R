@@ -356,7 +356,7 @@ setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 
 #'@export
 #'@name var
-#'@aliases var,Zi-method
+#'@aliases var,Zi,ANY-method
 #'@title Variance of zero inflated count data
 #'@param x  A \code{\linkS4class{Zi}}-class object
 #'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
@@ -374,7 +374,7 @@ setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 #'Zi <- ziMain(mtx)
 #'var(Zi)
 
-setMethod("var", "Zi", function(x, na.rm = FALSE) {
+setMethod("var", c("Zi","ANY"), function(x, na.rm = FALSE) {
   var <- weightedVar(x = x@inputcounts,
                                   w = x@weights, na.rm = na.rm)
   return(var)
@@ -753,7 +753,7 @@ setMethod("log2p", signature ="Zi",definition = function(x){
 
 
 #'@name +
-#'@aliases +,Zi-method
+#'@aliases +,Zi,ANY-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
@@ -806,7 +806,7 @@ setMethod("log2p", signature ="Zi",definition = function(x){
 #   return(result)
 # })
 
-setMethod("+", signature = "Zi", definition = function(e1, e2) {
+setMethod("+", signature = c("Zi","ANY"), definition = function(e1, e2) {
   is_Zi_e1 <- is(e1, "Zi")
   is_Zi_e2 <- is(e2, "Zi")
 
@@ -836,7 +836,7 @@ setMethod("+", signature = "Zi", definition = function(e1, e2) {
 
 
 #'@name -
-#'@aliases -,Zi-method
+#'@aliases -,Zi,ANY-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
@@ -892,7 +892,7 @@ setMethod("+", signature = "Zi", definition = function(e1, e2) {
 #   return(result)
 # })
 
-setMethod("-", signature = "Zi", definition = function(e1, e2) {
+setMethod("-", signature = c("Zi","ANY"), definition = function(e1, e2) {
   is_Zi_e1 <- is(e1, "Zi")
   is_Zi_e2 <- is(e2, "Zi")
 
@@ -921,7 +921,7 @@ setMethod("-", signature = "Zi", definition = function(e1, e2) {
 })
 
 #'@name *
-#'@aliases *,Zi-method
+#'@aliases *,Zi,ANY-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
@@ -974,7 +974,7 @@ setMethod("-", signature = "Zi", definition = function(e1, e2) {
 #   return(result)
 # })
 
-setMethod("*", signature = "Zi", definition = function(e1, e2) {
+setMethod("*", signature = c("Zi","ANY"), definition = function(e1, e2) {
   is_Zi_e1 <- is(e1, "Zi")
   is_Zi_e2 <- is(e2, "Zi")
 
@@ -1003,7 +1003,7 @@ setMethod("*", signature = "Zi", definition = function(e1, e2) {
 })
 
 #'@name /
-#'@aliases /,Zi-method
+#'@aliases /,Zi,ANY-method
 #'@title Arithmetic Operators
 #'@description Arithmetic operators for a Zi-class object
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
@@ -1058,7 +1058,7 @@ setMethod("*", signature = "Zi", definition = function(e1, e2) {
 #   return(result)
 # })
 
-setMethod("/", signature = "Zi", definition = function(e1, e2) {
+setMethod("/", signature = c("Zi","ANY"), definition = function(e1, e2) {
   is_Zi_e1 <- is(e1, "Zi")
   is_Zi_e2 <- is(e2, "Zi")
 

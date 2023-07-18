@@ -2,8 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{cov}
 \alias{cov}
-\alias{cov,Zi-method}
-\alias{cov,ANY-method}
+\alias{cov,Zi,ANY-method}
 \title{Calculate weighted Covariance}
 \usage{
 \S4method{cov}{Zi,ANY}(x, y = NULL, use = "everything")
@@ -12,6 +11,8 @@
 \item{x}{'Zi'-class object}
 
 \item{y}{'Zi'-class object}
+
+\item{use}{"everything"}
 }
 \description{
 calculate the weighted covariance of the columns of the

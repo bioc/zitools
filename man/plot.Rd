@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{plot}
 \alias{plot}
-\alias{plot,Zi-method}
+\alias{plot,Zi,ANY-method}
 \title{Plotting}
 \usage{
 \S4method{plot}{Zi,ANY}(x, y, ...)

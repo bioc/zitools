@@ -89,8 +89,7 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
                            method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
 
 #'@name cor
-#'@aliases cor,Zi-method
-#'@aliases cor,ANY-method
+#'@aliases cor,Zi,ANY-method
 #'@title Calculate weighted Pearson Correlation coeffiecients
 #'@description calculate the weighted pearson correlation coefficients of a
 #'count matrix of an Zi object taking weights for zero counts into account
@@ -105,7 +104,7 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'cor(Zi)
-setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", method = "pearson"){
+setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", method = "pearson"){
   if(use!="everything")
     stop("zitools::cor only implemented so far for use=\"everything\"")
   if(method!="pearson")
@@ -143,20 +142,20 @@ setMethod("cor", signature = "Zi", function(x, y = NULL, use = "everything", met
 })
 
 #'@name cov
-#'@aliases cov,Zi-method
-#'@aliases cov,ANY-method
+#'@aliases cov,Zi,ANY-method
 #'@title Calculate weighted Covariance
 #'@description calculate the weighted covariance of the columns of the
 #'count matrix of an Zi object taking weights for possible structural zero counts into account
 #'@param x    'Zi'-class object
 #'@param y    'Zi'-class object
+#'@param use "everything"
 #'@importFrom stats cor
 #'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'cov(Zi)
-setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
+setMethod("cov", c("Zi","ANY"), function(x, y = NULL, use = "everything"){
   if(use!="everything")
     stop("zitools::cor only implemented so far for use=\"everything\"")
   my_vector <- numeric()
@@ -190,7 +189,7 @@ setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
 
 #'@export
 #'@name plot
-#'@aliases plot,Zi-method
+#'@aliases plot,Zi,ANY-method
 #'@title Plotting
 #'@description plot
 #'@param  x      \code{\linkS4class{Zi}}-class object
@@ -204,7 +203,7 @@ setMethod("cov", signature = "Zi", function(x, y = NULL, use = "everything"){
 #'Zi <- ziMain(mtx)
 #'plot(Zi)
 #'
-setMethod("plot", "Zi" , function(x, y, ...) {
+setMethod("plot", c("Zi","ANY"), function(x, y, ...) {
   plot(x@deinflatedcounts, y = NULL, ...)
 })
 

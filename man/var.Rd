@@ -2,7 +2,7 @@
 % Please edit documentation in R/inherited_functions.R
 \name{var}
 \alias{var}
-\alias{var,Zi-method}
+\alias{var,Zi,ANY-method}
 \title{Variance of zero inflated count data}
 \usage{
 \S4method{var}{Zi,ANY}(x, na.rm = FALSE)

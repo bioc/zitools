@@ -2,8 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{cor}
 \alias{cor}
-\alias{cor,Zi-method}
-\alias{cor,ANY-method}
+\alias{cor,Zi,ANY-method}
 \title{Calculate weighted Pearson Correlation coeffiecients}
 \usage{
 \S4method{cor}{Zi,ANY}(x, y = NULL, use = "everything", method = "pearson")
