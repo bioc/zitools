@@ -299,6 +299,8 @@ subset_feature <- function(Zi, ...){
 #'@description Resample the deinflatedcounts matrix of an \code{\linkS4class{Zi}}-class object.
 #'Resampling is done by drawing from a binomial distribution with a given probability
 #'that a count value (zero and non-zero) is a structural zero.
+#'@returns a \code{\linkS4class{Zi}}-class object wher the \code{deinflatedcounts}
+#'are resampled
 #'
 #'
 #'@param x \code{\linkS4class{Zi}}-class object

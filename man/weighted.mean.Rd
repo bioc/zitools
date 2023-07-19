@@ -25,7 +25,7 @@ taking weights for structural zeros into account
 \examples{
 data(mtx)
 Zi <- ziMain(mtx)
-weight <- runif(length(Zi@inputcounts), 0.1, 1)
+weight <- runif(length(inputcounts(Zi)), 0.1, 1)
 weighted.mean(Zi, w= weight)
 }
 \seealso{

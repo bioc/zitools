@@ -52,6 +52,9 @@ attributes of result are set. Else if \code{\link{FALSE}}, no naming support is 
 
 \item{drop}{If \code{\link{TRUE}} a \code{\link[base]{vector}} is returned if J == 1.}
 }
+\value{
+a numeric \code{\link[base]{vector}} of row/column length
+}
 \description{
 Calculate the row or column quantiles of  zero-deinflated data of a
 \code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts matrix will be extracted

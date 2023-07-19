@@ -17,6 +17,9 @@
 \item{method}{default = "pearson", weighted correlation only implemented for
 person correlation}
 }
+\value{
+correlation matrix
+}
 \description{
 calculate the weighted pearson correlation coefficients of a
 count matrix of an Zi object taking weights for zero counts into account

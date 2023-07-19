@@ -146,7 +146,7 @@ suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, y=-log10(pva
 Zi2 <- Zi
 mat <- deinflatedcounts(Zi2)
 mat[mat > 500] <- 500
-Zi2@deinflatedcounts <- mat
+deinflatedcounts(Zi2) <- mat
 ```
 
 ```{r heatmap}
@@ -184,7 +184,7 @@ new_phyloseq <- zi2phyloseq(Zi)
 ```
 
 ```{r}
-str(new_phyloseq@otu_table, max.level = 3)
+str(otu_table(new_phyloseq), max.level = 3)
 ```
 
 ```{r}
@@ -196,3 +196,8 @@ plot_richness(new_phyloseq, measures = c("Chao1"), color = sample_data(new_phylo
   theme(axis.text.x = element_blank())
 ```
 
+# Session Info
+
+```{r}
+sessionInfo()
+```

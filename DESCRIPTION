@@ -1,12 +1,17 @@
 Package: zitools
 Title: Analysis of zero-inflated count data 
-Version: 0.0.0.9000
+Version: 0.99.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: 
-  zitools implements a zero inflated mixture model to zero inflated
-  count data and calculates weights for all zero counts. 
+    person("Carlotta", "Meyring", , "carlotta.meyring@uniklinik-freiburg.de", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0000-6201-7615"))
+Description:
+  zitools allows for zero inflated count data analysis by either using 
+  down-weighting of excess zeros or by replacing an appropriate proportion of 
+  excess zeros with NA. Through overloading frequently used statistical 
+  functions (such as mean, median, standard deviation), plotting functions 
+  (such as boxplots or heatmap) or differential abundance tests, it allows a 
+  wide range of downstream analyses for zero-inflated data in a less biased 
+  manner.
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -26,7 +31,9 @@ Imports: phyloseq,
           reshape2, 
           RColorBrewer,
           magrittr, 
-          BiocGenerics
+          BiocGenerics,
+          graphics,
+          utils
 Suggests: 
     knitr,
     rmarkdown,
@@ -42,8 +49,7 @@ Collate:
     'inherited_functions.R'
     'plots.R'
     'utils.R'
-Depends: R (>= 2.10), 
+Depends: R (>= 4.3.0), 
           methods
-LazyData: true
 VignetteBuilder: knitr
-biocViews: 
+biocViews: Software, StatisticalMethod

@@ -50,7 +50,7 @@ data, additionally taking weights for structural zeros into account.
 \examples{
 data(mtx)
 Zi <- ziMain(mtx)
-rowWeightedMeans(Zi, w = runif(ncol(Zi@inputcounts), 0.1,1))
-colWeightedMeans(Zi, w = runif(nrow(Zi@inputcounts), 0.1,1))
+rowWeightedMeans(Zi, w = runif(ncol(inputcounts(Zi)), 0.1,1))
+colWeightedMeans(Zi, w = runif(nrow(inputcounts(Zi)), 0.1,1))
 
 }

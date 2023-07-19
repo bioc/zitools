@@ -21,3 +21,7 @@ heatmap
 \description{
 Missing Value Heatmap
 }
+\examples{
+data(mtx)
+
+}

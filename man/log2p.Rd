@@ -10,6 +10,10 @@ log2p(x)
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 }
+\value{
+a \code{\linkS4class{Zi}}-class object where the log2(1+x) values of
+\code{inputcounts, deinflatedcounts and weights} are calculated.
+}
 \description{
 Calculate log2(x+1) of all 'matrix' objects of a 'Zi'-class
 object

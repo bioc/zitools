@@ -10,6 +10,10 @@
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 }
+\value{
+a \code{\linkS4class{Zi}}-class object where the log(1+x) values of
+\code{inputcounts, deinflatedcounts and weights} are calculated.
+}
 \description{
 Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
 object, log calculates by default natural logarithms

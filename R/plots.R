@@ -9,6 +9,8 @@ NULL
 #'@param ... see \link[graphics]{boxplot.default}
 #'@seealso \link[graphics]{boxplot.default}
 #'@importFrom graphics boxplot
+#'@returns  A List with all information to create a boxplot see
+#'\link[graphics]{boxplot.default}
 #'@export
 #'@examples
 #'data(mtx)
@@ -66,6 +68,9 @@ heatmap.Zi <- function(x, ...) {
 #'@import ggplot2
 #'@importFrom RColorBrewer brewer.pal
 #'@importFrom reshape2 melt
+#'@examples
+#'data(mtx)
+#'
 #'@export
 
 MissingValueHeatmap <- function(ZiObject,title = "", xlab = "", ylab = "") {
@@ -100,6 +105,7 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 #'person correlation
 #'@importFrom stats cor
 #'@export
+#'@returns correlation matrix
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -150,6 +156,7 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
 #'@param y    'Zi'-class object
 #'@param use "everything"
 #'@importFrom stats cor
+#'@returns covariance matrix
 #'@export
 #'@examples
 #'data(mtx)

@@ -133,6 +133,7 @@ quantile.Zi <- function(x, probs = seq(0, 1, 0.25), na.rm = TRUE, ...) {
 #'@description Calculate the row or column quantiles of  zero-deinflated data of a
 #' \code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts matrix will be extracted
 #'@importFrom MatrixGenerics rowQuantiles
+#'@returns a numeric \code{\link[base]{vector}} of row/column length
 #'
 #'@examples
 #'data(mtx)
@@ -451,7 +452,7 @@ setMethod("colVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, 
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'weight <- runif(length(Zi@inputcounts), 0.1, 1)
+#'weight <- runif(length(inputcounts(Zi)), 0.1, 1)
 #'weighted.mean(Zi, w= weight)
 
 
@@ -483,8 +484,8 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'rowWeightedMeans(Zi, w = runif(ncol(Zi@inputcounts), 0.1,1))
-#'colWeightedMeans(Zi, w = runif(nrow(Zi@inputcounts), 0.1,1))
+#'rowWeightedMeans(Zi, w = runif(ncol(inputcounts(Zi)), 0.1,1))
+#'colWeightedMeans(Zi, w = runif(nrow(inputcounts(Zi)), 0.1,1))
 #'
 
 setMethod("rowWeightedMeans", "Zi", function(x,
@@ -567,10 +568,10 @@ setMethod("weightedSd", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center 
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'rowWeightedSds(Zi, w = runif(ncol(Zi@inputcounts), 0.1,1))
-#'colWeightedSds(Zi, w = runif(nrow(Zi@inputcounts), 0.1,1))
-#'rowWeightedVars(Zi, w = runif(ncol(Zi@inputcounts), 0.1,1))
-#'colWeightedVars(Zi, w = runif(nrow(Zi@inputcounts), 0.1,1))
+#'rowWeightedSds(Zi, w = runif(ncol(inputcounts(Zi)), 0.1,1))
+#'colWeightedSds(Zi, w = runif(nrow(inputcounts(Zi)), 0.1,1))
+#'rowWeightedVars(Zi, w = runif(ncol(inputcounts(Zi)), 0.1,1))
+#'colWeightedVars(Zi, w = runif(nrow(inputcounts(Zi)), 0.1,1))
 #'
 
 setMethod("rowWeightedSds", "Zi", function(x,
@@ -635,7 +636,7 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'weight <- runif(length(Zi@inputcounts), 0.1, 1)
+#'weight <- runif(length(inputcounts(Zi)), 0.1, 1)
 #'weightedVar(Zi, w= weight)
 #'weightedSd(Zi, w = weight)
 
@@ -703,6 +704,8 @@ setMethod("colWeightedVars", "Zi", function(x, w, rows = NULL, cols = NULL, na.r
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@export
 #'@seealso \link[base]{log1p}, \link[zitools]{log2p}
+#'@returns a \code{\linkS4class{Zi}}-class object where the log(1+x) values of
+#'\code{inputcounts, deinflatedcounts and weights} are calculated.
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -727,6 +730,8 @@ setMethod("log1p", signature ="Zi", definition = function(x){
 #'@description Calculate log2(x+1) of all 'matrix' objects of a 'Zi'-class
 #'object
 #'@param x \code{\linkS4class{Zi}}-class object
+#'@returns a \code{\linkS4class{Zi}}-class object where the log2(1+x) values of
+#'\code{inputcounts, deinflatedcounts and weights} are calculated.
 #'@export
 #'@examples
 #'data(mtx)
@@ -1141,7 +1146,7 @@ setMethod("show", "Zi" , function(object) {
   dims <- dim(object@inputdata)
   formel <- as.character(Zi@model[[1]]$formula)
   anz <- length(object@inputcounts) # data points
-  anz0 <- sum(object@inputcounts==0,na.rm=T) # zeros
+  anz0 <- sum(object@inputcounts==0,na.rm=TRUE) # zeros
   anz00 <- sum(is.na(object@deinflatedcounts)) # structural zeros
 
   cat("Formal class 'Zi' [package \"zitools\"]\n")

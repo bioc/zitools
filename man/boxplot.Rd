@@ -12,6 +12,10 @@
 
 \item{...}{see \link[graphics]{boxplot.default}}
 }
+\value{
+A List with all information to create a boxplot see
+\link[graphics]{boxplot.default}
+}
 \description{
 Create boxplots of a 'Zi'-class object.
 }
