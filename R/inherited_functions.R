@@ -108,9 +108,13 @@ setMethod("rowMedians", "Zi", function(x,
 #'Zi <- ziMain(mtx)
 #'quantile(Zi)
 
-quantile.Zi <- function(x, probs = seq(0, 1, 0.25), na.rm = TRUE, ...) {
-  quantile(x@deinflatedcounts, probs = probs, na.rm = na.rm, ...)
-}
+quantile.Zi <-
+  function(x,
+           probs = seq(0, 1, 0.25),
+           na.rm = TRUE,
+           ...) {
+    quantile(x@deinflatedcounts, probs = probs, na.rm = na.rm, ...)
+  }
 
 #'@export
 #'@name rowQuantiles
@@ -242,16 +246,25 @@ mean.Zi <- function(x, ...) {
 #'rowMeans2(Zi)
 
 
-setMethod("colMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames=TRUE) {
-  if(is.null(rows)){
-    rows <-  c(1:nrow(x@inputcounts))}
-  if(is.null(cols)){
-    cols <-  c(1:ncol(x@inputcounts))}
+setMethod("colMeans2", "Zi", function(x,
+                                      rows = NULL,
+                                      cols = NULL,
+                                      na.rm = FALSE,
+                                      useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <-  c(1:nrow(x@inputcounts))
+  }
+  if (is.null(cols)) {
+    cols <-  c(1:ncol(x@inputcounts))
+  }
   colmean <-
     mapply(
       weighted.mean,
-      as.data.frame(x@inputcounts)[rows,cols],
-      as.data.frame(x@weights)[rows, cols],USE.NAMES = useNames, na.rm = na.rm)
+      as.data.frame(x@inputcounts)[rows, cols],
+      as.data.frame(x@weights)[rows, cols],
+      USE.NAMES = useNames,
+      na.rm = na.rm
+    )
   return(colmean)
 })
 
@@ -262,15 +275,25 @@ setMethod("colMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics rowMeans2
 #'
-setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames=TRUE) {
-  if(is.null(rows)){
-    rows <- c(1:nrow(t(x@inputcounts)))}
-  if(is.null(cols)){
-    cols <- c(1:ncol(t(x@inputcounts)))}
+setMethod("rowMeans2", "Zi", function(x,
+                                      rows = NULL,
+                                      cols = NULL,
+                                      na.rm = FALSE,
+                                      useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <- c(1:nrow(t(x@inputcounts)))
+  }
+  if (is.null(cols)) {
+    cols <- c(1:ncol(t(x@inputcounts)))
+  }
   rowmean <-
-    mapply(weighted.mean,
-           as.data.frame(t(x@inputcounts))[rows,cols],
-           as.data.frame(t(x@weights))[rows,cols], USE.NAMES = useNames, na.rm=na.rm)
+    mapply(
+      weighted.mean,
+      as.data.frame(t(x@inputcounts))[rows, cols],
+      as.data.frame(t(x@weights))[rows, cols],
+      USE.NAMES = useNames,
+      na.rm = na.rm
+    )
   return(rowmean)
 })
 
@@ -298,7 +321,8 @@ setMethod("rowMeans2", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE
 
 setMethod("sd", "Zi", function(x, na.rm = FALSE) {
   sd <- matrixStats::weightedSd(x = x@inputcounts,
-                                w = x@weights, na.rm = na.rm)
+                                w = x@weights,
+                                na.rm = na.rm)
   return(sd)
 })
 
@@ -327,14 +351,24 @@ setMethod("sd", "Zi", function(x, na.rm = FALSE) {
 #'rowSds(Zi)
 #'colSds(Zi)
 
-setMethod("rowSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <- c(1:nrow(t(x@inputcounts)))}
-  if(is.null(cols)){
-    cols <- c(1:ncol(t(x@inputcounts)))}
-  mapply(matrixStats::weightedSd,
-         as.data.frame(t(x@inputcounts))[rows,cols],
-         as.data.frame(t(x@weights))[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+setMethod("rowSds", "Zi", function(x,
+                                   rows = NULL,
+                                   cols = NULL,
+                                   na.rm = FALSE,
+                                   useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <- c(1:nrow(t(x@inputcounts)))
+  }
+  if (is.null(cols)) {
+    cols <- c(1:ncol(t(x@inputcounts)))
+  }
+  mapply(
+    matrixStats::weightedSd,
+    as.data.frame(t(x@inputcounts))[rows, cols],
+    as.data.frame(t(x@weights))[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 #'@name colSds
@@ -344,15 +378,24 @@ setMethod("rowSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 #'@importFrom matrixStats weightedSd
 #'@importFrom MatrixGenerics colSds
 
-setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <-  c(1:nrow(x@inputcounts))}
-  if(is.null(cols)){
-    cols <-  c(1:ncol(x@inputcounts))}
+setMethod("colSds", "Zi", function(x,
+                                   rows = NULL,
+                                   cols = NULL,
+                                   na.rm = FALSE,
+                                   useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <-  c(1:nrow(x@inputcounts))
+  }
+  if (is.null(cols)) {
+    cols <-  c(1:ncol(x@inputcounts))
+  }
   mapply(
     matrixStats::weightedSd,
-    as.data.frame(x@inputcounts)[rows,cols],
-    as.data.frame(x@weights)[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+    as.data.frame(x@inputcounts)[rows, cols],
+    as.data.frame(x@weights)[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 #'@export
@@ -375,9 +418,10 @@ setMethod("colSds", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, u
 #'Zi <- ziMain(mtx)
 #'var(Zi)
 
-setMethod("var", c("Zi","ANY"), function(x, na.rm = FALSE) {
+setMethod("var", c("Zi", "ANY"), function(x, na.rm = FALSE) {
   var <- weightedVar(x = x@inputcounts,
-                                  w = x@weights, na.rm = na.rm)
+                     w = x@weights,
+                     na.rm = na.rm)
   return(var)
 })
 
@@ -406,14 +450,24 @@ setMethod("var", c("Zi","ANY"), function(x, na.rm = FALSE) {
 #'rowVars(Zi)
 #'colVars(Zi)
 
-setMethod("rowVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <- c(1:nrow(t(x@inputcounts)))}
-  if(is.null(cols)){
-    cols <- c(1:ncol(t(x@inputcounts)))}
-  mapply(weightedVar,
-         as.data.frame(t(x@inputcounts))[rows,cols],
-         as.data.frame(t(x@weights))[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+setMethod("rowVars", "Zi", function(x,
+                                    rows = NULL,
+                                    cols = NULL,
+                                    na.rm = FALSE,
+                                    useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <- c(1:nrow(t(x@inputcounts)))
+  }
+  if (is.null(cols)) {
+    cols <- c(1:ncol(t(x@inputcounts)))
+  }
+  mapply(
+    weightedVar,
+    as.data.frame(t(x@inputcounts))[rows, cols],
+    as.data.frame(t(x@weights))[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 #'@name colVars
@@ -423,15 +477,24 @@ setMethod("rowVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, 
 #'@importFrom matrixStats weightedVar
 #'@importFrom MatrixGenerics colVars
 
-setMethod("colVars", "Zi", function(x, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <-  c(1:nrow(x@inputcounts))}
-  if(is.null(cols)){
-    cols <-  c(1:ncol(x@inputcounts))}
+setMethod("colVars", "Zi", function(x,
+                                    rows = NULL,
+                                    cols = NULL,
+                                    na.rm = FALSE,
+                                    useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <-  c(1:nrow(x@inputcounts))
+  }
+  if (is.null(cols)) {
+    cols <-  c(1:ncol(x@inputcounts))
+  }
   mapply(
     weightedVar,
-    as.data.frame(x@inputcounts)[rows,cols],
-    as.data.frame(x@weights)[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+    as.data.frame(x@inputcounts)[rows, cols],
+    as.data.frame(x@weights)[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 #'@export
@@ -517,15 +580,25 @@ setMethod("rowWeightedMeans", "Zi", function(x,
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics colWeightedMeans
 
-setMethod("colWeightedMeans", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <-  c(1:nrow(x@inputcounts))}
-  if(is.null(cols)){
-    cols <-  c(1:ncol(x@inputcounts))}
+setMethod("colWeightedMeans", "Zi", function(x,
+                                             w,
+                                             rows = NULL,
+                                             cols = NULL,
+                                             na.rm = FALSE,
+                                             useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <-  c(1:nrow(x@inputcounts))
+  }
+  if (is.null(cols)) {
+    cols <-  c(1:ncol(x@inputcounts))
+  }
   mapply(
     weighted.mean,
-    as.data.frame(x@inputcounts)[rows,cols],
-    as.data.frame(x@weights*w)[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+    as.data.frame(x@inputcounts)[rows, cols],
+    as.data.frame(x@weights * w)[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 #'@export
@@ -534,12 +607,30 @@ setMethod("colWeightedMeans", "Zi", function(x, w, rows = NULL, cols = NULL, na.
 #'@rdname weightedVar
 #'@importFrom matrixStats weightedSd
 
-setGeneric("weightedSd", function(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL,
-                                   ...) standardGeneric("weightedSd"))
+setGeneric("weightedSd", function(x,
+                                  w = NULL,
+                                  idxs = NULL,
+                                  na.rm = FALSE,
+                                  center = NULL,
+                                  ...)
+  standardGeneric("weightedSd"))
 
-setMethod("weightedSd", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center = NULL, ...) {
-  sqrt(weightedVar(x = x@inputcounts,
-              w = w * x@weights, idxs = idxs, na.rm = na.rm, center = NULL, ...))
+setMethod("weightedSd", "Zi", function(x,
+                                       w,
+                                       idxs = NULL,
+                                       na.rm = FALSE,
+                                       center = NULL,
+                                       ...) {
+  sqrt(
+    weightedVar(
+      x = x@inputcounts,
+      w = w * x@weights,
+      idxs = idxs,
+      na.rm = na.rm,
+      center = NULL,
+      ...
+    )
+  )
 })
 
 
@@ -575,11 +666,11 @@ setMethod("weightedSd", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center 
 #'
 
 setMethod("rowWeightedSds", "Zi", function(x,
-                                             w,
-                                             rows = NULL,
-                                             cols = NULL,
-                                             na.rm = FALSE,
-                                             useNames = TRUE) {
+                                           w,
+                                           rows = NULL,
+                                           cols = NULL,
+                                           na.rm = FALSE,
+                                           useNames = TRUE) {
   if (is.null(rows)) {
     rows <- c(1:nrow(t(x@inputcounts)))
   }
@@ -602,15 +693,25 @@ setMethod("rowWeightedSds", "Zi", function(x,
 #'@importFrom matrixStats weightedSd
 #'@importFrom MatrixGenerics colWeightedSds
 
-setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <-  c(1:nrow(x@inputcounts))}
-  if(is.null(cols)){
-    cols <-  c(1:ncol(x@inputcounts))}
+setMethod("colWeightedSds", "Zi", function(x,
+                                           w,
+                                           rows = NULL,
+                                           cols = NULL,
+                                           na.rm = FALSE,
+                                           useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <-  c(1:nrow(x@inputcounts))
+  }
+  if (is.null(cols)) {
+    cols <-  c(1:ncol(x@inputcounts))
+  }
   mapply(
     matrixStats::weightedSd,
-    as.data.frame(x@inputcounts)[rows,cols],
-    as.data.frame(x@weights*w)[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+    as.data.frame(x@inputcounts)[rows, cols],
+    as.data.frame(x@weights * w)[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 #'@export
@@ -640,12 +741,28 @@ setMethod("colWeightedSds", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm
 #'weightedVar(Zi, w= weight)
 #'weightedSd(Zi, w = weight)
 
-setGeneric("weightedVar", function(x, w = NULL, idxs = NULL, na.rm = FALSE, center = NULL,
-                                   ...) standardGeneric("weightedVar"))
+setGeneric("weightedVar", function(x,
+                                   w = NULL,
+                                   idxs = NULL,
+                                   na.rm = FALSE,
+                                   center = NULL,
+                                   ...)
+  standardGeneric("weightedVar"))
 
-setMethod("weightedVar", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center = NULL, ...) {
-  weightedVar(x = x@inputcounts,
-              w = w * x@weights, idxs = idxs, na.rm = na.rm, center = NULL, ...)
+setMethod("weightedVar", "Zi", function(x,
+                                        w,
+                                        idxs = NULL,
+                                        na.rm = FALSE,
+                                        center = NULL,
+                                        ...) {
+  weightedVar(
+    x = x@inputcounts,
+    w = w * x@weights,
+    idxs = idxs,
+    na.rm = na.rm,
+    center = NULL,
+    ...
+  )
 })
 
 #'@export
@@ -656,11 +773,11 @@ setMethod("weightedVar", "Zi", function(x, w, idxs = NULL, na.rm = FALSE, center
 #'@importFrom MatrixGenerics rowWeightedVars
 
 setMethod("rowWeightedVars", "Zi", function(x,
-                                           w,
-                                           rows = NULL,
-                                           cols = NULL,
-                                           na.rm = FALSE,
-                                           useNames = TRUE) {
+                                            w,
+                                            rows = NULL,
+                                            cols = NULL,
+                                            na.rm = FALSE,
+                                            useNames = TRUE) {
   if (is.null(rows)) {
     rows <- c(1:nrow(t(x@inputcounts)))
   }
@@ -684,15 +801,25 @@ setMethod("rowWeightedVars", "Zi", function(x,
 #'@importFrom MatrixGenerics colWeightedVars
 
 
-setMethod("colWeightedVars", "Zi", function(x, w, rows = NULL, cols = NULL, na.rm = FALSE, useNames = TRUE) {
-  if(is.null(rows)){
-    rows <-  c(1:nrow(x@inputcounts))}
-  if(is.null(cols)){
-    cols <-  c(1:ncol(x@inputcounts))}
+setMethod("colWeightedVars", "Zi", function(x,
+                                            w,
+                                            rows = NULL,
+                                            cols = NULL,
+                                            na.rm = FALSE,
+                                            useNames = TRUE) {
+  if (is.null(rows)) {
+    rows <-  c(1:nrow(x@inputcounts))
+  }
+  if (is.null(cols)) {
+    cols <-  c(1:ncol(x@inputcounts))
+  }
   mapply(
     weightedVar,
-    as.data.frame(x@inputcounts)[rows,cols],
-    as.data.frame(x@weights*w)[rows,cols], USE.NAMES = useNames, na.rm = na.rm)
+    as.data.frame(x@inputcounts)[rows, cols],
+    as.data.frame(x@weights * w)[rows, cols],
+    USE.NAMES = useNames,
+    na.rm = na.rm
+  )
 })
 
 
@@ -711,18 +838,23 @@ setMethod("colWeightedVars", "Zi", function(x, w, rows = NULL, cols = NULL, na.r
 #'Zi <- ziMain(mtx)
 #'log1p(Zi)
 
-setMethod("log1p", signature ="Zi", definition = function(x){
-  inputcounts <- log1p(x@inputcounts)
-  deinflatedcounts <- log1p(x@deinflatedcounts)
-  weights <- log1p(x@weights)
-  result <- new(
-    Class = "Zi",
-    inputdata = x@inputdata,
-    inputcounts = inputcounts,
-    model = x@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = weights)
-})
+setMethod(
+  "log1p",
+  signature = "Zi",
+  definition = function(x) {
+    inputcounts <- log1p(x@inputcounts)
+    deinflatedcounts <- log1p(x@deinflatedcounts)
+    weights <- log1p(x@weights)
+    result <- new(
+      Class = "Zi",
+      inputdata = x@inputdata,
+      inputcounts = inputcounts,
+      model = x@model,
+      deinflatedcounts = deinflatedcounts,
+      weights = weights
+    )
+  }
+)
 
 #'@name log2p
 #'@aliases log2p,Zi-method
@@ -738,23 +870,28 @@ setMethod("log1p", signature ="Zi", definition = function(x){
 #'Zi <- ziMain(mtx)
 #'log2p(Zi)
 #'
-setGeneric("log2p", function(x){
-  log2(x+1)
+setGeneric("log2p", function(x) {
+  log2(x + 1)
 })
 
-setMethod("log2p", signature ="Zi",definition = function(x){
-  inputcounts <- log2p(x@inputcounts)
-  deinflatedcounts <- log2p(x@deinflatedcounts)
-  weights <- log2p(x@weights)
-  result <- new(
-    Class = "Zi",
-    inputdata = x@inputdata,
-    inputcounts = inputcounts,
-    model = x@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = weights)
-  return(result)
-})
+setMethod(
+  "log2p",
+  signature = "Zi",
+  definition = function(x) {
+    inputcounts <- log2p(x@inputcounts)
+    deinflatedcounts <- log2p(x@deinflatedcounts)
+    weights <- log2p(x@weights)
+    result <- new(
+      Class = "Zi",
+      inputdata = x@inputdata,
+      inputcounts = inputcounts,
+      model = x@model,
+      deinflatedcounts = deinflatedcounts,
+      weights = weights
+    )
+    return(result)
+  }
+)
 
 
 #'@name +
@@ -811,33 +948,56 @@ setMethod("log2p", signature ="Zi",definition = function(x){
 #   return(result)
 # })
 
-setMethod("+", signature = c("Zi","ANY"), definition = function(e1, e2) {
-  is_Zi_e1 <- is(e1, "Zi")
-  is_Zi_e2 <- is(e2, "Zi")
+setMethod(
+  "+",
+  signature = c("Zi", "ANY"),
+  definition = function(e1, e2) {
+    is_Zi_e1 <- is(e1, "Zi")
+    is_Zi_e2 <- is(e2, "Zi")
 
-  values1 <- if (is_Zi_e1) e1@inputcounts else e1
-  values2 <- if (is_Zi_e2) e2@inputcounts else e2
-  adinputcounts <- values1 + values2
+    values1 <- if (is_Zi_e1)
+      e1@inputcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@inputcounts
+    else
+      e2
+    adinputcounts <- values1 + values2
 
-  values1 <- if (is_Zi_e1) e1@deinflatedcounts else e1
-  values2 <- if (is_Zi_e2) e2@deinflatedcounts else e2
-  addeinflatedcounts <- values1 + values2
+    values1 <- if (is_Zi_e1)
+      e1@deinflatedcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@deinflatedcounts
+    else
+      e2
+    addeinflatedcounts <- values1 + values2
 
-  values1 <- if (is_Zi_e1) e1@weights else e1
-  values2 <- if (is_Zi_e2) e2@weights else e2
-  adweights <- pmin(values1, values2) # Use 'pmin' for point-wise min
+    values1 <- if (is_Zi_e1)
+      e1@weights
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@weights
+    else
+      e2
+    adweights <-
+      pmin(values1, values2) # Use 'pmin' for point-wise min
 
-  result <- new(
-    Class = "Zi",
-    inputdata = e1@inputdata,
-    inputcounts = adinputcounts,
-    model = e1@model,
-    deinflatedcounts = addeinflatedcounts,
-    weights = adweights
-  )
+    result <- new(
+      Class = "Zi",
+      inputdata = e1@inputdata,
+      inputcounts = adinputcounts,
+      model = e1@model,
+      deinflatedcounts = addeinflatedcounts,
+      weights = adweights
+    )
 
-  return(result)
-})
+    return(result)
+  }
+)
 
 
 #'@name -
@@ -897,33 +1057,56 @@ setMethod("+", signature = c("Zi","ANY"), definition = function(e1, e2) {
 #   return(result)
 # })
 
-setMethod("-", signature = c("Zi","ANY"), definition = function(e1, e2) {
-  is_Zi_e1 <- is(e1, "Zi")
-  is_Zi_e2 <- is(e2, "Zi")
+setMethod(
+  "-",
+  signature = c("Zi", "ANY"),
+  definition = function(e1, e2) {
+    is_Zi_e1 <- is(e1, "Zi")
+    is_Zi_e2 <- is(e2, "Zi")
 
-  values1 <- if (is_Zi_e1) e1@inputcounts else e1
-  values2 <- if (is_Zi_e2) e2@inputcounts else e2
-  adinputcounts <- values1 - values2
+    values1 <- if (is_Zi_e1)
+      e1@inputcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@inputcounts
+    else
+      e2
+    adinputcounts <- values1 - values2
 
-  values1 <- if (is_Zi_e1) e1@deinflatedcounts else e1
-  values2 <- if (is_Zi_e2) e2@deinflatedcounts else e2
-  addeinflatedcounts <- values1 - values2
+    values1 <- if (is_Zi_e1)
+      e1@deinflatedcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@deinflatedcounts
+    else
+      e2
+    addeinflatedcounts <- values1 - values2
 
-  values1 <- if (is_Zi_e1) e1@weights else e1
-  values2 <- if (is_Zi_e2) e2@weights else e2
-  adweights <- pmin(values1, values2) # Use 'pmin' for point-wise min
+    values1 <- if (is_Zi_e1)
+      e1@weights
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@weights
+    else
+      e2
+    adweights <-
+      pmin(values1, values2) # Use 'pmin' for point-wise min
 
-  result <- new(
-    Class = "Zi",
-    inputdata = e1@inputdata,
-    inputcounts = adinputcounts,
-    model = e1@model,
-    deinflatedcounts = addeinflatedcounts,
-    weights = adweights
-  )
+    result <- new(
+      Class = "Zi",
+      inputdata = e1@inputdata,
+      inputcounts = adinputcounts,
+      model = e1@model,
+      deinflatedcounts = addeinflatedcounts,
+      weights = adweights
+    )
 
-  return(result)
-})
+    return(result)
+  }
+)
 
 #'@name *
 #'@aliases *,Zi,ANY-method
@@ -979,33 +1162,56 @@ setMethod("-", signature = c("Zi","ANY"), definition = function(e1, e2) {
 #   return(result)
 # })
 
-setMethod("*", signature = c("Zi","ANY"), definition = function(e1, e2) {
-  is_Zi_e1 <- is(e1, "Zi")
-  is_Zi_e2 <- is(e2, "Zi")
+setMethod(
+  "*",
+  signature = c("Zi", "ANY"),
+  definition = function(e1, e2) {
+    is_Zi_e1 <- is(e1, "Zi")
+    is_Zi_e2 <- is(e2, "Zi")
 
-  values1 <- if (is_Zi_e1) e1@inputcounts else e1
-  values2 <- if (is_Zi_e2) e2@inputcounts else e2
-  adinputcounts <- values1 * values2
+    values1 <- if (is_Zi_e1)
+      e1@inputcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@inputcounts
+    else
+      e2
+    adinputcounts <- values1 * values2
 
-  values1 <- if (is_Zi_e1) e1@deinflatedcounts else e1
-  values2 <- if (is_Zi_e2) e2@deinflatedcounts else e2
-  addeinflatedcounts <- values1 * values2
+    values1 <- if (is_Zi_e1)
+      e1@deinflatedcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@deinflatedcounts
+    else
+      e2
+    addeinflatedcounts <- values1 * values2
 
-  values1 <- if (is_Zi_e1) e1@weights else e1
-  values2 <- if (is_Zi_e2) e2@weights else e2
-  adweights <- pmin(values1, values2) # Use 'pmin' for point-wise min
+    values1 <- if (is_Zi_e1)
+      e1@weights
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@weights
+    else
+      e2
+    adweights <-
+      pmin(values1, values2) # Use 'pmin' for point-wise min
 
-  result <- new(
-    Class = "Zi",
-    inputdata = e1@inputdata,
-    inputcounts = adinputcounts,
-    model = e1@model,
-    deinflatedcounts = addeinflatedcounts,
-    weights = adweights
-  )
+    result <- new(
+      Class = "Zi",
+      inputdata = e1@inputdata,
+      inputcounts = adinputcounts,
+      model = e1@model,
+      deinflatedcounts = addeinflatedcounts,
+      weights = adweights
+    )
 
-  return(result)
-})
+    return(result)
+  }
+)
 
 #'@name /
 #'@aliases /,Zi,ANY-method
@@ -1063,33 +1269,56 @@ setMethod("*", signature = c("Zi","ANY"), definition = function(e1, e2) {
 #   return(result)
 # })
 
-setMethod("/", signature = c("Zi","ANY"), definition = function(e1, e2) {
-  is_Zi_e1 <- is(e1, "Zi")
-  is_Zi_e2 <- is(e2, "Zi")
+setMethod(
+  "/",
+  signature = c("Zi", "ANY"),
+  definition = function(e1, e2) {
+    is_Zi_e1 <- is(e1, "Zi")
+    is_Zi_e2 <- is(e2, "Zi")
 
-  values1 <- if (is_Zi_e1) e1@inputcounts else e1
-  values2 <- if (is_Zi_e2) e2@inputcounts else e2
-  adinputcounts <- values1 / values2
+    values1 <- if (is_Zi_e1)
+      e1@inputcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@inputcounts
+    else
+      e2
+    adinputcounts <- values1 / values2
 
-  values1 <- if (is_Zi_e1) e1@deinflatedcounts else e1
-  values2 <- if (is_Zi_e2) e2@deinflatedcounts else e2
-  addeinflatedcounts <- values1 / values2
+    values1 <- if (is_Zi_e1)
+      e1@deinflatedcounts
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@deinflatedcounts
+    else
+      e2
+    addeinflatedcounts <- values1 / values2
 
-  values1 <- if (is_Zi_e1) e1@weights else e1
-  values2 <- if (is_Zi_e2) e2@weights else e2
-  adweights <- pmin(values1, values2) # Use 'pmin' for point-wise min
+    values1 <- if (is_Zi_e1)
+      e1@weights
+    else
+      e1
+    values2 <- if (is_Zi_e2)
+      e2@weights
+    else
+      e2
+    adweights <-
+      pmin(values1, values2) # Use 'pmin' for point-wise min
 
-  result <- new(
-    Class = "Zi",
-    inputdata = e1@inputdata,
-    inputcounts = adinputcounts,
-    model = e1@model,
-    deinflatedcounts = addeinflatedcounts,
-    weights = adweights
-  )
+    result <- new(
+      Class = "Zi",
+      inputdata = e1@inputdata,
+      inputcounts = adinputcounts,
+      model = e1@model,
+      deinflatedcounts = addeinflatedcounts,
+      weights = adweights
+    )
 
-  return(result)
-})
+    return(result)
+  }
+)
 
 #setMethod("Arith", c("Zi", "numeric"),
 #          function(e1, e2) {
@@ -1146,16 +1375,33 @@ setMethod("show", "Zi" , function(object) {
   dims <- dim(object@inputdata)
   formel <- as.character(Zi@model[[1]]$formula)
   anz <- length(object@inputcounts) # data points
-  anz0 <- sum(object@inputcounts==0,na.rm=TRUE) # zeros
+  anz0 <- sum(object@inputcounts == 0, na.rm = TRUE) # zeros
   anz00 <- sum(is.na(object@deinflatedcounts)) # structural zeros
 
   cat("Formal class 'Zi' [package \"zitools\"]\n")
-  cat(" ",dims[1],"features (rows),",dims[2],"samples (columns)\n")
-  cat(paste0(" ",anz," data points, ",
-      anz0, "(",round(anz0/anz*100,3),"%) zeros, ",
-      anz00,"(",round(anz00/anz*100,3),"%) structual zeros estimated with ",
-      formel[2]," ",formel[1]," ",formel[3],"\n"))
-  str(object, list.len = 10,max.level = 2)
+  cat(" ", dims[1], "features (rows),", dims[2], "samples (columns)\n")
+  cat(
+    paste0(
+      " ",
+      anz,
+      " data points, ",
+      anz0,
+      "(",
+      round(anz0 / anz * 100, 3),
+      "%) zeros, ",
+      anz00,
+      "(",
+      round(anz00 / anz * 100, 3),
+      "%) structual zeros estimated with ",
+      formel[2],
+      " ",
+      formel[1],
+      " ",
+      formel[3],
+      "\n"
+    )
+  )
+  str(object, list.len = 10, max.level = 2)
   cat("Use str(object) to inspect the whole object structure.")
 })
 
@@ -1170,13 +1416,16 @@ setMethod("show", "Zi" , function(object) {
 #'@export
 
 
-setMethod("tax_table", signature = "Zi", function(object){
-  if("phyloseq" %in% class(object@inputdata)) {
-    tax_table <- tax_table(object@inputdata)}
-  if("matrix" %in% class(object@inputdata)){
-    tax_table <- NULL}
-  if("SummarizedExperiment" %in% class(object@inputdata)){
-    tax_table <- NULL}
+setMethod("tax_table", signature = "Zi", function(object) {
+  if ("phyloseq" %in% class(object@inputdata)) {
+    tax_table <- tax_table(object@inputdata)
+  }
+  if ("matrix" %in% class(object@inputdata)) {
+    tax_table <- NULL
+  }
+  if ("SummarizedExperiment" %in% class(object@inputdata)) {
+    tax_table <- NULL
+  }
   return(tax_table)
 })
 
@@ -1192,13 +1441,16 @@ setMethod("tax_table", signature = "Zi", function(object){
 #'@export
 #'
 
-setMethod("sample_data", signature = "Zi", function(object){
-  if("phyloseq" %in% class(object@inputdata)) {
-    sample_data <- sample_data(object@inputdata)}
-  if("matrix" %in% class(object@inputdata)){
-    sample_data <- NULL}
-  if("SummarizedExperiment" %in% class(object@inputdata)){
-    sample_data <- NULL}
+setMethod("sample_data", signature = "Zi", function(object) {
+  if ("phyloseq" %in% class(object@inputdata)) {
+    sample_data <- sample_data(object@inputdata)
+  }
+  if ("matrix" %in% class(object@inputdata)) {
+    sample_data <- NULL
+  }
+  if ("SummarizedExperiment" %in% class(object@inputdata)) {
+    sample_data <- NULL
+  }
   return(sample_data)
 })
 
@@ -1214,13 +1466,16 @@ setMethod("sample_data", signature = "Zi", function(object){
 #'@export
 #'
 
-setMethod("otu_table", signature = "Zi", function(object){
-  if("phyloseq" %in% class(object@inputdata)) {
-    otu_table <- otu_table(object@inputdata)}
-  if("matrix" %in% class(object@inputdata)){
-    otu_table <- NULL}
-  if("SummarizedExperiment" %in% class(object@inputdata)){
-    otu_table <- NULL}
+setMethod("otu_table", signature = "Zi", function(object) {
+  if ("phyloseq" %in% class(object@inputdata)) {
+    otu_table <- otu_table(object@inputdata)
+  }
+  if ("matrix" %in% class(object@inputdata)) {
+    otu_table <- NULL
+  }
+  if ("SummarizedExperiment" %in% class(object@inputdata)) {
+    otu_table <- NULL
+  }
   return(otu_table)
 })
 
@@ -1236,13 +1491,16 @@ setMethod("otu_table", signature = "Zi", function(object){
 #'@export
 #'
 
-setMethod("phy_tree", signature = "Zi", function(physeq){
-  if("phyloseq" %in% class(physeq@inputdata)) {
-    phy_tree <- phy_tree(physeq@inputdata)}
-  if("matrix" %in% class(physeq@inputdata)){
-    phy_tree <- NULL}
-  if("SummarizedExperiment" %in% class(physeq@inputdata)){
-    phy_tree <- NULL}
+setMethod("phy_tree", signature = "Zi", function(physeq) {
+  if ("phyloseq" %in% class(physeq@inputdata)) {
+    phy_tree <- phy_tree(physeq@inputdata)
+  }
+  if ("matrix" %in% class(physeq@inputdata)) {
+    phy_tree <- NULL
+  }
+  if ("SummarizedExperiment" %in% class(physeq@inputdata)) {
+    phy_tree <- NULL
+  }
   return(phy_tree)
 })
 
@@ -1260,13 +1518,16 @@ setMethod("phy_tree", signature = "Zi", function(physeq){
 #'@export
 #'
 
-setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
-  if("SummarizedExperiment" %in% class(x@inputdata)) {
-    rowData <- rowData(x@inputdata, useNames = useNames, ...)}
-  if("matrix" %in% class(x@inputdata)){
-    rowData <- NULL}
-  if("phyloseq" %in% class(x@inputdata)){
-    rowData <- NULL}
+setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...) {
+  if ("SummarizedExperiment" %in% class(x@inputdata)) {
+    rowData <- rowData(x@inputdata, useNames = useNames, ...)
+  }
+  if ("matrix" %in% class(x@inputdata)) {
+    rowData <- NULL
+  }
+  if ("phyloseq" %in% class(x@inputdata)) {
+    rowData <- NULL
+  }
   return(rowData)
 })
 
@@ -1285,13 +1546,16 @@ setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...){
 #'@export
 
 
-setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
-  if("SummarizedExperiment" %in% class(x@inputdata)) {
-    assays <- assays(x@inputdata, withDimnames=withDimnames, ...)}
-  if("matrix" %in% class(x@inputdata)){
-    assays <- NULL}
-  if("phyloseq" %in% class(x@inputdata)){
-    assays <- NULL}
+setMethod("assays", signature = "Zi", function(x, withDimnames = TRUE,  ...) {
+  if ("SummarizedExperiment" %in% class(x@inputdata)) {
+    assays <- assays(x@inputdata, withDimnames = withDimnames, ...)
+  }
+  if ("matrix" %in% class(x@inputdata)) {
+    assays <- NULL
+  }
+  if ("phyloseq" %in% class(x@inputdata)) {
+    assays <- NULL
+  }
   return(assays)
 })
 
@@ -1309,13 +1573,16 @@ setMethod("assays", signature = "Zi", function(x, withDimnames=TRUE,  ...){
 #'
 #'@export
 
-setMethod("colData", signature = "Zi", function(x, ...){
-  if("SummarizedExperiment" %in% class(x@inputdata)) {
-    colData <- colData(x@inputdata, ...)}
-  if("matrix" %in% class(x@inputdata)){
-    colData <- NULL}
-  if("phyloseq" %in% class(x@inputdata)){
-    colData <- NULL}
+setMethod("colData", signature = "Zi", function(x, ...) {
+  if ("SummarizedExperiment" %in% class(x@inputdata)) {
+    colData <- colData(x@inputdata, ...)
+  }
+  if ("matrix" %in% class(x@inputdata)) {
+    colData <- NULL
+  }
+  if ("phyloseq" %in% class(x@inputdata)) {
+    colData <- NULL
+  }
   return(colData)
 })
 
@@ -1328,17 +1595,21 @@ setMethod("colData", signature = "Zi", function(x, ...){
 #'@export
 #'
 
-setMethod("t", signature = "Zi", definition = function(x){
-  inputcounts <- t(x@inputcounts)
-  deinflatedcounts <- t(x@deinflatedcounts)
-  weights <- t(x@weights)
-  result <- new(
-    Class = "Zi",
-    inputdata = x@inputdata,
-    inputcounts = inputcounts,
-    model = x@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = weights
-  )
-  return(result)
-})
+setMethod(
+  "t",
+  signature = "Zi",
+  definition = function(x) {
+    inputcounts <- t(x@inputcounts)
+    deinflatedcounts <- t(x@deinflatedcounts)
+    weights <- t(x@weights)
+    result <- new(
+      Class = "Zi",
+      inputdata = x@inputdata,
+      inputcounts = inputcounts,
+      model = x@model,
+      deinflatedcounts = deinflatedcounts,
+      weights = weights
+    )
+    return(result)
+  }
+)
