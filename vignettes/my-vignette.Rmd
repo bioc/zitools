@@ -13,21 +13,26 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+# Introduction
 
+This vignette provides an introductory example on how to work with the 'zitools' 
+package, which implements a weighting strategy based on a fitted zero inflated 
+mixture model. 'zitools' allows for zero inflated count data analysis by either 
+using down-weighting of excess zeros or by replacing an appropriate proportion 
+of excess zeros with NA. Through overloading frequently used statistical 
+functions (such as mean, median, standard deviation), plotting functions (such 
+as boxplots or heatmap) or differential abundance tests, it allows a wide range 
+of downstream analyses for zero-inflated data in a less biased manner.
 
 # Installation
 
-You can install the development version of zitools from GitHub with:
+Let's start with loading the 'zitools'-package:
 
 ```{r}
 library(zitools)
 ```
 
-# Introduction
-
-This vignette provides an introductory example on how to work with the 'zitools' package, which implements a weighting strategy based on a fitted zero inflated mixture model.
-
-Step one: load required packages
+and loading additionally required packages. 
 
 ```{r}
 library(phyloseq)
@@ -35,22 +40,43 @@ library(DESeq2)
 library(tidyverse)
 ```
 
-## ziMain function
+## Example Dataset
 
-zitools is a package to analyse zero inflated count data, such as microbiome data. As default structural zeros are estimated from counts using features (=rows) and samples (=columns) as factorial predictor variables when fitting a zero inflated poisson or zero inflated negative binomial model.
+An example microbiome dataset from github is used to display the 'zitools' 
+workflow. The data used here are described in 
+[Giloteaux et. al.]{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4918027/} and 
+are available from [GitHub]{https://github.com/Nick243/Create-Giloteaux-2016-Phyloseq-Object/blob/master/ps_giloteaux_2016.rds} 
 
+The study, in which this dataset was generated, was conducted to investigate the
+gut microbiome of individuals diagnosed with myalgic encephalomyelitis/chronic
+fatigue syndrome (ME/CFS). Therefore, the gut microbial diversity was analysed
+by performing 16S rRNA sequencing obtained from stool samples. The dataset
+comprises 39 control samples and 48 cases. 
 
-In a first step, the dataset is loaded. The example dataset is the ME/CFS dataset (described above).
+In a first step, the dataset is loaded. 
 
 ```{r Dataset}
-phyloseq <- readRDS("C:/Users/meyerinc/Masterarbeit/ps_giloteaux_2016.rds")
+download.file("https://raw.githubusercontent.com/Nick243/Create-Giloteaux-2016-Phyloseq-Object/master/ps_giloteaux_2016.rds",destfile = "ps_giloteaux_2016.RDS")
+phyloseq <- readRDS("ps_giloteaux_2016.RDS")
 ```
 
 ```{r, echo = FALSE}
 str(phyloseq, max.level = 3)
 ```
 
-After loading the dataset, a zero inflated negative binomial model is fitted to the data and based on the model a deinflated count matrix as well as weights for structural zeros are calculated by executing the \texttt{ziMain} function.
+## Analysis using zitools 
+
+The zero inflation analysis steps are wrapped into a single function, called ziMain. 
+It fits a zero-inflated mixture model to the data. Per default structural 
+zeros are estimated from counts using features (=rows) and samples (=columns) 
+as factorial predictor variables when fitting a zero inflated negative binomial 
+model. Based on the fitted model, probabilities that count values are structural 
+zeros are calculated. Considering these probabilities, the function generates a 
+deinflated count matrix by replacing predicted structural zeros with NA and 
+simultaneously computes weights given that a zero count is a structural zero. 
+Thus, the ziMain function integrates the fitting process, probability 
+calculation, deinflation, and weight calculation by a single function call.
+
 
 ```{r ziMain}
 Zi <- ziMain(phyloseq)
@@ -59,7 +85,12 @@ print(Zi)
 
 ## Basic Statistic Quantities
 
-Following the OOP concept of polymorphism, already implemented functions can be called with an \texttt{Zi}-object without further arguments.
+Following the OOP concept of polymorphism, already implemented functions can be 
+called with an \texttt{Zi}-object without further arguments as demonstrated in the
+following examples. Please note, that the basic functionality was not reimplemented.
+Instead only a wrapper methods for Zi-class objects were written that pass the
+appropriate information to existing functions. This ensures that the full functionality
+coincides.
 
 ```{r}
 mean(Zi)
@@ -72,11 +103,20 @@ quantile(Zi)
 
 ## Boxplots
 
-Batch effects of the dataset can be observed when visualizing the data with a boxplot.
+Batch effects within the dataset can be visualized by plotting the data as boxplots
+over samples.
 
 ```{r boxplot, echo=TRUE}
 boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", main = "ZI considered")
 ```
+
+Considering that the process of generating deinflatedcounts is based on a random
+drawings, resample_deinflatedcounts repeating the process of drawing structural
+zeros can be performed to evaluate influences of this random drawing process.
+Visualization based on resampled deinflatedcounts via boxplots shows only minor
+differences. Slight differences are highlighted by red circles. This suggests that
+the randomness inherent in the drawing process has only a small influence on the
+distributions and summary statistics within individual samples.
 
 ```{r repeat plot}
 i <- 1
@@ -94,7 +134,18 @@ repeat {
 
 ## Differential Abundance Analysis
 
-To identify differentially abundant taxa between the two groups (Patient vs Control) of the dataset, differential abundance analysis of the DESeq2 package can be performed. First, the object of a Zi-class is transformed in a DESeqDataSet object to perform DESeq analysis of the DESeq2 package. Thereby, weights given that a zero count is a structural zero, are included in the DESeqDataSet object and are included in the calculation of differentially abundant taxa.
+To identify differentially abundant taxa between two groups of the dataset 
+(e.g. patients vs. controls), differential abundance analysis using the 
+[DESeq2]{https://bioconductor.org/packages/release/bioc/html/DESeq2.html} package
+can be performed. As a first step, the object of a Zi-class has to be transformed in a
+DESeqDataSet object using zi2deseq2. In this process, weights for down-weighting
+structural zeros are included in the DESeqDataSet. Therefore, when performing
+the actual differential abundance analysis weights are automatically incorporated in
+the calculation of differentially abundant taxa. Log2 fold changes are calculated by
+DESeq() and the Wald statistic is used to calculate p-values and to identify 
+differentially abundant taxa. In this example, only positive counts are used to 
+estimate the size factors required for normalization within DESeq2, i.e. zeros 
+do not contribute.
 
 ```{r DDS}
 DDS <- zi2deseq2(Zi, ~Subject)
@@ -126,6 +177,12 @@ result_df <- data.frame("OTU" = result_df$OTU, "log2FoldChange" = result_df$log2
 
 ## Plot Differential Abundance Result
 
+The most common depiction of the magnitude of the differential abundances and
+their significance is a so-called Volcano plot with fold-changes on the horizontal axis
+and p-values on the negative log10-scale on the vertical axis.
+Volcano plot can be generated manually as demonstrated in the following.
+
+
 ```{r, echo = TRUE}
 suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, y=-log10(pvalue), color = Genus)) +
   geom_point()+
@@ -142,6 +199,12 @@ suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, y=-log10(pva
 
 ## Missing Value Heatmap
 
+Heatmaps allow for discovering patterns of variation in the data by identifying
+regions of high or low abundance. By plotting a MissingValueHeatmap the amount
+of predicted structural zeros can be visualized as they are represented by NA values
+of the deinflated count matrix. For demonstration purposes, all values > 500 are set
+to 500 for better color coding.
+
 ```{r, eval = TRUE, echo = FALSE}
 Zi2 <- Zi
 mat <- deinflatedcounts(Zi2)
@@ -155,7 +218,12 @@ MissingValueHeatmap(Zi2, xlab = "Sample")
 
 ## Principal Component Analysis
 
-By calculating a weighted correlation as well as a weighted scaling, a weighted Principal Component Analysis can be performed
+There is no principal component analysis method that enables the direct consideration
+of individual weights for each data point. However, by splitting the calculations,
+visualization is feasible. First, weighted correlations are computed by taking into
+account the weights assigned to each data point. Then, principal components are
+calculated from these correlations and the weighted scaled data is projected to these
+principal components.
 
 ```{r}
 PCA <- princomp(covmat = cor(t(Zi)), cor = FALSE)
@@ -179,6 +247,12 @@ suppressWarnings(print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = Subject))+
 
 ## Interaction with the phyloseq package
 
+To allow for an even wider range of analysis methods, the function zi2phyloseq()
+creates a phyloseq object where the otu_table is replaced with deinflatedcounts.
+Therefore, functions of the phyloseq package can be used while also accounting for
+the zero inflation weights calculated via our zitools package.
+
+
 ```{r}
 new_phyloseq <- zi2phyloseq(Zi)
 ```
@@ -191,7 +265,12 @@ str(otu_table(new_phyloseq), max.level = 3)
 subset <- subset_taxa(new_phyloseq, Kingdom=="Bacteria")
 subset <- prune_taxa(names(sort(taxa_sums(subset),TRUE)[1:300]), subset)
 plot_heatmap(subset, sample.label="Sample_Name_s")
+```
 
+One option to estimate the alpha diversity is calculating the Chao1 index using
+plot_richness of the phyloseq package
+
+```{r}  
 plot_richness(new_phyloseq, measures = c("Chao1"), color = sample_data(new_phyloseq)$Subject)+
   theme(axis.text.x = element_blank())
 ```

@@ -3,14 +3,22 @@
 \name{inputcounts}
 \alias{inputcounts}
 \alias{inputcounts,Zi-method}
+\alias{inputcounts<-}
+\alias{inputcounts<-,Zi-method}
 \title{Access the inputcounts}
 \usage{
 inputcounts(x)
 
 \S4method{inputcounts}{Zi}(x)
+
+inputcounts(x) <- value
+
+\S4method{inputcounts}{Zi}(x) <- value
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{value}{inputcounts object}
 }
 \value{
 inputcounts

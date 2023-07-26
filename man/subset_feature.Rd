@@ -13,6 +13,7 @@ subset_feature(Zi, ...)
 for more details}
 }
 \description{
-Subset a \code{\linkS4class{Zi}}-class object based on tax_table of a phyloseq
+Subset a \code{\linkS4class{Zi}}-class object based on tax_table
+of a phyloseq
 object or on rowData of a SummarizedExperiment object
 }

@@ -234,7 +234,7 @@ zi_core <- function(input, feature = "",  formula, dist, link, ...)
   matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)
   zi <- pscl::zeroinfl(formula, data = zi_input, dist = dist,
-                 link = link,...)
+                       link = link,...)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
     spread(key = "sample", value = "count") %>%

@@ -1413,7 +1413,21 @@ setMethod("show", "Zi" , function(object) {
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq tax_table
 #'@returns tax_table
+#'@examples
+#'#'data(mtx)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
+#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
+#'                      "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'ps <- phyloseq::phyloseq(otu_table(mtx, taxa_are_rows = TRUE), sample_data,
+#'                         tax_table)
+#'Zi <- ziMain(ps)
+#'tax_table(Zi)
+#'
 #'@export
+#'
 
 
 setMethod("tax_table", signature = "Zi", function(object) {
@@ -1437,6 +1451,18 @@ setMethod("tax_table", signature = "Zi", function(object) {
 #'inputdata slot is a phyloseq object
 #'@importFrom phyloseq sample_data
 #'@returns sample_data
+#'@examples
+#'data(mtx)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
+#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
+#'                      "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'ps <- phyloseq::phyloseq(otu_table(mtx, taxa_are_rows = TRUE), sample_data,
+#'                         tax_table)
+#'Zi <- ziMain(ps)
+#'sample_data(Zi)
 #'
 #'@export
 #'
@@ -1462,7 +1488,18 @@ setMethod("sample_data", signature = "Zi", function(object) {
 #'inputdata slot is a phyloseq object
 #'@returns otu_table
 #'@importFrom phyloseq otu_table
-#'
+#'@examples
+#'data(mtx)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
+#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
+#'                      "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'ps <- phyloseq::phyloseq(otu_table(mtx, taxa_are_rows = TRUE), sample_data,
+#'                         tax_table)
+#'Zi <- ziMain(ps)
+#'otu_table(Zi)
 #'@export
 #'
 
@@ -1514,9 +1551,20 @@ setMethod("phy_tree", signature = "Zi", function(physeq) {
 #'is an object of the class SummarizedExperiment
 #'@returns DFrame
 #'@importFrom SummarizedExperiment rowData
-#'
+#'@examples
+#'data(mtx)
+#'colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
+#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
+#'                      "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
+#'                           colData = colData,
+#'                           rowData = rowData)
+#'Zi <- ziMain(se)
+#'rowData(Zi)
 #'@export
-#'
 
 setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...) {
   if ("SummarizedExperiment" %in% class(x@inputdata)) {
@@ -1543,6 +1591,20 @@ setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...) {
 #'object of the class SummarizedExperiment
 #'@importFrom SummarizedExperiment assays
 #'@returns list
+#'@examples
+#'data(mtx)
+#'colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
+#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
+#'                      "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
+#'                           colData = colData,
+#'                           rowData = rowData)
+#'Zi <- ziMain(se)
+#'assays(Zi)
+#'
 #'@export
 
 
@@ -1572,6 +1634,20 @@ setMethod("assays", signature = "Zi", function(x, withDimnames = TRUE,  ...) {
 #'@seealso \code{\link[SummarizedExperiment]{colData}}
 #'
 #'@export
+#'
+#'@examples
+#'data(mtx)
+#'colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
+#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
+#'                      "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
+#'                           colData = colData,
+#'                           rowData = rowData)
+#'Zi <- ziMain(se)
+#'colData(Zi)
 
 setMethod("colData", signature = "Zi", function(x, ...) {
   if ("SummarizedExperiment" %in% class(x@inputdata)) {
@@ -1593,6 +1669,10 @@ setMethod("colData", signature = "Zi", function(x, ...) {
 #'@description transpose all matrizes of a \code{\linkS4class{Zi}}-class object
 #'@returns \code{\linkS4class{Zi}}-class object
 #'@export
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'t(Zi)
 #'
 
 setMethod(

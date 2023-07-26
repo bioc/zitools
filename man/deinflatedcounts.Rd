@@ -3,20 +3,29 @@
 \name{deinflatedcounts}
 \alias{deinflatedcounts}
 \alias{deinflatedcounts,Zi-method}
+\alias{deinflatedcounts<-}
+\alias{deinflatedcounts<-,Zi-method}
 \title{Access the model}
 \usage{
 deinflatedcounts(x)
 
 \S4method{deinflatedcounts}{Zi}(x)
+
+deinflatedcounts(x) <- value
+
+\S4method{deinflatedcounts}{Zi}(x) <- value
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{value}{deinflatedcounts object}
 }
 \value{
 deinflatedcounts
 }
 \description{
-access the deinflatedcounts of an \code{\linkS4class{Zi}}-class object
+access the deinflatedcounts of an \code{\linkS4class{Zi}}-class
+object
 }
 \examples{
 data(mtx)

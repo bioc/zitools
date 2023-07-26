@@ -3,14 +3,22 @@
 \name{model}
 \alias{model}
 \alias{model,Zi-method}
+\alias{model<-}
+\alias{model<-,Zi-method}
 \title{Access the model}
 \usage{
 model(x)
 
 \S4method{model}{Zi}(x)
+
+model(x) <- value
+
+\S4method{model}{Zi}(x) <- value
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{value}{model object}
 }
 \value{
 model

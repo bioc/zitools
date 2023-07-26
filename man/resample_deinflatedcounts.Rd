@@ -10,11 +10,17 @@ resample_deinflatedcounts(x)
 \item{x}{\code{\linkS4class{Zi}}-class object}
 }
 \value{
-a \code{\linkS4class{Zi}}-class object wher the \code{deinflatedcounts}
-are resampled
+a \code{\linkS4class{Zi}}-class object where the
+\code{deinflatedcounts} are resampled
 }
 \description{
-Resample the deinflatedcounts matrix of an \code{\linkS4class{Zi}}-class object.
-Resampling is done by drawing from a binomial distribution with a given probability
-that a count value (zero and non-zero) is a structural zero.
+Resample the deinflatedcounts matrix of an
+\code{\linkS4class{Zi}}-class object. Resampling is done by drawing from a
+binomial distribution with a given probability that a count value (zero and
+non-zero) is a structural zero.
+}
+\examples{
+data(mtx)
+Zi <- ziMain(mtx)
+resample_deinflatedcounts(Zi)
 }

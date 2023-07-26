@@ -127,51 +127,51 @@ setGeneric("ziMain", function(inputdata,
       weights = matrix(1, nrow = nrow(mtx), ncol = ncol(mtx)))
   }
   else{
-  rownames <- rownames(mtx)
-  colnames <- colnames(mtx)
-  mtx_new <- mtx[rowSums(mtx[]) > 0,] #remove rows that contain only 0
-  mtx_random <- preprocess_mtx(mtx)
-  list_subset <- subset_mtx(mtx_random)
-  list_core <- list()
-  for (i in 1:length(list_subset)) {
-    list_core[[i]] <-
-      zi_core(
-        list_subset[[i]],
-        feature = feature,
-        formula = formula,
-        dist = dist,
-        link = link,
-        ...
-      )
-  }
-  ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
-  model <- lapply(list_core, '[[', "model")
-  zideinflatedcounts <- do.call(rbind, lapply(list_core, '[[', "zideinflatedcounts"))
-  weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
-  if (zeroRows.rm == FALSE) {
-    mtx_new <- mtx
-    zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx[]) == 0,])
-    zero_weights <- mtx[rowSums(mtx[]) == 0,]
-    zero_weights[] <- 1
-    weights <- rbind(weights, zero_weights)
-  }
-  if(zeroRows.rm == TRUE) {
-    rownames <- rownames(mtx_new)
-    colnames <- colnames(mtx_new)
-  }
-  mtx_new <- mtx_new[rownames,colnames]
-  mode(mtx_new) <- "integer"
-  zideinflatedcounts <- zideinflatedcounts[rownames,colnames]
-  mode(zideinflatedcounts) <- "integer"
-  weights <- weights[rownames,colnames]
-  result <- new(
-    Class = "Zi",
-    inputdata = inputdata,
-    inputcounts = mtx_new,
-    model = model,
-    deinflatedcounts = zideinflatedcounts,
-    weights = weights
-  )}
+    rownames <- rownames(mtx)
+    colnames <- colnames(mtx)
+    mtx_new <- mtx[rowSums(mtx[]) > 0,] #remove rows that contain only 0
+    mtx_random <- preprocess_mtx(mtx)
+    list_subset <- subset_mtx(mtx_random)
+    list_core <- list()
+    for (i in 1:length(list_subset)) {
+      list_core[[i]] <-
+        zi_core(
+          list_subset[[i]],
+          feature = feature,
+          formula = formula,
+          dist = dist,
+          link = link,
+          ...
+        )
+    }
+    ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
+    model <- lapply(list_core, '[[', "model")
+    zideinflatedcounts <- do.call(rbind, lapply(list_core, '[[', "zideinflatedcounts"))
+    weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
+    if (zeroRows.rm == FALSE) {
+      mtx_new <- mtx
+      zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx[]) == 0,])
+      zero_weights <- mtx[rowSums(mtx[]) == 0,]
+      zero_weights[] <- 1
+      weights <- rbind(weights, zero_weights)
+    }
+    if(zeroRows.rm == TRUE) {
+      rownames <- rownames(mtx_new)
+      colnames <- colnames(mtx_new)
+    }
+    mtx_new <- mtx_new[rownames,colnames]
+    mode(mtx_new) <- "integer"
+    zideinflatedcounts <- zideinflatedcounts[rownames,colnames]
+    mode(zideinflatedcounts) <- "integer"
+    weights <- weights[rownames,colnames]
+    result <- new(
+      Class = "Zi",
+      inputdata = inputdata,
+      inputcounts = mtx_new,
+      model = model,
+      deinflatedcounts = zideinflatedcounts,
+      weights = weights
+    )}
   return(result)
 })
 

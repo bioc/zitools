@@ -16,3 +16,9 @@
 \description{
 transpose all matrizes of a \code{\linkS4class{Zi}}-class object
 }
+\examples{
+data(mtx)
+Zi <- ziMain(mtx)
+t(Zi)
+
+}

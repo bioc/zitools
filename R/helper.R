@@ -25,7 +25,7 @@ zi2phyloseq <- function(ZiObject)
 }
 
 #'@name inputdata
-#'@title Access the inputdata
+#'@title Access and Set the inputdata
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@description access the inputdata of an \code{\linkS4class{Zi}}-class object
 #'@returns inputdata
@@ -45,6 +45,28 @@ setGeneric("inputdata", function(x)
 
 setMethod("inputdata", "Zi", function(x)
   x@inputdata)
+
+#'@name inputdata<-
+#'@rdname inputdata
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value inputdata object
+#'@export
+#'
+#'
+setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
+
+#'@name inputdata<-
+#'@rdname inputdata
+#'@aliases inputdata<-,Zi-method
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value inputdata object
+#'@export
+#'
+#'
+setMethod("inputdata<-", "Zi", function(x, value) {
+  x@inputdata <- value
+  x
+})
 
 #'@name inputcounts
 #'@title Access the inputcounts
@@ -68,6 +90,27 @@ setGeneric("inputcounts", function(x)
 setMethod("inputcounts", "Zi", function(x)
   x@inputcounts)
 
+#'@name inputcounts<-
+#'@rdname inputcounts
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value inputcounts object
+#'@export
+#'
+#'
+setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
+
+#'@name inputcounts<-
+#'@rdname inputcounts
+#'@aliases inputcounts<-,Zi-method
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value inputcounts object
+#'@export
+#'
+#'
+setMethod("inputcounts<-", "Zi", function(x, value) {
+  x@inputcounts <- value
+  x
+})
 
 #'@name model
 #'@title Access the model
@@ -91,10 +134,34 @@ setGeneric("model", function(x)
 setMethod("model", "Zi", function(x)
   x@model)
 
+#'@name model<-
+#'@rdname model
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value model object
+#'@export
+#'
+#'
+setGeneric("model<-", function(x, value) standardGeneric("model<-"))
+
+#'@name model<-
+#'@rdname model
+#'@aliases model<-,Zi-method
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value model object
+#'@export
+#'
+#'
+setMethod("model<-", "Zi", function(x, value) {
+  x@model <- value
+  x
+})
+
+
 #'@name deinflatedcounts
 #'@title Access the model
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@description access the deinflatedcounts of an \code{\linkS4class{Zi}}-class object
+#'@description access the deinflatedcounts of an \code{\linkS4class{Zi}}-class
+#'object
 #'@returns deinflatedcounts
 #'@export
 #'@examples
@@ -113,6 +180,28 @@ setGeneric("deinflatedcounts", function(x)
 setMethod("deinflatedcounts", "Zi", function(x)
   x@deinflatedcounts)
 
+#'@name deinflatedcounts<-
+#'@rdname deinflatedcounts
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value deinflatedcounts object
+#'@export
+#'
+#'
+setGeneric("deinflatedcounts<-", function(x, value) standardGeneric
+           ("deinflatedcounts<-"))
+
+#'@name deinflatedcounts<-
+#'@rdname deinflatedcounts
+#'@aliases deinflatedcounts<-,Zi-method
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value deinflatedcounts object
+#'@export
+#'
+#'
+setMethod("deinflatedcounts<-", "Zi", function(x, value) {
+  x@deinflatedcounts <- value
+  x
+})
 
 #'@name weights
 #'@title Access the weights
@@ -136,24 +225,44 @@ setGeneric("weights", function(x)
 setMethod("weights", "Zi", function(x)
   x@weights)
 
+#'@name weights<-
+#'@rdname weights
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value weights object
+#'@export
+#'
+#'
+setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
 
+#'@name weights<-
+#'@rdname weights
+#'@aliases weights<-,Zi-method
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param value weights object
+#'@export
+#'
+#'
+setMethod("weights<-", "Zi", function(x, value) {
+  x@weights <- value
+  x
+})
 
 #'@name zi2deseq2
 #'@title Convert a \code{\linkS4class{Zi}}-class object to a DESeq2 dds object
-#'@description A \code{\linkS4class{Zi}}-class object is converted to a DESeqDataSet object, which
-#'can be used for DESeq2 analysis. Both, weight and count matrices will be
-#'stored in assays of the DESeqDataSet.
+#'@description A \code{\linkS4class{Zi}}-class object is converted to a
+#'DESeqDataSet object, which can be used for DESeq2 analysis. Both, weight and
+#'count matrices will be stored in assays of the DESeqDataSet.
 #'
 #'@param ZiObject \code{\linkS4class{Zi}}-class object
 #'@param design  A formula which specifies the design of the experiment, taking
 #' the form formula(~ x + y + z). That is, a formula with right-hand side only.
-#' By default, the functions in this package and DESeq2 will use the last variable
-#' in the formula (e.g. z) for presenting results (fold changes, etc.) and plotting.
-#' When considering your specification of experimental design, you will want to re-order the
-#' levels so that the NULL set is first.
-#'@param colData if the inputdata of the \code{\linkS4class{Zi}}-class object is a matrix: a
-#'DataFrame or data.frame with at least a single column. Rows of colData
-#'correspond to columns of countData
+#' By default, the functions in this package and DESeq2 will use the last
+#' variable in the formula (e.g. z) for presenting results (fold changes, etc.)
+#' and plotting. When considering your specification of experimental design,
+#' you will want to re-order the levels so that the NULL set is first.
+#'@param colData if the inputdata of the \code{\linkS4class{Zi}}-class object
+#'is a matrix: a DataFrame or data.frame with at least a single column. Rows of
+#'colData correspond to columns of countData
 #'@param ...  [phyloseq::phyloseq_to_deseq2] if the inputdata of the 'Zi'-object
 #'is a phyloseq object       [DESeq2::DESeqDataSet] if the inputdata the '
 #'Zi'-object is a SummarizedExperiment object
@@ -189,12 +298,13 @@ zi2deseq2 <- function(ZiObject, design, colData, ...) {
 #'@name subset_sample
 #'@title Subset a \code{\linkS4class{Zi}}-class object based on sample data
 #'
-#'@description Subset a \code{\linkS4class{Zi}}-class object based on sample_data of an phyloseq
-#'object or on colData based on a SummarizedExperiment object
+#'@description Subset a \code{\linkS4class{Zi}}-class object based on
+#'sample_data of an phyloseq object or on colData based on a
+#'SummarizedExperiment object
 #'
 #'@param Zi \code{\linkS4class{Zi}}-class object
-#'@param ... The subsetting expression that should be applied, see \link[base]{subset}
-#'for more details
+#'@param ... The subsetting expression that should be applied, see
+#'\link[base]{subset} for more details
 #'
 #'@export
 #'@importFrom phyloseq sample_data
@@ -230,12 +340,13 @@ subset_sample <- function(Zi, ...) {
 #'@name subset_sample
 #'@title Subset a \code{\linkS4class{Zi}}-class object based on sample data
 #'
-#'@description Subset a \code{\linkS4class{Zi}}-class object based on sample_data of an phyloseq
-#'object or on colData of a SummarizedExperiment object
+#'@description Subset a \code{\linkS4class{Zi}}-class object based on
+#'sample_data of an phyloseq object or on colData of a SummarizedExperiment
+#'object
 #'
 #'@param Zi \code{\linkS4class{Zi}}-class object
-#'@param ... The subsetting expression that should be applied, see \link[base]{subset}
-#'for more details
+#'@param ... The subsetting expression that should be applied, see
+#'\link[base]{subset} for more details
 #'
 #'@export
 #'@importFrom phyloseq sample_data
@@ -270,7 +381,8 @@ subset_sample <- function(Zi, ...) {
 #'@name subset_feature
 #'@title Subset a \code{\linkS4class{Zi}}-class object based on feature data
 #'
-#'@description Subset a \code{\linkS4class{Zi}}-class object based on tax_table of a phyloseq
+#'@description Subset a \code{\linkS4class{Zi}}-class object based on tax_table
+#'of a phyloseq
 #'object or on rowData of a SummarizedExperiment object
 #'
 #'@param Zi \code{\linkS4class{Zi}}-class object
@@ -281,7 +393,8 @@ subset_sample <- function(Zi, ...) {
 #'@importFrom phyloseq tax_table
 #'@importFrom phyloseq tax_table<-
 #'@importFrom SummarizedExperiment rowData
-#'
+#'@examples
+
 subset_feature <- function(Zi, ...) {
   if (is(Zi@inputdata, "phyloseq") == TRUE) {
     mtx <- as(tax_table(Zi@inputdata), "matrix")
@@ -313,15 +426,20 @@ subset_feature <- function(Zi, ...) {
 #'@name resample_deinflatedcounts
 #'@title Resample a \code{\linkS4class{Zi}}-class object
 #'
-#'@description Resample the deinflatedcounts matrix of an \code{\linkS4class{Zi}}-class object.
-#'Resampling is done by drawing from a binomial distribution with a given probability
-#'that a count value (zero and non-zero) is a structural zero.
-#'@returns a \code{\linkS4class{Zi}}-class object wher the \code{deinflatedcounts}
-#'are resampled
+#'@description Resample the deinflatedcounts matrix of an
+#'\code{\linkS4class{Zi}}-class object. Resampling is done by drawing from a
+#'binomial distribution with a given probability that a count value (zero and
+#'non-zero) is a structural zero.
+#'@returns a \code{\linkS4class{Zi}}-class object where the
+#'\code{deinflatedcounts} are resampled
 #'
 #'
 #'@param x \code{\linkS4class{Zi}}-class object
-#'
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'resample_deinflatedcounts(Zi)
+
 #'@export
 
 resample_deinflatedcounts <- function(x) {

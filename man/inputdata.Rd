@@ -3,14 +3,22 @@
 \name{inputdata}
 \alias{inputdata}
 \alias{inputdata,Zi-method}
-\title{Access the inputdata}
+\alias{inputdata<-}
+\alias{inputdata<-,Zi-method}
+\title{Access and Set the inputdata}
 \usage{
 inputdata(x)
 
 \S4method{inputdata}{Zi}(x)
+
+inputdata(x) <- value
+
+\S4method{inputdata}{Zi}(x) <- value
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{value}{inputdata object}
 }
 \value{
 inputdata

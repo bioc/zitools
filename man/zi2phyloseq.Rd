@@ -7,7 +7,8 @@
 zi2phyloseq(ZiObject)
 }
 \arguments{
-\item{ZiObject}{\code{\linkS4class{Zi}}-class object with a phyloseq object as input}
+\item{ZiObject}{\code{\linkS4class{Zi}}-class object with a phyloseq object as
+input}
 }
 \value{
 a "phyloseq"-class object

@@ -3,14 +3,22 @@
 \name{weights}
 \alias{weights}
 \alias{weights,Zi-method}
+\alias{weights<-}
+\alias{weights<-,Zi-method}
 \title{Access the weights}
 \usage{
 weights(x)
 
 \S4method{weights}{Zi}(x)
+
+weights(x) <- value
+
+\S4method{weights}{Zi}(x) <- value
 }
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
+
+\item{value}{weights object}
 }
 \value{
 weights
