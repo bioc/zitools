@@ -10,10 +10,11 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in [0,1]}
+\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in
+[0,1]}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
-not. default = \code{\link{TRUE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are
+excluded, otherwise not. default = \code{\link{TRUE}}}
 
 \item{...}{\link[stats]{quantile}}
 }
@@ -22,8 +23,8 @@ quantile value
 }
 \description{
 Calculate the quantiles of  zero-deinflated data of a
-\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts
-matrix will be extracted.
+\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the
+deinflatedcounts matrix will be extracted.
 }
 \examples{
 data(mtx)
@@ -31,5 +32,6 @@ Zi <- ziMain(mtx)
 quantile(Zi)
 }
 \seealso{
-\link[stats]{quantile}, \link[zitools]{rowQuantiles}, \link[zitools]{colQuantiles}
+\link[stats]{quantile}, \link[zitools]{rowQuantiles},
+\link[zitools]{colQuantiles}
 }

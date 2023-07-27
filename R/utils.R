@@ -5,13 +5,14 @@ NULL
 #'@name reshape_zi
 #'@title Reshape a given matrix into long format
 #'
-#'@description reshape a given matrix into a long format as input for for fitting
-#'a zero inflated model
+#'@description reshape a given matrix into a long format as input for for
+#'fitting a zero inflated model
 #'
 #'@param mtx count matrix
 #'@param feature character string characterizing the rows, e.g. gene, OTU
 #'
 #'@returns a dataframe (long format), 3 columns: count, sample, "feature"
+#'
 #'@importFrom tibble rownames_to_column
 #'@importFrom magrittr %>%
 #'@importFrom tidyr gather
@@ -35,6 +36,7 @@ reshape_zi <- function(mtx, feature = "") {
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns a dataframe(long format), columns: count, sample, "feature",
+#'
 #'@importFrom magrittr %>%
 #'@importFrom dplyr bind_cols
 #'@importFrom dplyr mutate
@@ -71,7 +73,8 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
   }
   replaced_zero <- str_zero %>%
     filter(is.na(count)) %>%
-    sample_n(sum(str_zero$na) - round(sum(str_zero$p_str_zero)), replace = FALSE) %>%
+    sample_n(sum(str_zero$na) - round(sum(str_zero$p_str_zero)),
+             replace = FALSE) %>%
     replace_na(list(count = 0))
   zi_replaced <-
     merge(
@@ -82,7 +85,9 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
       all = TRUE
     )
   zi_replaced <-
-    cbind(zi_replaced[c(1, 2)], "count" = with(zi_replaced, ifelse(is.na(count.y), count.x, count.y)))
+    cbind(zi_replaced[c(1, 2)], "count" = with(zi_replaced,
+                                               ifelse(is.na(count.y),
+                                                      count.x, count.y)))
 
   return(zi_replaced)
 }
@@ -94,11 +99,13 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'NB count component can be used as weights and is calculated using the Bayes'
 #'rule: w = ((1-pi)*fnb)/fzinb
 #'
-#'@param zi result of fitting a zero inflation model to the data using pscl::zeroinfl
+#'@param zi result of fitting a zero inflation model to the data using
+#'pscl::zeroinfl
 #'@param zi_input result of reshape_zi, count data in a long format
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
 #'@returns matrix of the calculated weights
+#'
 #'@import pscl
 #'@importFrom dplyr mutate
 #'@importFrom dplyr case_when
@@ -173,6 +180,7 @@ calcWeights <-
 #'model
 #'
 #'@param mtx count matrix
+#'
 #'@returns randomly sorted matrix
 #'@noRd
 preprocess_mtx <- function(mtx) {
@@ -190,7 +198,10 @@ preprocess_mtx <- function(mtx) {
 #'@title subset matrix into groups of roughly 5000 datapoints per block
 #'
 #'@description subset a matrix into blocks of approximately 5000 datapoints per
-#'block.
+#'block. First, the number of the blocks is calculated (n_blocks). Then, the
+#'number of rows for each block is calculated and based on that an index for the
+#'blocks is created. According to the index, the matrix is split into the blocks
+#'and after splitting the matrix, the index is removed.
 #'
 #'@param mtx matrix to be subsetted
 #'
@@ -198,15 +209,15 @@ preprocess_mtx <- function(mtx) {
 #'@noRd
 subset_mtx <- function(mtx)
 {
-  a <- round(nrow(mtx)*ncol(mtx)/5000) # number of blocks
-  if (a == 0) {a <- 1}
-  b <- ceiling(nrow(mtx)/a) #number of rows for each block
-  index <- rep(c(1:a),each=b) #index for subsetted groups
+  n_blocks <- round(nrow(mtx)*ncol(mtx)/5000)
+  if (n_blocks == 0) {n_blocks <- 1}
+  n_rowsperblock <- ceiling(nrow(mtx)/n_blocks)
+  index <- rep(c(1:n_blocks),each=n_rowsperblock)
   index <- index[1:nrow(mtx)]
   df <- as.data.frame(mtx)
   df$index <- index
-  list_subset <- split(df, index) # split df based on index
-  list_subset <- lapply(list_subset, function(x) x[!(names(x) %in% c("index"))]) # remove index
+  list_subset <- split(df, index)
+  list_subset <- lapply(list_subset, function(x) x[!(names(x) %in% c("index"))])
   return(list_subset)}
 
 #'@name zi_core
@@ -218,11 +229,13 @@ subset_mtx <- function(mtx)
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'@param dist character specification of count model family, either poisson,
 #'negbin, geometric (a log link is always used)
-#'@param link character specification of link function in the binary zero-inflation
-#'model, either logit, probit, cloglog, cauchit, log (a binomial family is always used)
+#'@param link character specification of link function in the binary zero-
+#'inflation model, either logit, probit, cloglog, cauchit, log (a binomial
+#'family is always used).
 #'
 #'@returns list including the input matrix, the zero inflation model, the matrix
 #'where predicted structural zeros are replaced with NA, and the weight matrix
+#'
 #'@importFrom pscl zeroinfl
 #'@importFrom tidyr spread
 #'@importFrom tibble column_to_rownames
@@ -233,14 +246,23 @@ zi_core <- function(input, feature = "",  formula, dist, link, ...)
 {
   matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)
-  zi <- pscl::zeroinfl(formula, data = zi_input, dist = dist,
-                       link = link,...)
+  zi <- pscl::zeroinfl(formula,
+                       data = zi_input,
+                       dist = dist,
+                       link = link,
+                       ...)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
     spread(key = "sample", value = "count") %>%
-    column_to_rownames(var = feature)%>%
+    column_to_rownames(var = feature) %>%
     as.matrix()
   weights <- calcWeights(zi_input, zi, feature, dist = dist)
-  result <- list(ziInput = matrix, model = zi, zideinflatedcounts = zi_prediction_wide, weights = weights)
+  result <-
+    list(
+      ziInput = matrix,
+      model = zi,
+      zideinflatedcounts = zi_prediction_wide,
+      weights = weights
+    )
   return(result)
 }

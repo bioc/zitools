@@ -20,8 +20,8 @@ x giving the weights to use for elements of x}
 \item{idxs}{A \code{\link[base]{vector}} indicating subset of elements to
 operate over. If \code{\link{NULL}}, no subsetting is done.}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-not. default = \code{\link{FALSE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}}
 
 \item{center}{\code{\link{numeric}} scalar specifying the center location of
 the data. If \code{\link{NULL}}, it is estimated from data.}
@@ -32,8 +32,9 @@ the data. If \code{\link{NULL}}, it is estimated from data.}
 a \code{\link{numeric}} scalar
 }
 \description{
-Calculate a weighted variance and standard deviation of zero inflated count data,
-additionally taking weights for structural zeros into account
+Calculate a weighted variance and standard deviation of zero
+inflated count data, additionally taking weights for structural zeros into
+account
 }
 \examples{
 data(mtx)
@@ -43,5 +44,6 @@ weightedVar(Zi, w= weight)
 weightedSd(Zi, w = weight)
 }
 \seealso{
-\link[matrixStats]{weightedVar}, \link[zitools]{rowWeightedVars}, \link[zitools]{colWeightedVars}
+\link[matrixStats]{weightedVar}, \link[zitools]{rowWeightedVars},
+\link[zitools]{colWeightedVars}
 }

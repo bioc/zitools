@@ -10,8 +10,8 @@
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
-not. default = \code{\link{TRUE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} NAs are
+excluded, otherwise not. default = \code{\link{TRUE}}}
 
 \item{...}{see \link[stats]{median.default}}
 }
@@ -26,7 +26,9 @@ object. To calculate the median, the deinflatedcounts matrix will be extracted
 data(mtx)
 Zi <- ziMain(mtx)
 median(Zi)
+
 }
 \seealso{
-\link[stats]{median}, \link[zitools]{colMedians}, \link[zitools]{rowMedians}
+\link[stats]{median}, \link[zitools]{colMedians},
+\link[zitools]{rowMedians}
 }

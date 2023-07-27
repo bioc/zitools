@@ -10,8 +10,8 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
-are excluded, otherwise not. default = \code{\link{FALSE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}}
 }
 \value{
 standard deviation value
@@ -26,5 +26,6 @@ Zi <- ziMain(mtx)
 sd(Zi)
 }
 \seealso{
-\link[matrixStats]{weightedSd}, \link[zitools]{rowSds}, \link[zitools]{colSds}
+\link[matrixStats]{weightedSd}, \link[zitools]{rowSds},
+\link[zitools]{colSds}
 }

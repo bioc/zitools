@@ -18,20 +18,22 @@
 DFrame
 }
 \description{
-access the \link[SummarizedExperiment]{rowData} of an \code{\linkS4class{Zi}}-class object if the inputdata
-is an object of the class SummarizedExperiment
+access the \link[SummarizedExperiment]{rowData} of an
+\code{\linkS4class{Zi}}-class object if the inputdata is an object of the
+class SummarizedExperiment
 }
 \examples{
 data(mtx)
 colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-                     "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-                     "Sample10"),
+                                  "Sample5", "Sample6", "Sample7", "Sample8",
+                                  "Sample9", "Sample10"),
                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
 rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-                     Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+                     Phylum = c(rep("Bacteroidetes", times = 50),
+                                rep("Firmicutes", times = 50)))
 se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
-                          colData = colData,
-                          rowData = rowData)
+                                                colData = colData,
+                                                rowData = rowData)
 Zi <- ziMain(se)
 rowData(Zi)
 }

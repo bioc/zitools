@@ -4,14 +4,36 @@ NULL
 
 #'@name zi2phyloseq
 #'@title Replace the otu table of a phyloseq object
+#'
 #'@param ZiObject \code{\linkS4class{Zi}}-class object with a phyloseq object as
 #'input
+#'
 #'@description Replace the OTU table of a phyloseq object with the OTU table
 #'of zero de-inflated count data
+#'
 #'@returns a "phyloseq"-class object
+#'
 #'@importFrom phyloseq otu_table
 #'@importFrom phyloseq otu_table<-
 #'@importFrom phyloseq taxa_are_rows
+#'@examples
+#'data(mtx)
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
+#'                                       "Sample4", "Sample5", "Sample6",
+#'                                       "Sample7", "Sample8", "Sample9",
+#'                                       "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
+#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
+#'Zi <- ziMain(ps)
+#'new_ps <- zi2phyloseq(Zi)
+#'new_ps
+#'
 #'@export
 
 zi2phyloseq <- function(ZiObject)
@@ -26,9 +48,13 @@ zi2phyloseq <- function(ZiObject)
 
 #'@name inputdata
 #'@title Access and Set the inputdata
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@description access the inputdata of an \code{\linkS4class{Zi}}-class object
+#'
 #'@returns inputdata
+#'
 #'@export
 #'@examples
 #'data(mtx)
@@ -47,19 +73,24 @@ setMethod("inputdata", "Zi", function(x)
   x@inputdata)
 
 #'@name inputdata<-
+#'
 #'@rdname inputdata
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value inputdata object
+#'
 #'@export
 #'
-#'
+
 setGeneric("inputdata<-", function(x, value) standardGeneric("inputdata<-"))
 
 #'@name inputdata<-
 #'@rdname inputdata
 #'@aliases inputdata<-,Zi-method
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value inputdata object
+#'
 #'@export
 #'
 #'
@@ -70,10 +101,15 @@ setMethod("inputdata<-", "Zi", function(x, value) {
 
 #'@name inputcounts
 #'@title Access the inputcounts
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@description access the inputcounts of an \code{\linkS4class{Zi}}-class object
+#'
 #'@returns inputcounts
+#'
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -92,8 +128,10 @@ setMethod("inputcounts", "Zi", function(x)
 
 #'@name inputcounts<-
 #'@rdname inputcounts
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value inputcounts object
+#'
 #'@export
 #'
 #'
@@ -102,8 +140,10 @@ setGeneric("inputcounts<-", function(x, value) standardGeneric("inputcounts<-"))
 #'@name inputcounts<-
 #'@rdname inputcounts
 #'@aliases inputcounts<-,Zi-method
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value inputcounts object
+#'
 #'@export
 #'
 #'
@@ -114,9 +154,13 @@ setMethod("inputcounts<-", "Zi", function(x, value) {
 
 #'@name model
 #'@title Access the model
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@description access the model of an \code{\linkS4class{Zi}}-class object
+#'
 #'@returns model
+#'
 #'@export
 #'@examples
 #'data(mtx)
@@ -136,8 +180,10 @@ setMethod("model", "Zi", function(x)
 
 #'@name model<-
 #'@rdname model
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value model object
+#'
 #'@export
 #'
 #'
@@ -146,8 +192,10 @@ setGeneric("model<-", function(x, value) standardGeneric("model<-"))
 #'@name model<-
 #'@rdname model
 #'@aliases model<-,Zi-method
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value model object
+#'
 #'@export
 #'
 #'
@@ -159,11 +207,15 @@ setMethod("model<-", "Zi", function(x, value) {
 
 #'@name deinflatedcounts
 #'@title Access the model
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@description access the deinflatedcounts of an \code{\linkS4class{Zi}}-class
 #'object
+#'
 #'@returns deinflatedcounts
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -175,6 +227,7 @@ setGeneric("deinflatedcounts", function(x)
 #'@name deinflatedcounts
 #'@aliases deinflatedcounts,Zi-method
 #'@export
+#'
 #'@rdname deinflatedcounts
 
 setMethod("deinflatedcounts", "Zi", function(x)
@@ -182,8 +235,10 @@ setMethod("deinflatedcounts", "Zi", function(x)
 
 #'@name deinflatedcounts<-
 #'@rdname deinflatedcounts
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value deinflatedcounts object
+#'
 #'@export
 #'
 #'
@@ -193,8 +248,10 @@ setGeneric("deinflatedcounts<-", function(x, value) standardGeneric
 #'@name deinflatedcounts<-
 #'@rdname deinflatedcounts
 #'@aliases deinflatedcounts<-,Zi-method
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value deinflatedcounts object
+#'
 #'@export
 #'
 #'
@@ -205,9 +262,13 @@ setMethod("deinflatedcounts<-", "Zi", function(x, value) {
 
 #'@name weights
 #'@title Access the weights
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@description access the weights of an \code{\linkS4class{Zi}}-class object
+#'
 #'@returns weights
+#'
 #'@export
 #'@examples
 #'data(mtx)
@@ -227,8 +288,10 @@ setMethod("weights", "Zi", function(x)
 
 #'@name weights<-
 #'@rdname weights
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value weights object
+#'
 #'@export
 #'
 #'
@@ -237,8 +300,10 @@ setGeneric("weights<-", function(x, value) standardGeneric("weights<-"))
 #'@name weights<-
 #'@rdname weights
 #'@aliases weights<-,Zi-method
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param value weights object
+#'
 #'@export
 #'
 #'
@@ -249,6 +314,7 @@ setMethod("weights<-", "Zi", function(x, value) {
 
 #'@name zi2deseq2
 #'@title Convert a \code{\linkS4class{Zi}}-class object to a DESeq2 dds object
+#'
 #'@description A \code{\linkS4class{Zi}}-class object is converted to a
 #'DESeqDataSet object, which can be used for DESeq2 analysis. Both, weight and
 #'count matrices will be stored in assays of the DESeqDataSet.
@@ -266,11 +332,13 @@ setMethod("weights<-", "Zi", function(x, value) {
 #'@param ...  [phyloseq::phyloseq_to_deseq2] if the inputdata of the 'Zi'-object
 #'is a phyloseq object       [DESeq2::DESeqDataSet] if the inputdata the '
 #'Zi'-object is a SummarizedExperiment object
+#'
 #'@importFrom phyloseq phyloseq_to_deseq2
 #'@importFrom DESeq2 DESeqDataSet
 #'@importFrom DESeq2 DESeqDataSetFromMatrix
 #'@importFrom SummarizedExperiment assays<-
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -311,6 +379,23 @@ zi2deseq2 <- function(ZiObject, design, colData, ...) {
 #'@importFrom phyloseq sample_data<-
 #'@importFrom SummarizedExperiment colData
 #'
+#'@examples
+#'data(mtx)
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
+#'                                       "Sample4", "Sample5", "Sample6",
+#'                                       "Sample7", "Sample8", "Sample9",
+#'                                       "Sample10"),
+#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
+#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
+#'Zi <- ziMain(ps)
+#'subset_sample(Zi, SampleID == "Sample1")
+#'
 
 subset_sample <- function(Zi, ...) {
   if (is(Zi@inputdata, "phyloseq") == TRUE) {
@@ -337,47 +422,8 @@ subset_sample <- function(Zi, ...) {
   return(result)
 }
 
-#'@name subset_sample
-#'@title Subset a \code{\linkS4class{Zi}}-class object based on sample data
-#'
-#'@description Subset a \code{\linkS4class{Zi}}-class object based on
-#'sample_data of an phyloseq object or on colData of a SummarizedExperiment
-#'object
-#'
-#'@param Zi \code{\linkS4class{Zi}}-class object
-#'@param ... The subsetting expression that should be applied, see
-#'\link[base]{subset} for more details
-#'
-#'@export
-#'@importFrom phyloseq sample_data
-#'@importFrom phyloseq sample_data<-
-#'@importFrom SummarizedExperiment colData
-#'
 
-subset_sample <- function(Zi, ...) {
-  if (is(Zi@inputdata, "phyloseq") == TRUE) {
-    newDF <- subset(as(tax_table(Zi@inputdata), "data.frame"), ...)
-    rownames <- rownames(newDF)
-    tax_table(Zi@inputdata) <- sample_data(newDF)
-  }
-  if (is(Zi@inputdata, "SummarizedExperiment") == TRUE) {
-    newDF <- subset(as(colData(Zi@inputdata), "DataFrame"), ...)
-    colnames <- rownames(newDF)
-    Zi@inputdata <- Zi@inputdata[, colnames]
-  }
-  inputcounts <- Zi@inputcounts[, colnames]
-  deinflatedcounts <- Zi@deinflatedcounts[, colnames]
-  weights <- Zi@weights[, colnames]
-  result <- new(
-    Class = "Zi",
-    inputdata = Zi@inputdata,
-    inputcounts = inputcounts,
-    model = Zi@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = weights
-  )
-  return(result)
-}
+
 #'@name subset_feature
 #'@title Subset a \code{\linkS4class{Zi}}-class object based on feature data
 #'

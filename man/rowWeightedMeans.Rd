@@ -28,17 +28,19 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{w}{a numerical vector of weights either of length = rows or length = cols
-giving the weights to use for elements of x}
+\item{w}{a numerical vector of weights either of length = rows or length =
+cols giving the weights to use for elements of x}
 
-\item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-operate over. If \code{\link{NULL}} (default), no subsetting is done}
+\item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows
+and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+is done}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-not. default = \code{\link{FALSE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}}
 
-\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
+\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+support is done.}
 }
 \value{
 a numeric vector of length N(K)

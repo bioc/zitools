@@ -35,9 +35,11 @@
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
 \item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows
-and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting is done}
+and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+is done.}
 
-\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in [0,1]}
+\item{probs}{A numeric \code{\link[base]{vector}} of J probabilities in
+[0,1]}
 
 \item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
 \code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}}
@@ -47,17 +49,20 @@ and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting i
 \item{...}{Additional arguments passed to specific methods
 \link[MatrixGenerics]{rowQuantiles}}
 
-\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
+\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+support is done.}
 
-\item{drop}{If \code{\link{TRUE}} a \code{\link[base]{vector}} is returned if J == 1.}
+\item{drop}{If \code{\link{TRUE}} a \code{\link[base]{vector}} is returned if
+J == 1.}
 }
 \value{
 a numeric \code{\link[base]{vector}} of row/column length
 }
 \description{
-Calculate the row or column quantiles of  zero-deinflated data of a
-\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts matrix will be extracted
+Calculate the row or column quantiles of  zero-deinflated data
+of a \code{\linkS4class{Zi}}-class object. To calculate the quantiles, the
+deinflatedcounts matrix will be extracted
 }
 \examples{
 data(mtx)

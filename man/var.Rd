@@ -10,15 +10,15 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
-are excluded, otherwise not. default = \code{\link{FALSE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}}
 }
 \value{
 variance value
 }
 \description{
-Calculate the variance of zero inflated count data taking weights
-for structural zeros into account.
+Calculate the variance of zero inflated count data taking
+weights for structural zeros into account.
 }
 \examples{
 data(mtx)
@@ -26,5 +26,6 @@ Zi <- ziMain(mtx)
 var(Zi)
 }
 \seealso{
-\link[matrixStats]{weightedVar}, \link[zitools]{rowVars}, \link[zitools]{colVars}
+\link[matrixStats]{weightedVar}, \link[zitools]{rowVars},
+\link[zitools]{colVars}
 }

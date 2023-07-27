@@ -14,14 +14,16 @@
 \arguments{
 \item{x}{A \code{\linkS4class{Zi}}-class object}
 
-\item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-operate over. If \code{\link{NULL}} (default), no subsetting is done}
+\item{rows, cols}{A \code{\link[base]{vector}} indicating the subset of rows
+and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+is done}
 
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-not. default = \code{\link{FALSE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}}
 
-\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
+\item{useNames}{\code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+support is done.}
 }
 \value{
 a numeric \code{\link[base]{vector}} of row/column length

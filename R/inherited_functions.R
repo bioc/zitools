@@ -6,19 +6,24 @@ NULL
 #'@title Calculate the median of zero-deinflated count data
 #'
 #'@param x \code{\linkS4class{Zi}}-class object
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
-#'not. default = \code{\link{TRUE}}
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} NAs are
+#'excluded, otherwise not. default = \code{\link{TRUE}}
 #'@param ... see \link[stats]{median.default}
+#'
 #'@description Caluclate the median of  zero-deinflated data of a 'Zi'-class
 #'object. To calculate the median, the deinflatedcounts matrix will be extracted
 #'
 #'@returns median value
+#'
 #'@importFrom stats median
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'median(Zi)
-#'@seealso \link[stats]{median}, \link[zitools]{colMedians}, \link[zitools]{rowMedians}
+#'
+#'@seealso \link[stats]{median}, \link[zitools]{colMedians},
+#'\link[zitools]{rowMedians}
 
 median.Zi <- function(x, na.rm = TRUE, ...)
 {
@@ -29,27 +34,36 @@ median.Zi <- function(x, na.rm = TRUE, ...)
 
 #'@export
 #'@name colMedians
+#'
 #'@aliases colMedians,Zi-method
+#'
 #'@title Calculate the row or column median of zero-deinflated count data
+#'
 #'@description Calculate the row or column median of  zero-deinflated data of a
-#' \code{\linkS4class{Zi}}-class object. To calculate the median, the deinflatedcounts matrix will be extracted
-#'@param  x         \code{\linkS4class{Zi}}-class object
-#'@param  rows,     A  \code{\link[base]{vector}} indicating the subset of rows (and/or columns) to operate
-#'@param  cols      over. If  \code{\link{NULL}}, no subsetting is done
-#'@param  na.rm     \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-#'not. default = \code{\link{TRUE}}
-#'@param  useNames  \code{\link[base]{logical}}.  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#' \code{\linkS4class{Zi}}-class object. To calculate the median, the
+#' deinflatedcounts matrix will be extracted.
+#'
+#'@param x \code{\linkS4class{Zi}}-class object
+#'@param rows,cols A  \code{\link[base]{vector}} indicating the subset of rows
+#'(and/or columns) to operate over. If  \code{\link{NULL}}, no subsetting is
+#'done
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}
+#'@param useNames \code{\link[base]{logical}}. If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
 #'@param ... see \code{\link[MatrixGenerics]{colMedians}}
 #'
 #'@returns returns a numeric vector of row/column length
+#'
 #'@importFrom MatrixGenerics colMedians
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'colMedians(Zi, useNames = TRUE)
 #'rowMedians(Zi, useNames = TRUE)
-#'
+
 setMethod("colMedians", "Zi" , function(x,
                                         rows = NULL,
                                         cols = NULL,
@@ -67,10 +81,14 @@ setMethod("colMedians", "Zi" , function(x,
 })
 
 #'@name rowMedians
-#'@aliases rowMedians,Zi-method
 #'@export
+#'
+#'@aliases rowMedians,Zi-method
+#'
 #'@rdname colMedians
+#'
 #'@importFrom MatrixGenerics rowMedians
+
 setMethod("rowMedians", "Zi", function(x,
                                        rows = NULL,
                                        cols = NULL,
@@ -92,17 +110,23 @@ setMethod("rowMedians", "Zi", function(x,
 #'@title Calculate the quantiles of zero-deinflated count data
 #'
 #'@param x A \code{\linkS4class{Zi}}-class object
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} NAs are excluded, otherwise
-#'not. default = \code{\link{TRUE}}
-#'@param probs A numeric \code{\link[base]{vector}} of J probabilities in \[0,1\]
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} NAs are
+#'excluded, otherwise not. default = \code{\link{TRUE}}
+#'@param probs A numeric \code{\link[base]{vector}} of J probabilities in
+#'\[0,1\]
 #'@param ... \link[stats]{quantile}
+#'
 #'@description Calculate the quantiles of  zero-deinflated data of a
-#'\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts
-#'matrix will be extracted.
+#'\code{\linkS4class{Zi}}-class object. To calculate the quantiles, the
+#'deinflatedcounts matrix will be extracted.
 #'
 #'@returns quantile value
+#'
 #'@importFrom stats quantile
-#'@seealso \link[stats]{quantile}, \link[zitools]{rowQuantiles}, \link[zitools]{colQuantiles}
+#'
+#'@seealso \link[stats]{quantile}, \link[zitools]{rowQuantiles},
+#'\link[zitools]{colQuantiles}
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -118,25 +142,34 @@ quantile.Zi <-
 
 #'@export
 #'@name rowQuantiles
+#'
 #'@aliases rowQuantiles,Zi-method
+#'
 #'@title Calculate the row or column quantiles of zero-deinflated count data
 #'
-#'@param  x         A \code{\linkS4class{Zi}}-class object
-#'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows
-#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param  probs     A numeric \code{\link[base]{vector}} of J probabilities in \[0,1\]
-#'@param  na.rm     \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param rows,cols A \code{\link[base]{vector}} indicating the subset of rows
+#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+#'is done.
+#'@param probs A numeric \code{\link[base]{vector}} of J probabilities in
+#'\[0,1\]
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
 #'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}
-#'@param  type      An integer specifying the type of estimator
-#'@param  ...       Additional arguments passed to specific methods
+#'@param type An integer specifying the type of estimator
+#'@param ... Additional arguments passed to specific methods
 #'\link[MatrixGenerics]{rowQuantiles}
-#'@param  useNames  \code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
-#'@param  drop      If \code{\link{TRUE}} a \code{\link[base]{vector}} is returned if J == 1.
+#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
+#'@param drop If \code{\link{TRUE}} a \code{\link[base]{vector}} is returned if
+#'J == 1.
 #'
-#'@description Calculate the row or column quantiles of  zero-deinflated data of a
-#' \code{\linkS4class{Zi}}-class object. To calculate the quantiles, the deinflatedcounts matrix will be extracted
+#'@description Calculate the row or column quantiles of  zero-deinflated data
+#'of a \code{\linkS4class{Zi}}-class object. To calculate the quantiles, the
+#'deinflatedcounts matrix will be extracted
+#'
 #'@importFrom MatrixGenerics rowQuantiles
+#'
 #'@returns a numeric \code{\link[base]{vector}} of row/column length
 #'
 #'@examples
@@ -168,9 +201,13 @@ setMethod("rowQuantiles", "Zi", function(x,
 })
 
 #'@name colQuantiles
+#'
 #'@aliases colQuantiles,Zi-method
+#'
 #'@export
+#'
 #'@rdname rowQuantiles
+#'
 #'@importFrom MatrixGenerics colQuantiles
 
 setMethod("colQuantiles", "Zi", function(x,
@@ -199,14 +236,18 @@ setMethod("colQuantiles", "Zi", function(x,
 #'@export
 #'@name mean
 #'@title Arithmetic Mean
-#'@param x  A \code{\linkS4class{Zi}}-class object
+#'
+#'@param x A \code{\linkS4class{Zi}}-class object
 #'@param ... \link[base]{mean.default}
 #'
 #'@description  Calculate the arithmetic mean of zero inflated data taking weights
 #'for structural zeros into account
 #'
 #'@returns mean value
-#'@seealso \link[stats]{weighted.mean}, \link[zitools]{colMeans2}, \link[zitools]{rowMeans2}
+#'
+#'@seealso \link[stats]{weighted.mean}, \link[zitools]{colMeans2},
+#'\link[zitools]{rowMeans2}
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -224,21 +265,27 @@ mean.Zi <- function(x, ...) {
 #'@export
 #'@name colMeans2
 #'@title Calculate the row or column means of zero-inflated count data
+#'
 #'@aliases colMeans2,Zi-method
-#'@param  x   A \code{\linkS4class{Zi}}-class object
-#'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-#'operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-#'not. default = \code{\link{FALSE}}
-#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#'
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param rows,cols A \code{\link[base]{vector}} indicating the subset of rows
+#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+#'is done
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
 #'
 #'@description Calculate row and column means of zero-inflated count data taking
 #'weights for structural zeros into account.
 #'
 #'@returns a numeric \code{\link[base]{vector}} of row/column length
+#'
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics colMeans2
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -269,12 +316,16 @@ setMethod("colMeans2", "Zi", function(x,
 })
 
 #'@name rowMeans2
+#'
 #'@aliases rowMeans2,Zi-method
+#'
 #'@export
+#'
 #'@rdname colMeans2
+#'
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics rowMeans2
-#'
+
 setMethod("rowMeans2", "Zi", function(x,
                                       rows = NULL,
                                       cols = NULL,
@@ -302,22 +353,27 @@ setMethod("rowMeans2", "Zi", function(x,
 #'@name sd
 #'@aliases sd,Zi-method
 #'@title Standard Deviation of zero inflated count data
-#'@param x  A \code{\linkS4class{Zi}}-class object
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
-#'are excluded, otherwise not. default = \code{\link{FALSE}}
+#'
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
 #'
 #'@description  Calculate the standard deviation of zero inflated count data
 #'taking weights for structural zeros into account.
+#'
 #'@importFrom matrixStats weightedSd
 #'@importFrom BiocGenerics sd
+#'
 #'@returns standard deviation value
-#'@seealso \link[matrixStats]{weightedSd}, \link[zitools]{rowSds}, \link[zitools]{colSds}
+#'
+#'@seealso \link[matrixStats]{weightedSd}, \link[zitools]{rowSds},
+#'\link[zitools]{colSds}
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'sd(Zi)
-
 
 setMethod("sd", "Zi", function(x, na.rm = FALSE) {
   sd <- matrixStats::weightedSd(x = x@inputcounts,
@@ -331,20 +387,24 @@ setMethod("sd", "Zi", function(x, na.rm = FALSE) {
 #'@aliases rowSds,Zi-method
 #'@title Row and Column Standard Deviations of zero inflated count data
 #'
-#'@param  x   A \code{\linkS4class{Zi}}-class object
-#'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-#'operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
-#'are excluded, otherwise not. default = \code{\link{FALSE}}
-#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param rows,cols A \code{\link[base]{vector}} indicating the subset of rows
+#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+#' is done
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
 #'
 #'@description Calculate row and column standard deviations of zero inflated
 #'count data taking weights for structural zeros into account
 #'
 #'@returns a \code{\link[base]{vector}} of row/column length
+#'
 #'@importFrom matrixStats weightedSd
 #'@importFrom MatrixGenerics rowSds
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -400,19 +460,26 @@ setMethod("colSds", "Zi", function(x,
 
 #'@export
 #'@name var
-#'@aliases var,Zi,ANY-method
-#'@title Variance of zero inflated count data
-#'@param x  A \code{\linkS4class{Zi}}-class object
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
-#'are excluded, otherwise not. default = \code{\link{FALSE}}
 #'
-#'@description  Calculate the variance of zero inflated count data taking weights
-#'for structural zeros into account.
+#'@aliases var,Zi,ANY-method
+#'
+#'@title Variance of zero inflated count data
+#'
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'
+#'@description  Calculate the variance of zero inflated count data taking
+#'weights for structural zeros into account.
 #'
 #'@returns variance value
+#'
 #'@importFrom matrixStats weightedVar
 #'@importFrom BiocGenerics var
-#'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowVars}, \link[zitools]{colVars}
+#'
+#'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowVars},
+#'\link[zitools]{colVars}
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -430,20 +497,24 @@ setMethod("var", c("Zi", "ANY"), function(x, na.rm = FALSE) {
 #'@aliases rowVars,Zi-method
 #'@title Row and Column Variances of zero inflated count data
 #'
-#'@param  x   A \code{\linkS4class{Zi}}-class object
-#'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-#'operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s
-#'are excluded, otherwise not. default = \code{\link{FALSE}}
-#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#'@param x A \code{\linkS4class{Zi}}-class object
+#'@param rows,cols A \code{\link[base]{vector}} indicating the subset of rows
+#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+#' is done
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
 #'
 #'@description Calculate row and column variances of zero inflated count data
 #'taking weights for structural zeros into account.
 #'
 #'@returns a vector of row/col length
+#'
 #'@importFrom matrixStats weightedVar
 #'@importFrom MatrixGenerics rowVars
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -507,11 +578,16 @@ setMethod("colVars", "Zi", function(x,
 #'x giving the weights to use for elements of x
 #'@param ... \link[stats]{weighted.mean}
 #'
-#'@description Calculate a weighted mean of zero inflated count data, additionally
-#' taking weights for structural zeros into account
+#'@description Calculate a weighted mean of zero inflated count data,
+#'additionally taking weights for structural zeros into account
+#'
 #'@returns weighted mean value
+#'
 #'@importFrom stats weighted.mean
-#'@seealso \link[stats]{weighted.mean}, \link[zitools]{rowWeightedMeans}, \link[zitools]{colWeightedMeans}
+#'
+#'@seealso \link[stats]{weighted.mean}, \link[zitools]{rowWeightedMeans},
+#'\link[zitools]{colWeightedMeans}
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -527,23 +603,29 @@ setMethod("weighted.mean", "Zi", function(x, w, ...) {
 #'@export
 #'@name rowWeightedMeans
 #'@aliases rowWeightedMeans,Zi-method
+#'
 #'@title Row and Column weighted means of zero inflated count data
 #'
 #'@param x A \code{\linkS4class{Zi}}-class object
-#'@param w a numerical vector of weights either of length = rows or length = cols
-#' giving the weights to use for elements of x
-#'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-#'operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-#'not. default = \code{\link{FALSE}}
-#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#'@param w a numerical vector of weights either of length = rows or length =
+#'cols giving the weights to use for elements of x
+#'@param rows,cols A \code{\link[base]{vector}} indicating the subset of rows
+#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+#' is done
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
 #'
 #'@description Calculate row and column weighted means of zero inflated count
 #'data, additionally taking weights for structural zeros into account.
+#'
 #'@returns a numeric vector of length N(K)
+#'
 #'@importFrom stats weighted.mean
 #'@importFrom MatrixGenerics rowWeightedMeans
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -641,21 +723,25 @@ setMethod("weightedSd", "Zi", function(x,
 #'inflated count data
 #'
 #'@param x A \code{\linkS4class{Zi}}-class object
-#'@param w a numerical vector of weights either of length = rows or length = cols
-#' giving the weights to use for elements of x
-#'@param  rows,cols A \code{\link[base]{vector}} indicating the subset of rows and/or columns to
-#'operate over. If \code{\link{NULL}} (default), no subsetting is done
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-#'not. default = \code{\link{FALSE}}
-#'@param useNames \code{\link[base]{logical}}  If \code{\link{TRUE}} (default), names
-#'attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.
+#'@param w a numerical vector of weights either of length = rows or length =
+#'cols giving the weights to use for elements of x
+#'@param rows,cols A \code{\link[base]{vector}} indicating the subset of rows
+#'and/or columns to operate over. If \code{\link{NULL}} (default), no subsetting
+#' is done
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'@param useNames \code{\link[base]{logical}} If \code{\link{TRUE}} (default),
+#'names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+#'support is done.
 #'
 #'@description Calculate row and column standard deviations or variances of
 #'zero inflated count data, additionally taking weights for structural zeros
 #'into account.
 #'@returns a numeric vector of length N(K)
+#'
 #'@importFrom matrixStats weightedSd
 #'@importFrom MatrixGenerics rowWeightedSds
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -724,16 +810,23 @@ setMethod("colWeightedSds", "Zi", function(x,
 #'x giving the weights to use for elements of x
 #'@param idxs A \code{\link[base]{vector}} indicating subset of elements to
 #'operate over. If \code{\link{NULL}}, no subsetting is done.
-#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-#'not. default = \code{\link{FALSE}}
-#'@param center	 \code{\link{numeric}} scalar specifying the center location of
+#'@param na.rm \code{\link[base]{logical}} If \code{\link{TRUE}}
+#'\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{FALSE}}
+#'@param center \code{\link{numeric}} scalar specifying the center location of
 #' the data. If \code{\link{NULL}}, it is estimated from data.
 #' @param ... \code{\link[matrixStats]{weightedVar}}
-#'@description  Calculate a weighted variance and standard deviation of zero inflated count data,
-#'additionally taking weights for structural zeros into account
+
+#'@description  Calculate a weighted variance and standard deviation of zero
+#'inflated count data, additionally taking weights for structural zeros into
+#'account
+
 #'@returns a \code{\link{numeric}} scalar
+
 #'@importFrom matrixStats weightedVar
-#'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowWeightedVars}, \link[zitools]{colWeightedVars}
+
+#'@seealso \link[matrixStats]{weightedVar}, \link[zitools]{rowWeightedVars},
+#'\link[zitools]{colWeightedVars}
+
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -823,48 +916,109 @@ setMethod("colWeightedVars", "Zi", function(x,
 })
 
 
+#'@export
+#'@name show
+#'@aliases show,Zi-method
+#'@title Show summary of Zi object
+#'
+#'@description Message printed at command line
+#'
+#'@param object \code{\linkS4class{Zi}}-class object
+#'
+#'@returns returns a numeric vector of row/column length
+#'
+#'@importFrom methods show
+#'
+#'@examples
+#'data(mtx)
+#'Zi <- ziMain(mtx)
+#'Zi
+#'show(Zi)
+#'
+setMethod("show", "Zi" , function(object) {
+  dims <- dim(object@inputdata)
+  formel <- as.character(object@model[[1]]$formula)
+  anz <- length(object@inputcounts) # data points
+  anz0 <- sum(object@inputcounts == 0, na.rm = TRUE) # zeros
+  anz00 <- sum(is.na(object@deinflatedcounts)) # structural zeros
+
+  cat("Formal class 'Zi' [package \"zitools\"]\n")
+  cat(" ", dims[1], "features (rows),", dims[2], "samples (columns)\n")
+  cat(
+    paste0(
+      " ",
+      anz,
+      " data points, ",
+      anz0,
+      "(",
+      round(anz0 / anz * 100, 3),
+      "%) zeros, ",
+      anz00,
+      "(",
+      round(anz00 / anz * 100, 3),
+      "%) structual zeros estimated with ",
+      formel[2],
+      " ",
+      formel[1],
+      " ",
+      formel[3],
+      "\n"
+    )
+  )
+  str(object, list.len = 10, max.level = 2)
+  cat("Use str(object) to inspect the whole object structure.")
+})
+
 #'@name log1p
 #'@aliases log1p,Zi-method
+#'
 #'@title log(1+x)
+#'
 #'@description Calculate log(1+x) of all 'matrix' objects of a 'Zi'-class
 #'object, log calculates by default natural logarithms
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@export
+#'
 #'@seealso \link[base]{log1p}, \link[zitools]{log2p}
+#'
 #'@returns a \code{\linkS4class{Zi}}-class object where the log(1+x) values of
 #'\code{inputcounts, deinflatedcounts and weights} are calculated.
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'log1p(Zi)
+#'
 
-setMethod(
-  "log1p",
-  signature = "Zi",
-  definition = function(x) {
-    inputcounts <- log1p(x@inputcounts)
-    deinflatedcounts <- log1p(x@deinflatedcounts)
-    weights <- log1p(x@weights)
-    result <- new(
-      Class = "Zi",
-      inputdata = x@inputdata,
-      inputcounts = inputcounts,
-      model = x@model,
-      deinflatedcounts = deinflatedcounts,
-      weights = weights
-    )
-  }
-)
+setMethod("log1p", "Zi", function(x) {
+  inputcounts <- log1p(x@inputcounts)
+  deinflatedcounts <- log1p(x@deinflatedcounts)
+  weights <- log1p(x@weights)
+  result <- new(
+    Class = "Zi",
+    inputdata = x@inputdata,
+    inputcounts = inputcounts,
+    model = x@model,
+    deinflatedcounts = deinflatedcounts,
+    weights = weights
+  )
+})
 
 #'@name log2p
 #'@aliases log2p,Zi-method
 #'@title log2p(x+1)
+#'
 #'@description Calculate log2(x+1) of all 'matrix' objects of a 'Zi'-class
 #'object
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@returns a \code{\linkS4class{Zi}}-class object where the log2(1+x) values of
 #'\code{inputcounts, deinflatedcounts and weights} are calculated.
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -874,33 +1028,33 @@ setGeneric("log2p", function(x) {
   log2(x + 1)
 })
 
-setMethod(
-  "log2p",
-  signature = "Zi",
-  definition = function(x) {
-    inputcounts <- log2p(x@inputcounts)
-    deinflatedcounts <- log2p(x@deinflatedcounts)
-    weights <- log2p(x@weights)
-    result <- new(
-      Class = "Zi",
-      inputdata = x@inputdata,
-      inputcounts = inputcounts,
-      model = x@model,
-      deinflatedcounts = deinflatedcounts,
-      weights = weights
-    )
-    return(result)
-  }
-)
+setMethod("log2p", "Zi", function(x) {
+  inputcounts <- log2p(x@inputcounts)
+  deinflatedcounts <- log2p(x@deinflatedcounts)
+  weights <- log2p(x@weights)
+  result <- new(
+    Class = "Zi",
+    inputdata = x@inputdata,
+    inputcounts = inputcounts,
+    model = x@model,
+    deinflatedcounts = deinflatedcounts,
+    weights = weights
+  )
+  return(result)
+})
 
 
 #'@name +
 #'@aliases +,Zi,ANY-method
 #'@title Arithmetic Operators
+#'
 #'@description Arithmetic operators for a Zi-class object
+#'
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
+#'
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -1003,10 +1157,14 @@ setMethod(
 #'@name -
 #'@aliases -,Zi,ANY-method
 #'@title Arithmetic Operators
+#'
 #'@description Arithmetic operators for a Zi-class object
+#'
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
+#'
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -1110,10 +1268,14 @@ setMethod(
 
 #'@name *
 #'@aliases *,Zi,ANY-method
+#'
 #'@title Arithmetic Operators
+#'
 #'@description Arithmetic operators for a Zi-class object
+#'
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
+#'
 #'@export
 #'@examples
 #'data(mtx)
@@ -1215,11 +1377,16 @@ setMethod(
 
 #'@name /
 #'@aliases /,Zi,ANY-method
+#'
 #'@title Arithmetic Operators
+#'
 #'@description Arithmetic operators for a Zi-class object
+#'
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
+#'
 #'@importFrom methods Arith
+#'
 #'@export
 #'@examples
 #'data(mtx)
@@ -1356,73 +1523,35 @@ setMethod(
 #          })
 
 
-#'@export
-#'@name show
-#'@aliases show,Zi-method
-#'@title Show summary of Zi object
-#'@description Message printed at command line
-#'@param  object        \code{\linkS4class{Zi}}-class object
-#'
-#'@returns returns a numeric vector of row/column length
-#'@importFrom methods show
-#'@examples
-#'data(mtx)
-#'Zi <- ziMain(mtx)
-#'Zi
-#'show(Zi)
-#'
-setMethod("show", "Zi" , function(object) {
-  dims <- dim(object@inputdata)
-  formel <- as.character(Zi@model[[1]]$formula)
-  anz <- length(object@inputcounts) # data points
-  anz0 <- sum(object@inputcounts == 0, na.rm = TRUE) # zeros
-  anz00 <- sum(is.na(object@deinflatedcounts)) # structural zeros
-
-  cat("Formal class 'Zi' [package \"zitools\"]\n")
-  cat(" ", dims[1], "features (rows),", dims[2], "samples (columns)\n")
-  cat(
-    paste0(
-      " ",
-      anz,
-      " data points, ",
-      anz0,
-      "(",
-      round(anz0 / anz * 100, 3),
-      "%) zeros, ",
-      anz00,
-      "(",
-      round(anz00 / anz * 100, 3),
-      "%) structual zeros estimated with ",
-      formel[2],
-      " ",
-      formel[1],
-      " ",
-      formel[3],
-      "\n"
-    )
-  )
-  str(object, list.len = 10, max.level = 2)
-  cat("Use str(object) to inspect the whole object structure.")
-})
-
 #'@name tax_table
 #'@title Access the taxonomy table
+#'
 #'@aliases tax_table,Zi-method
+#'
 #'@param object \code{\linkS4class{Zi}}-class object
-#'@description access the taxonomy table (\link[phyloseq]{tax_table}) of an \code{\linkS4class{Zi}}-class object if the
-#'inputdata slot is a phyloseq object
+#'
+#'@description access the taxonomy table (\link[phyloseq]{tax_table}) of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata slot is a phyloseq
+#'object
+#'
 #'@importFrom phyloseq tax_table
+#'
 #'@returns tax_table
+#'
 #'@examples
-#'#'data(mtx)
-#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-#'                      "Sample10"),
+#'data(mtx)
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
+#'                                       "Sample4", "Sample5", "Sample6",
+#'                                       "Sample7", "Sample8", "Sample9",
+#'                                       "Sample10"),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
 #'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
-#'ps <- phyloseq::phyloseq(otu_table(mtx, taxa_are_rows = TRUE), sample_data,
-#'                         tax_table)
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
 #'Zi <- ziMain(ps)
 #'tax_table(Zi)
 #'
@@ -1446,21 +1575,31 @@ setMethod("tax_table", signature = "Zi", function(object) {
 #'@name sample_data
 #'@aliases sample_data,Zi-method
 #'@title Access the sample data
+#'
 #'@param object \code{\linkS4class{Zi}}-class object
-#'@description access the \link[phyloseq]{sample_data} of an \code{\linkS4class{Zi}}-class object if the
-#'inputdata slot is a phyloseq object
+#'
+#'@description access the \link[phyloseq]{sample_data} of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata slot is a phyloseq
+#'object
+#'
 #'@importFrom phyloseq sample_data
+#'
 #'@returns sample_data
+#'
 #'@examples
 #'data(mtx)
-#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-#'                      "Sample10"),
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
+#'                                       "Sample4", "Sample5", "Sample6",
+#'                                       "Sample7", "Sample8", "Sample9",
+#'                                       "Sample10"),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
 #'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
-#'ps <- phyloseq::phyloseq(otu_table(mtx, taxa_are_rows = TRUE), sample_data,
-#'                         tax_table)
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
 #'Zi <- ziMain(ps)
 #'sample_data(Zi)
 #'
@@ -1483,21 +1622,31 @@ setMethod("sample_data", signature = "Zi", function(object) {
 #'@name otu_table
 #'@aliases otu_table,Zi-method
 #'@title Access the otu table
+#'
 #'@param object \code{\linkS4class{Zi}}-class object
-#'@description access the \link[phyloseq]{otu_table} of an \code{\linkS4class{Zi}}-class object if the
-#'inputdata slot is a phyloseq object
+#'
+#'@description access the \link[phyloseq]{otu_table} of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata slot is a phyloseq
+#'object
+
 #'@returns otu_table
+#'
 #'@importFrom phyloseq otu_table
+#'
 #'@examples
 #'data(mtx)
-#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-#'                      "Sample10"),
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
+#'                                       "Sample4", "Sample5", "Sample6",
+#'                                       "Sample7", "Sample8", "Sample9",
+#'                                       "Sample10"),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
 #'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
-#'ps <- phyloseq::phyloseq(otu_table(mtx, taxa_are_rows = TRUE), sample_data,
-#'                         tax_table)
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
 #'Zi <- ziMain(ps)
 #'otu_table(Zi)
 #'@export
@@ -1519,18 +1668,26 @@ setMethod("otu_table", signature = "Zi", function(object) {
 #'@name phy_tree
 #'@aliases phy_tree,Zi-method
 #'@title Access the phylogenetic tree
+#'
 #'@param physeq \code{\linkS4class{Zi}}-class object
-#'@description access the phylogenetic tree (\link[phyloseq]{phy_tree}) of an object of the class
-#'"Zi" if the inputdata slot is a phyloseq object
+#'@param errorIfNULL Logical. Should the accessor stop with an error if the slot
+#'is empty (NULL)? Default TRUE.
+#'
+#'@description access the \link[phyloseq]{phy_tree} of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata slot is a phyloseq
+#'object
+#'
 #'@returns phy_tree
 #'@importFrom phyloseq phy_tree
 #'
 #'@export
 #'
+#'
 
-setMethod("phy_tree", signature = "Zi", function(physeq) {
+
+setMethod("phy_tree", signature = "Zi", function(physeq, errorIfNULL) {
   if ("phyloseq" %in% class(physeq@inputdata)) {
-    phy_tree <- phy_tree(physeq@inputdata)
+    phy_tree <- phy_tree(physeq@inputdata, errorIfNULL = errorIfNULL)
   }
   if ("matrix" %in% class(physeq@inputdata)) {
     phy_tree <- NULL
@@ -1544,24 +1701,31 @@ setMethod("phy_tree", signature = "Zi", function(physeq) {
 #'@name rowData
 #'@aliases rowData,Zi-method
 #'@title Access the row data
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param useNames returns a rowData dataframe with rownames
 #'@param ... \code{\link[SummarizedExperiment]{rowData}}
-#'@description access the \link[SummarizedExperiment]{rowData} of an \code{\linkS4class{Zi}}-class object if the inputdata
-#'is an object of the class SummarizedExperiment
+#'
+#'@description access the \link[SummarizedExperiment]{rowData} of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata is an object of the
+#'class SummarizedExperiment
+#'
 #'@returns DFrame
+#'
 #'@importFrom SummarizedExperiment rowData
+#'
 #'@examples
 #'data(mtx)
 #'colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-#'                      "Sample10"),
+#'                                   "Sample5", "Sample6", "Sample7", "Sample8",
+#'                                   "Sample9", "Sample10"),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
 #'rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
 #'se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
-#'                           colData = colData,
-#'                           rowData = rowData)
+#'                                                 colData = colData,
+#'                                                 rowData = rowData)
 #'Zi <- ziMain(se)
 #'rowData(Zi)
 #'@export
@@ -1582,26 +1746,33 @@ setMethod("rowData", signature = "Zi", function(x, useNames = TRUE, ...) {
 #'@name assays
 #'@aliases assays,Zi-method
 #'@title Access assays
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param withDimnames A \code{logical}, indicating whether the dimnames of the
 #'SummarizedExperiment object should be applied (i.e. copied) to the extracted
 #'assays. see \code{\link[SummarizedExperiment]{assays}}
 #'@param ... see \code{\link[SummarizedExperiment]{assays}}
-#'@description access  \link[SummarizedExperiment]{assays} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
-#'object of the class SummarizedExperiment
+#'
+#'@description access  \link[SummarizedExperiment]{assays} of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata is an object of the
+#'class SummarizedExperiment
+#'
 #'@importFrom SummarizedExperiment assays
+#'
 #'@returns list
+#'
 #'@examples
 #'data(mtx)
 #'colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-#'                      "Sample10"),
+#'                                   "Sample5", "Sample6", "Sample7", "Sample8",
+#'                                   "Sample9", "Sample10"),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
 #'rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
 #'se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
-#'                           colData = colData,
-#'                           rowData = rowData)
+#'                                                 colData = colData,
+#'                                                 rowData = rowData)
 #'Zi <- ziMain(se)
 #'assays(Zi)
 #'
@@ -1625,12 +1796,18 @@ setMethod("assays", signature = "Zi", function(x, withDimnames = TRUE,  ...) {
 #'@name colData
 #'@aliases colData,Zi-method
 #'@title Access the col Data
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
 #'@param ... \code{\link[SummarizedExperiment]{colData}}
-#'@description access the \link[SummarizedExperiment]{colData} of an \code{\linkS4class{Zi}}-class object if the inputdata is an
-#'object of the class SummarizedExperiment
+#'
+#'@description access the \link[SummarizedExperiment]{colData} of an
+#'\code{\linkS4class{Zi}}-class object if the inputdata is an object of the
+#'class SummarizedExperiment
+#'
 #'@importFrom SummarizedExperiment colData
+#'
 #'@returns DFrame
+#'
 #'@seealso \code{\link[SummarizedExperiment]{colData}}
 #'
 #'@export
@@ -1638,14 +1815,15 @@ setMethod("assays", signature = "Zi", function(x, withDimnames = TRUE,  ...) {
 #'@examples
 #'data(mtx)
 #'colData <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3", "Sample4",
-#'                      "Sample5", "Sample6", "Sample7", "Sample8", "Sample9",
-#'                      "Sample10"),
+#'                                   "Sample5", "Sample6", "Sample7", "Sample8",
+#'                                   "Sample9", "Sample10"),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
 #'rowData <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50), rep("Firmicutes", times = 50)))
+#'                      Phylum = c(rep("Bacteroidetes", times = 50),
+#'                                 rep("Firmicutes", times = 50)))
 #'se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mtx),
-#'                           colData = colData,
-#'                           rowData = rowData)
+#'                                                 colData = colData,
+#'                                                 rowData = rowData)
 #'Zi <- ziMain(se)
 #'colData(Zi)
 
@@ -1665,10 +1843,15 @@ setMethod("colData", signature = "Zi", function(x, ...) {
 #'@name t
 #'@aliases t,Zi-method
 #'@title Transpose a \code{\linkS4class{Zi}}-class object
+#'
 #'@param x \code{\linkS4class{Zi}}-class object
+#'
 #'@description transpose all matrizes of a \code{\linkS4class{Zi}}-class object
+#'
 #'@returns \code{\linkS4class{Zi}}-class object
+#'
 #'@export
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)

@@ -26,5 +26,6 @@ mean(Zi)
 
 }
 \seealso{
-\link[stats]{weighted.mean}, \link[zitools]{colMeans2}, \link[zitools]{rowMeans2}
+\link[stats]{weighted.mean}, \link[zitools]{colMeans2},
+\link[zitools]{rowMeans2}
 }

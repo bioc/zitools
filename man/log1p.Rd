@@ -22,6 +22,7 @@ object, log calculates by default natural logarithms
 data(mtx)
 Zi <- ziMain(mtx)
 log1p(Zi)
+
 }
 \seealso{
 \link[base]{log1p}, \link[zitools]{log2p}

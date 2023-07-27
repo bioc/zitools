@@ -14,29 +14,30 @@
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 
-\item{rows, }{A  \code{\link[base]{vector}} indicating the subset of rows (and/or columns) to operate}
+\item{rows, cols}{A  \code{\link[base]{vector}} indicating the subset of rows
+(and/or columns) to operate over. If  \code{\link{NULL}}, no subsetting is
+done}
 
-\item{cols}{over. If  \code{\link{NULL}}, no subsetting is done}
-
-\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}} \code{\link{NA}}s are excluded, otherwise
-not. default = \code{\link{TRUE}}}
+\item{na.rm}{\code{\link[base]{logical}} If \code{\link{TRUE}}
+\code{\link{NA}}s are excluded, otherwise not. default = \code{\link{TRUE}}}
 
 \item{...}{see \code{\link[MatrixGenerics]{colMedians}}}
 
-\item{useNames}{\code{\link[base]{logical}}.  If \code{\link{TRUE}} (default), names
-attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
+\item{useNames}{\code{\link[base]{logical}}. If \code{\link{TRUE}} (default),
+names attributes of result are set. Else if \code{\link{FALSE}}, no naming
+support is done.}
 }
 \value{
 returns a numeric vector of row/column length
 }
 \description{
 Calculate the row or column median of  zero-deinflated data of a
-\code{\linkS4class{Zi}}-class object. To calculate the median, the deinflatedcounts matrix will be extracted
+\code{\linkS4class{Zi}}-class object. To calculate the median, the
+deinflatedcounts matrix will be extracted.
 }
 \examples{
 data(mtx)
 Zi <- ziMain(mtx)
 colMedians(Zi, useNames = TRUE)
 rowMedians(Zi, useNames = TRUE)
-
 }

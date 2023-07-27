@@ -19,8 +19,8 @@ x giving the weights to use for elements of x}
 weighted mean value
 }
 \description{
-Calculate a weighted mean of zero inflated count data, additionally
-taking weights for structural zeros into account
+Calculate a weighted mean of zero inflated count data,
+additionally taking weights for structural zeros into account
 }
 \examples{
 data(mtx)
@@ -29,5 +29,6 @@ weight <- runif(length(inputcounts(Zi)), 0.1, 1)
 weighted.mean(Zi, w= weight)
 }
 \seealso{
-\link[stats]{weighted.mean}, \link[zitools]{rowWeightedMeans}, \link[zitools]{colWeightedMeans}
+\link[stats]{weighted.mean}, \link[zitools]{rowWeightedMeans},
+\link[zitools]{colWeightedMeans}
 }
