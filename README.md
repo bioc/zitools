@@ -4,7 +4,15 @@
 
 <!-- badges: end -->
 
-The goal of zitools is to analyse zero inflated count data by fitting a zero inflated mixture model and accounting for excess of zeros by downweighting them.
+One fundamental objective of microbiome analyses is to identify differentially abundant taxa among different experimental
+groups or conditions. However, microbiome data are often overdispersed and zero inflated making data analysis extremely
+challenging. Although there are several models considering zero inflation, none of them provides functionality for
+subsequent analyses. Therefore, we propose zitools, an R package allowing for zero inflated count data analysis by
+either using down-weighting of excess zeros or by replacing an appropriate proportion of excess zeros with NA. Through
+overloading frequently used statistical functions (such as mean, median, standard deviation), plotting functions (such as
+boxplots or heatmap) or differential abundance tests, it allows a wide range of downstream analyses for zero-inflated data
+in a less biased manner.
+
 
 ## Installation
 
