@@ -17,21 +17,3 @@ Subset a \code{\linkS4class{Zi}}-class object based on
 sample_data of an phyloseq object or on colData based on a
 SummarizedExperiment object
 }
-\examples{
-data(mtx)
-OTU <- otu_table(mtx, taxa_are_rows = TRUE)
-sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
-                                      "Sample4", "Sample5", "Sample6",
-                                      "Sample7", "Sample8", "Sample9",
-                                      "Sample10"),
-                     Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
-SAM <- sample_data(sample_data)
-tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-                     Phylum = c(rep("Bacteroidetes", times = 50),
-                                rep("Firmicutes", times = 50)))
-TAX <- tax_table(tax_table)
-ps <- phyloseq::phyloseq(OTU, TAX, SAM)
-Zi <- ziMain(ps)
-subset_sample(Zi, SampleID == "Sample1")
-
-}

@@ -20,5 +20,4 @@ data(mtx)
 Zi <- ziMain(mtx)
 Zi+Zi
 Zi+2
-
 }

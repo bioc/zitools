@@ -1060,98 +1060,47 @@ setMethod("log2p", "Zi", function(x) {
 #'Zi <- ziMain(mtx)
 #'Zi+Zi
 #'Zi+2
-#'
-# setMethod("+", signature = "Zi", definition = function(e1,e2){
-#   if(class(e1)=="Zi")
-#     values1 <- e1@inputcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@inputcounts
-#   else
-#     values2 <- e2
-#   adinputcounts <- values1 + values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@deinflatedcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@deinflatedcounts
-#   else
-#     values2 <- e2
-#   addeinflatedcounts <- values1+values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@weights
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@weights
-#   else
-#     values2 <- e2
-#   adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
-#
-#   result <- new(
-#     Class = "Zi",
-#     inputdata = e1@inputdata,
-#     inputcounts = adinputcounts,
-#     model = e1@model,
-#     deinflatedcounts = addeinflatedcounts,
-#     weights = adweights)
-#   return(result)
-# })
 
-setMethod(
-  "+",
-  signature = c("Zi", "ANY"),
-  definition = function(e1, e2) {
-    is_Zi_e1 <- is(e1, "Zi")
-    is_Zi_e2 <- is(e2, "Zi")
+setMethod("+", signature = "Zi", definition = function(e1,e2){
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1 + values2
 
-    values1 <- if (is_Zi_e1)
-      e1@inputcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@inputcounts
-    else
-      e2
-    adinputcounts <- values1 + values2
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1+values2
 
-    values1 <- if (is_Zi_e1)
-      e1@deinflatedcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@deinflatedcounts
-    else
-      e2
-    addeinflatedcounts <- values1 + values2
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
 
-    values1 <- if (is_Zi_e1)
-      e1@weights
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@weights
-    else
-      e2
-    adweights <-
-      pmin(values1, values2) # Use 'pmin' for point-wise min
-
-    result <- new(
-      Class = "Zi",
-      inputdata = e1@inputdata,
-      inputcounts = adinputcounts,
-      model = e1@model,
-      deinflatedcounts = addeinflatedcounts,
-      weights = adweights
-    )
-
-    return(result)
-  }
-)
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
 
 
 #'@name -
@@ -1171,100 +1120,50 @@ setMethod(
 #'Zi-Zi
 #'Zi-2
 #'
-#'
-# setMethod("-", signature = "Zi", definition = function(e1,e2){
-#   if(class(e1)=="Zi")
-#     values1 <- e1@inputcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@inputcounts
-#   else
-#     values2 <- e2
-#   adinputcounts <- values1-values2
-#   if(sum(adinputcounts<0,na.rm=T)>0)
-#     warning("Negative counts produced.")
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@deinflatedcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@deinflatedcounts
-#   else
-#     values2 <- e2
-#   addeinflatedcounts <- values1-values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@weights
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@weights
-#   else
-#     values2 <- e2
-#   adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
-#
-#   result <- new(
-#     Class = "Zi",
-#     inputdata = e1@inputdata,
-#     inputcounts = adinputcounts,
-#     model = e1@model,
-#     deinflatedcounts = addeinflatedcounts,
-#     weights = adweights)
-#   return(result)
-# })
 
-setMethod(
-  "-",
-  signature = c("Zi", "ANY"),
-  definition = function(e1, e2) {
-    is_Zi_e1 <- is(e1, "Zi")
-    is_Zi_e2 <- is(e2, "Zi")
+setMethod("-", signature = "Zi", definition = function(e1,e2){
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1-values2
+  if(sum(adinputcounts<0,na.rm=T)>0)
+    warning("Negative counts produced.")
 
-    values1 <- if (is_Zi_e1)
-      e1@inputcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@inputcounts
-    else
-      e2
-    adinputcounts <- values1 - values2
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1-values2
 
-    values1 <- if (is_Zi_e1)
-      e1@deinflatedcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@deinflatedcounts
-    else
-      e2
-    addeinflatedcounts <- values1 - values2
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
 
-    values1 <- if (is_Zi_e1)
-      e1@weights
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@weights
-    else
-      e2
-    adweights <-
-      pmin(values1, values2) # Use 'pmin' for point-wise min
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
 
-    result <- new(
-      Class = "Zi",
-      inputdata = e1@inputdata,
-      inputcounts = adinputcounts,
-      model = e1@model,
-      deinflatedcounts = addeinflatedcounts,
-      weights = adweights
-    )
-
-    return(result)
-  }
-)
 
 #'@name *
 #'@aliases *,Zi,ANY-method
@@ -1283,97 +1182,47 @@ setMethod(
 #'Zi*Zi
 #'Zi*2
 #'
-# setMethod("*", signature = "Zi", definition = function(e1,e2){
-#   if(class(e1)=="Zi")
-#     values1 <- e1@inputcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@inputcounts
-#   else
-#     values2 <- e2
-#   adinputcounts <- values1*values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@deinflatedcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@deinflatedcounts
-#   else
-#     values2 <- e2
-#   addeinflatedcounts <- values1*values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@weights
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@weights
-#   else
-#     values2 <- e2
-#   adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
-#
-#   result <- new(
-#     Class = "Zi",
-#     inputdata = e1@inputdata,
-#     inputcounts = adinputcounts,
-#     model = e1@model,
-#     deinflatedcounts = addeinflatedcounts,
-#     weights = adweights)
-#   return(result)
-# })
+ setMethod("*", signature = "Zi", definition = function(e1,e2){
+   if(class(e1)=="Zi")
+     values1 <- e1@inputcounts
+   else
+     values1 <- e1
+   if(class(e2)=="Zi")
+     values2 <- e2@inputcounts
+   else
+     values2 <- e2
+   adinputcounts <- values1*values2
 
-setMethod(
-  "*",
-  signature = c("Zi", "ANY"),
-  definition = function(e1, e2) {
-    is_Zi_e1 <- is(e1, "Zi")
-    is_Zi_e2 <- is(e2, "Zi")
+   if(class(e1)=="Zi")
+     values1 <- e1@deinflatedcounts
+   else
+     values1 <- e1
+   if(class(e2)=="Zi")
+     values2 <- e2@deinflatedcounts
+   else
+     values2 <- e2
+   addeinflatedcounts <- values1*values2
 
-    values1 <- if (is_Zi_e1)
-      e1@inputcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@inputcounts
-    else
-      e2
-    adinputcounts <- values1 * values2
+   if(class(e1)=="Zi")
+     values1 <- e1@weights
+   else
+     values1 <- e1
+   if(class(e2)=="Zi")
+     values2 <- e2@weights
+   else
+     values2 <- e2
+   adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
 
-    values1 <- if (is_Zi_e1)
-      e1@deinflatedcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@deinflatedcounts
-    else
-      e2
-    addeinflatedcounts <- values1 * values2
+   result <- new(
+     Class = "Zi",
+     inputdata = e1@inputdata,
+     inputcounts = adinputcounts,
+     model = e1@model,
+     deinflatedcounts = addeinflatedcounts,
+     weights = adweights)
+   return(result)
+ })
 
-    values1 <- if (is_Zi_e1)
-      e1@weights
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@weights
-    else
-      e2
-    adweights <-
-      pmin(values1, values2) # Use 'pmin' for point-wise min
-
-    result <- new(
-      Class = "Zi",
-      inputdata = e1@inputdata,
-      inputcounts = adinputcounts,
-      model = e1@model,
-      deinflatedcounts = addeinflatedcounts,
-      weights = adweights
-    )
-
-    return(result)
-  }
-)
 
 #'@name /
 #'@aliases /,Zi,ANY-method
@@ -1395,132 +1244,47 @@ setMethod(
 #'Zi/2
 #'
 #'
-# setMethod("/", signature = "Zi", definition = function(e1,e2){
-#   if(class(e1)=="Zi")
-#     values1 <- e1@inputcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@inputcounts
-#   else
-#     values2 <- e2
-#   adinputcounts <- values1/values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@deinflatedcounts
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@deinflatedcounts
-#   else
-#     values2 <- e2
-#   addeinflatedcounts <- values1/values2
-#
-#   if(class(e1)=="Zi")
-#     values1 <- e1@weights
-#   else
-#     values1 <- e1
-#   if(class(e2)=="Zi")
-#     values2 <- e2@weights
-#   else
-#     values2 <- e2
-#   adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
-#
-#   result <- new(
-#     Class = "Zi",
-#     inputdata = e1@inputdata,
-#     inputcounts = adinputcounts,
-#     model = e1@model,
-#     deinflatedcounts = addeinflatedcounts,
-#     weights = adweights)
-#   return(result)
-# })
 
-setMethod(
-  "/",
-  signature = c("Zi", "ANY"),
-  definition = function(e1, e2) {
-    is_Zi_e1 <- is(e1, "Zi")
-    is_Zi_e2 <- is(e2, "Zi")
+setMethod("/", signature = "Zi", definition = function(e1,e2){
+  if(class(e1)=="Zi")
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1/values2
 
-    values1 <- if (is_Zi_e1)
-      e1@inputcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@inputcounts
-    else
-      e2
-    adinputcounts <- values1 / values2
+  if(class(e1)=="Zi")
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1/values2
 
-    values1 <- if (is_Zi_e1)
-      e1@deinflatedcounts
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@deinflatedcounts
-    else
-      e2
-    addeinflatedcounts <- values1 / values2
+  if(class(e1)=="Zi")
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(class(e2)=="Zi")
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
 
-    values1 <- if (is_Zi_e1)
-      e1@weights
-    else
-      e1
-    values2 <- if (is_Zi_e2)
-      e2@weights
-    else
-      e2
-    adweights <-
-      pmin(values1, values2) # Use 'pmin' for point-wise min
-
-    result <- new(
-      Class = "Zi",
-      inputdata = e1@inputdata,
-      inputcounts = adinputcounts,
-      model = e1@model,
-      deinflatedcounts = addeinflatedcounts,
-      weights = adweights
-    )
-
-    return(result)
-  }
-)
-
-#setMethod("Arith", c("Zi", "numeric"),
-#          function(e1, e2) {
-#            is_Zi_e1 <- is(e1, "Zi")
-#            is_Zi_e2 <- is(e2, "Zi")
-
-#            values1 <- if (is_Zi_e1) e1@inputcounts else e1
-#            values2 <- if (is_Zi_e2) e2@inputcounts else e2
-#            adinputcounts <- values1 / values2
-
-#            values1 <- if (is_Zi_e1) e1@deinflatedcounts else e1
-#            values2 <- if (is_Zi_e2) e2@deinflatedcounts else e2
-#            addeinflatedcounts <- values1 / values2
-
-#            values1 <- if (is_Zi_e1) e1@weights else e1
-#            values2 <- if (is_Zi_e2) e2@weights else e2
-#            adweights <- pmin(values1, values2) # Use 'pmin' for point-wise min
-
-#            result <- new(
-#              Class = "Zi",
-#              inputdata = e1@inputdata,
-#              inputcounts = adinputcounts,
-#              model = e1@model,
-#              deinflatedcounts = addeinflatedcounts,
-#              weights = adweights
-#            )
-
-#            return(result)
-#          })
-
-#setMethod("Arith", c("numeric", "Zi"),
-#          function(e1, e2) {
-#            e2@y <- callGeneric(e1, e2@y)
-#            e2
-#          })
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
 
 
 #'@name tax_table
