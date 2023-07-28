@@ -4,6 +4,9 @@
 \name{Zi-class}
 \alias{Zi-class}
 \title{Class Zi}
+\value{
+\code{\linkS4class{Zi}}-class object
+}
 \description{
 Objects of this class store all the results of the ZiMain function to continue
 zero inflated data analysis

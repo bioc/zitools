@@ -12,6 +12,9 @@ subset_sample(Zi, ...)
 \item{...}{The subsetting expression that should be applied, see
 \link[base]{subset} for more details}
 }
+\value{
+a \code{\linkS4class{Zi}}-class object after subsetting is done
+}
 \description{
 Subset a \code{\linkS4class{Zi}}-class object based on
 sample_data of an phyloseq object or on colData based on a

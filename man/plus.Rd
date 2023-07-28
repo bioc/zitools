@@ -3,19 +3,36 @@
 \name{+}
 \alias{+}
 \alias{+,Zi,ANY-method}
+\alias{´-´}
+\alias{-,Zi,ANY-method}
 \title{Arithmetic Operators}
 \usage{
 \S4method{+}{Zi,ANY}(e1, e2)
+
+\S4method{-}{Zi,ANY}(e1, e2)
 }
 \arguments{
 \item{e1}{\code{\linkS4class{Zi}}-class object, matrix or number}
 
 \item{e2}{\code{\linkS4class{Zi}}-class object, matrix or number}
 }
+\value{
+a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+operation is performed
+
+a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+operation is performed
+}
 \description{
+Arithmetic operators for a Zi-class object
+
 Arithmetic operators for a Zi-class object
 }
 \examples{
+data(mtx)
+Zi <- ziMain(mtx)
+Zi+Zi
+Zi+2
 data(mtx)
 Zi <- ziMain(mtx)
 Zi+Zi

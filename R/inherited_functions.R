@@ -1053,8 +1053,12 @@ setMethod("log2p", "Zi", function(x) {
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'
-#'@export
+#'@importFrom methods Arith
 #'
+#'@returns a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+#'operation is performed
+#'
+#'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -1062,31 +1066,31 @@ setMethod("log2p", "Zi", function(x) {
 #'Zi+2
 
 setMethod("+", signature = "Zi", definition = function(e1,e2){
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@inputcounts
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@inputcounts
   else
     values2 <- e2
   adinputcounts <- values1 + values2
 
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@deinflatedcounts
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@deinflatedcounts
   else
     values2 <- e2
   addeinflatedcounts <- values1+values2
 
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@weights
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@weights
   else
     values2 <- e2
@@ -1102,8 +1106,7 @@ setMethod("+", signature = "Zi", definition = function(e1,e2){
   return(result)
 })
 
-
-#'@name -
+#'@name ´-´
 #'@aliases -,Zi,ANY-method
 #'@title Arithmetic Operators
 #'
@@ -1112,43 +1115,44 @@ setMethod("+", signature = "Zi", definition = function(e1,e2){
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'
-#'@export
+#'@importFrom methods Arith
+#'@rdname plus
+#'@returns a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+#'operation is performed
 #'
+#'@export
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
-#'Zi-Zi
-#'Zi-2
-#'
+#'Zi+Zi
+#'Zi+2
 
 setMethod("-", signature = "Zi", definition = function(e1,e2){
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@inputcounts
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@inputcounts
   else
     values2 <- e2
-  adinputcounts <- values1-values2
-  if(sum(adinputcounts<0,na.rm=T)>0)
-    warning("Negative counts produced.")
+  adinputcounts <- values1 + values2
 
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@deinflatedcounts
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@deinflatedcounts
   else
     values2 <- e2
-  addeinflatedcounts <- values1-values2
+  addeinflatedcounts <- values1+values2
 
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@weights
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@weights
   else
     values2 <- e2
@@ -1163,7 +1167,6 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
     weights = adweights)
   return(result)
 })
-
 
 #'@name *
 #'@aliases *,Zi,ANY-method
@@ -1175,6 +1178,10 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
 #'@param e1 \code{\linkS4class{Zi}}-class object, matrix or number
 #'@param e2 \code{\linkS4class{Zi}}-class object, matrix or number
 #'
+#'@returns a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+#'operation is performed
+#'
+#'@importFrom methods Arith
 #'@export
 #'@examples
 #'data(mtx)
@@ -1183,31 +1190,31 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
 #'Zi*2
 #'
  setMethod("*", signature = "Zi", definition = function(e1,e2){
-   if(class(e1)=="Zi")
+   if(is(e1, "Zi"))
      values1 <- e1@inputcounts
    else
      values1 <- e1
-   if(class(e2)=="Zi")
+   if(is(e2, "Zi"))
      values2 <- e2@inputcounts
    else
      values2 <- e2
    adinputcounts <- values1*values2
 
-   if(class(e1)=="Zi")
+   if(is(e1, "Zi"))
      values1 <- e1@deinflatedcounts
    else
      values1 <- e1
-   if(class(e2)=="Zi")
+   if(is(e2, "Zi"))
      values2 <- e2@deinflatedcounts
    else
      values2 <- e2
    addeinflatedcounts <- values1*values2
 
-   if(class(e1)=="Zi")
+   if(is(e1, "Zi"))
      values1 <- e1@weights
    else
      values1 <- e1
-   if(class(e2)=="Zi")
+   if(is(e2, "Zi"))
      values2 <- e2@weights
    else
      values2 <- e2
@@ -1236,6 +1243,9 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
 #'
 #'@importFrom methods Arith
 #'
+#'@returns a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+#'operation is performed
+#'
 #'@export
 #'@examples
 #'data(mtx)
@@ -1246,31 +1256,31 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
 #'
 
 setMethod("/", signature = "Zi", definition = function(e1,e2){
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@inputcounts
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@inputcounts
   else
     values2 <- e2
   adinputcounts <- values1/values2
 
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@deinflatedcounts
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@deinflatedcounts
   else
     values2 <- e2
   addeinflatedcounts <- values1/values2
 
-  if(class(e1)=="Zi")
+  if(is(e1, "Zi"))
     values1 <- e1@weights
   else
     values1 <- e1
-  if(class(e2)=="Zi")
+  if(is(e2, "Zi"))
     values2 <- e2@weights
   else
     values2 <- e2
@@ -1285,6 +1295,7 @@ setMethod("/", signature = "Zi", definition = function(e1,e2){
     weights = adweights)
   return(result)
 })
+
 
 
 #'@name tax_table

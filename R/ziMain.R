@@ -9,6 +9,7 @@
 #'@slot deinflatedcounts matrix. The matrix where predicted structural zeros are omitted
 #'and stored as NA values
 #'@slot weights matrix. A matrix containing weights for zero counts
+#'@returns \code{\linkS4class{Zi}}-class object
 #'@exportClass Zi
 #'
 #'

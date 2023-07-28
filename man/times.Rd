@@ -12,6 +12,10 @@
 
 \item{e2}{\code{\linkS4class{Zi}}-class object, matrix or number}
 }
+\value{
+a \code{\linkS4class{Zi}}-class object after a specific arithmetic
+operation is performed
+}
 \description{
 Arithmetic operators for a Zi-class object
 }

@@ -339,6 +339,8 @@ setMethod("weights<-", "Zi", function(x, value) {
 #'@importFrom SummarizedExperiment assays<-
 #'@export
 #'
+#'@returns a \code{dds} class object
+#'
 #'@examples
 #'data(mtx)
 #'Zi <- ziMain(mtx)
@@ -373,6 +375,8 @@ zi2deseq2 <- function(ZiObject, design, colData, ...) {
 #'@param Zi \code{\linkS4class{Zi}}-class object
 #'@param ... The subsetting expression that should be applied, see
 #'\link[base]{subset} for more details
+#'
+#'@returns a \code{\linkS4class{Zi}}-class object after subsetting is done
 #'
 #'@export
 #'@importFrom phyloseq sample_data
@@ -418,6 +422,8 @@ subset_sample <- function(Zi, ...) {
 #'@param Zi \code{\linkS4class{Zi}}-class object
 #'@param ... The subsetting expression that should be applied, see \link[base]{subset}
 #'for more details
+#'
+#'@returns a \code{\linkS4class{Zi}}-class object after subsetting is done
 #'
 #'@export
 #'@importFrom phyloseq tax_table

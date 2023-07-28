@@ -13,6 +13,9 @@ A matrix with 100 rows and 10 columns
 \usage{
 mtx
 }
+\value{
+a data matrix
+}
 \description{
 Zero-inflated matrix data
 }

@@ -24,6 +24,9 @@ colData correspond to columns of countData}
 is a phyloseq object       \link[DESeq2:DESeqDataSet]{DESeq2::DESeqDataSet} if the inputdata the '
 Zi'-object is a SummarizedExperiment object}
 }
+\value{
+a \code{dds} class object
+}
 \description{
 A \code{\linkS4class{Zi}}-class object is converted to a
 DESeqDataSet object, which can be used for DESeq2 analysis. Both, weight and

@@ -53,3 +53,4 @@ Depends: R (>= 4.3.0),
           methods
 VignetteBuilder: knitr
 biocViews: Software, StatisticalMethod
+LazyData: true
