@@ -33,11 +33,11 @@ Imports: phyloseq,
           magrittr, 
           BiocGenerics,
           graphics,
-          utils
+          utils,
+          BiocStyle
 Suggests: 
     knitr,
     rmarkdown,
-    BiocStyle,
     testthat (>= 3.0.0), 
     tidyverse
 Config/testthat/edition: 3
