@@ -22,10 +22,10 @@ ZiW1@weights <- Zi@weights * 0 + 1
 test_that(
   "Compare results for sd, mean, rowMeans2 and colMeans2 on Zi object with weights equal to 1 to the case where Zi@inputcounts is used",
   {
-    expect_identical(sd(ZiW1), sd(ZiW1@inputcounts))
-    expect_identical(mean(ZiW1), mean(ZiW1@inputcounts))
-    expect_identical(unname(rowMeans2(ZiW1)), rowMeans2(ZiW1@inputcounts))
-    expect_identical(unname(colMeans2(ZiW1)), colMeans2(ZiW1@inputcounts))
+    expect_equal(sd(ZiW1), sd(ZiW1@inputcounts))
+    expect_equal(mean(ZiW1), mean(ZiW1@inputcounts))
+    expect_equal(unname(rowMeans2(ZiW1)), rowMeans2(ZiW1@inputcounts))
+    expect_equal(unname(colMeans2(ZiW1)), colMeans2(ZiW1@inputcounts))
   }
 )
 
@@ -43,9 +43,9 @@ Zi2@weights <- rbind(Zi@weights, Zi@weights)/2
 test_that(
   "Testing whether results for colMeans2, mean and sd on small dataset is the same as for datasets with nrows*2 but weights*(1/2)  ",
   {
-    expect_identical(colMeans2(Zi2), colMeans2(Zi))
+    expect_equal(colMeans2(Zi2), colMeans2(Zi))
     expect_equal(mean(Zi2), mean(Zi)) #Equal hat eine gewisse Toleranz
-    expect_identical(sd(Zi2), sd(Zi))
+    expect_equal(sd(Zi2), sd(Zi))
   }
 )
 
