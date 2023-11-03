@@ -24,8 +24,8 @@ test_that(
   {
     expect_equal(sd(ZiW1), sd(ZiW1@inputcounts))
     expect_equal(mean(ZiW1), mean(ZiW1@inputcounts))
-    expect_equal(unname(rowMeans2(ZiW1)), rowMeans2(ZiW1@inputcounts))
-    expect_equal(unname(colMeans2(ZiW1)), colMeans2(ZiW1@inputcounts))
+    expect_equal(unname(rowMeans2(ZiW1)), unname(rowMeans2(ZiW1@inputcounts)))
+    expect_equal(unname(colMeans2(ZiW1)), unname(colMeans2(ZiW1@inputcounts)))
   }
 )
 
