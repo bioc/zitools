@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 4.5
 )
 ```
 # Introduction
@@ -28,36 +30,33 @@ of downstream analyses for zero-inflated data in a less biased manner.
 
 Let's start with loading the 'zitools'-package:
 
-```{r}
+```{r, message = FALSE}
 library(zitools)
 ```
 
 and loading additionally required packages. 
 
-```{r}
+```{r, message = FALSE}
 library(phyloseq)
 library(DESeq2)
 library(tidyverse)
+library(microbiome)
 ```
 
 ## Example Dataset
 
-An example microbiome dataset from github is used to display the 'zitools' 
-workflow. The data used here are described in 
-[Giloteaux et. al.]{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4918027/} and 
-are available from [GitHub]{https://github.com/Nick243/Create-Giloteaux-2016-Phyloseq-Object/blob/master/ps_giloteaux_2016.rds} 
+An example microbiome dataset from the R package microbiome is used to display the 'zitools' workflow. The data used here are described in [Lahti et. al.]{https://pubmed.ncbi.nlm.nih.gov/23638368/}.
 
-The study, in which this dataset was generated, was conducted to investigate the
-gut microbiome of individuals diagnosed with myalgic encephalomyelitis/chronic
-fatigue syndrome (ME/CFS). Therefore, the gut microbial diversity was analysed
-by performing 16S rRNA sequencing obtained from stool samples. The dataset
-comprises 39 control samples and 48 cases. 
+The study, in which this dataset was generated, was conducted to investigate the 
+impact of probiotic intervention on the human intestinal microbiome. Therefore, the intestinal microbiota diversity was analysed by performing 16S rRNA sequencing obtained from fecal samples. The dataset
+comprises 22 subjects - 8 from the probiotic group and 14 from the placebo group, all samples were analysed before and after the intervention (44 samples in total).  
 
 In a first step, the dataset is loaded. 
 
 ```{r Dataset}
-download.file("https://raw.githubusercontent.com/Nick243/Create-Giloteaux-2016-Phyloseq-Object/master/ps_giloteaux_2016.rds",destfile = "ps_giloteaux_2016.RDS")
-phyloseq <- readRDS("ps_giloteaux_2016.RDS")
+data("peerj32")
+phyloseq <- peerj32[["phyloseq"]]
+phyloseq@sam_data[["time"]] <- factor(phyloseq@sam_data[["time"]])
 ```
 
 ```{r, echo = FALSE}
@@ -69,7 +68,7 @@ str(phyloseq, max.level = 3)
 The zero inflation analysis steps are wrapped into a single function, called ziMain. 
 It fits a zero-inflated mixture model to the data. Per default structural 
 zeros are estimated from counts using features (=rows) and samples (=columns) 
-as factorial predictor variables when fitting a zero inflated negative binomial 
+as predictor variables when fitting a zero inflated negative binomial 
 model. Based on the fitted model, probabilities that count values are structural 
 zeros are calculated. Considering these probabilities, the function generates a 
 deinflated count matrix by replacing predicted structural zeros with NA and 
@@ -104,10 +103,13 @@ quantile(Zi)
 ## Boxplots
 
 Batch effects within the dataset can be visualized by plotting the data as boxplots
-over samples.
+over samples. The boxplot function is overloaded for the Zi-class and can be called
+without further arguments. 
 
 ```{r boxplot, echo=TRUE}
 boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", main = "ZI considered")
+boxplot(log2p(inputcounts(Zi)), xlab = "samples", ylab = "log2(count+1)", main = "ZI not considered")
+
 ```
 
 Considering that the process of generating deinflatedcounts is based on a random
@@ -122,13 +124,12 @@ distributions and summary statistics within individual samples.
 i <- 1
 repeat {
   Zi <- resample_deinflatedcounts(Zi)
-  print(boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)"))
+  boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", main = paste("Iteration", i))
   i = i+1
   if(i==6){
     break
   }
 } 
-
 
 ```
 
@@ -145,28 +146,30 @@ the calculation of differentially abundant taxa. Log2 fold changes are calculate
 DESeq() and the Wald statistic is used to calculate p-values and to identify 
 differentially abundant taxa. In this example, only positive counts are used to 
 estimate the size factors required for normalization within DESeq2, i.e. zeros 
-do not contribute.
+do not contribute. For simplicity, the model used for the differential abundance 
+analysis is a simple model with only one factor (time), with the timepoints being 
+1, before intervention and 2, after intervention. 
 
 ```{r DDS}
-DDS <- zi2deseq2(Zi, ~Subject)
-DDS$Subject <- relevel(DDS$Subject, ref = "Patient")
+DDS <- zi2deseq2(Zi, ~time)
+DDS$Subject <- relevel(DDS$time, ref = "1")
 DDS <-  DESeq(DDS, test = "Wald", fitType = "local", sfType = "poscounts")
+
 ```
 
 ```{r, echo=TRUE}
 (result <- results(DDS, cooksCutoff = FALSE))
-
 result <- as.data.frame(result)
-round(result, digits = 3)
 
-class(result)
 ```
 
-```{r df, echo=FALSE, eval=TRUE}
+```{r df, echo=FALSE, eval=TRUE, warning = FALSE}
 result_df<- cbind(as(result, "data.frame"), as(tax_table(phyloseq)[rownames(result), ], "matrix"))
 result_df <- result_df %>%
-  rownames_to_column(var = "OTU") %>%
-  arrange(padj)
+    rownames_to_column(var = "OTU") %>%
+    arrange(padj)
+#drop the rows with NA
+result_df <- result_df[complete.cases(result_df), ]
 
 result_df$diffexpressed[result_df$log2FoldChange > 1 & result_df$pvalue < 0.05] <- result_df$Genus
 result_df$diffexpressed[result_df$log2FoldChange < -1 & result_df$pvalue < 0.05] <- result_df$Genus
@@ -225,24 +228,23 @@ account the weights assigned to each data point. Then, principal components are
 calculated from these correlations and the weighted scaled data is projected to these
 principal components.
 
-```{r}
+```{r, results='hide'}
 PCA <- princomp(covmat = cor(t(Zi)), cor = FALSE)
 centered_data <- (inputcounts(t(Zi))-colMeans2(t(Zi)))/sqrt(colVars(t(Zi)))
 loadings <- PCA$loadings
 scores <- centered_data %*% loadings
 PCA$scores <- scores
 
-df_PCA <- data.frame("PC1" = PCA[["scores"]][,1], "PC2" = PCA[["scores"]][,2], "Subject" = sample_data(Zi)$Subject)
-summary(PCA)
+df_PCA <- data.frame("PC1" = PCA[["scores"]][,1], "PC2" = PCA[["scores"]][,2], "group" = sample_data(Zi)$group)
 ```
 
 ```{r plot PCA, echo=FALSE}
-suppressWarnings(print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = Subject))+
+suppressWarnings(print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = group))+
   geom_point()+
   xlim(-200,100)+
   ylim(-250,260)+
-  xlab("PC1 6.0%")+
-  ylab("PC2 4.8%")))
+  xlab("PC1 14.6%")+
+  ylab("PC2 9.9%")))
 ```
 
 ## Interaction with the phyloseq package
@@ -261,17 +263,17 @@ new_phyloseq <- zi2phyloseq(Zi)
 str(otu_table(new_phyloseq), max.level = 3)
 ```
 
-```{r}
-subset <- subset_taxa(new_phyloseq, Kingdom=="Bacteria")
+```{r, warning=FALSE}
+subset <- subset_taxa(new_phyloseq, Phylum=="Firmicutes")
 subset <- prune_taxa(names(sort(taxa_sums(subset),TRUE)[1:300]), subset)
-plot_heatmap(subset, sample.label="Sample_Name_s")
+(plot_heatmap(subset, ))
 ```
 
 One option to estimate the alpha diversity is calculating the Chao1 index using
 plot_richness of the phyloseq package
 
 ```{r}  
-plot_richness(new_phyloseq, measures = c("Chao1"), color = sample_data(new_phyloseq)$Subject)+
+plot_richness(new_phyloseq, measures = c("Chao1"), color = sample_data(new_phyloseq)$group)+
   theme(axis.text.x = element_blank())
 ```
 
