@@ -176,7 +176,7 @@ quantile.Zi <-
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'rowQuantiles(Zi, useNames = TRUE)
-#'colQuantiles(Zi)
+#'colQuantiles(Zi, useNames = TRUE)
 
 setMethod("rowQuantiles", "Zi", function(x,
                                          rows = NULL,
@@ -217,7 +217,7 @@ setMethod("colQuantiles", "Zi", function(x,
                                          na.rm = TRUE,
                                          type = 7L,
                                          ...,
-                                         useNames = NA,
+                                         useNames = TRUE,
                                          drop = TRUE) {
   colQuantiles(
     x = x@deinflatedcounts,
