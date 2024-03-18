@@ -27,7 +27,7 @@
   na.rm = TRUE,
   type = 7L,
   ...,
-  useNames = NA,
+  useNames = TRUE,
   drop = TRUE
 )
 }
@@ -68,5 +68,5 @@ deinflatedcounts matrix will be extracted
 data(mtx)
 Zi <- ziMain(mtx)
 rowQuantiles(Zi, useNames = TRUE)
-colQuantiles(Zi)
+colQuantiles(Zi, useNames = TRUE)
 }
