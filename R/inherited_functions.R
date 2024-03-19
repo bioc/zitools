@@ -299,10 +299,10 @@ setMethod("colMeans2", "Zi", function(x,
                                       na.rm = FALSE,
                                       useNames = TRUE) {
   if (is.null(rows)) {
-    rows <-  c(1:nrow(x@inputcounts))
+    rows <- seq_len(nrow(x@inputcounts))
   }
   if (is.null(cols)) {
-    cols <-  c(1:ncol(x@inputcounts))
+    cols <-  seq_len(ncol(x@inputcounts))
   }
   colmean <-
     mapply(
@@ -332,10 +332,10 @@ setMethod("rowMeans2", "Zi", function(x,
                                       na.rm = FALSE,
                                       useNames = TRUE) {
   if (is.null(rows)) {
-    rows <- c(1:nrow(t(x@inputcounts)))
+    rows <- seq_len(nrow(t(x@inputcounts)))
   }
   if (is.null(cols)) {
-    cols <- c(1:ncol(t(x@inputcounts)))
+    cols <- seq_len(ncol(t(x@inputcounts)))
   }
   rowmean <-
     mapply(
@@ -417,10 +417,10 @@ setMethod("rowSds", "Zi", function(x,
                                    na.rm = FALSE,
                                    useNames = TRUE) {
   if (is.null(rows)) {
-    rows <- c(1:nrow(t(x@inputcounts)))
+    rows <- seq_len(nrow(t(x@inputcounts)))
   }
   if (is.null(cols)) {
-    cols <- c(1:ncol(t(x@inputcounts)))
+    cols <- seq_len(ncol(t(x@inputcounts)))
   }
   mapply(
     matrixStats::weightedSd,
@@ -444,10 +444,10 @@ setMethod("colSds", "Zi", function(x,
                                    na.rm = FALSE,
                                    useNames = TRUE) {
   if (is.null(rows)) {
-    rows <-  c(1:nrow(x@inputcounts))
+    rows <-  seq_len(nrow(x@inputcounts))
   }
   if (is.null(cols)) {
-    cols <-  c(1:ncol(x@inputcounts))
+    cols <-  seq_len(ncol(x@inputcounts))
   }
   mapply(
     matrixStats::weightedSd,
@@ -527,10 +527,10 @@ setMethod("rowVars", "Zi", function(x,
                                     na.rm = FALSE,
                                     useNames = TRUE) {
   if (is.null(rows)) {
-    rows <- c(1:nrow(t(x@inputcounts)))
+    rows <- seq_len(nrow(t(x@inputcounts)))
   }
   if (is.null(cols)) {
-    cols <- c(1:ncol(t(x@inputcounts)))
+    cols <- seq_len(ncol(t(x@inputcounts)))
   }
   mapply(
     weightedVar,
@@ -554,10 +554,10 @@ setMethod("colVars", "Zi", function(x,
                                     na.rm = FALSE,
                                     useNames = TRUE) {
   if (is.null(rows)) {
-    rows <-  c(1:nrow(x@inputcounts))
+    rows <-  seq_len(nrow(x@inputcounts))
   }
   if (is.null(cols)) {
-    cols <-  c(1:ncol(x@inputcounts))
+    cols <-  seq_len(ncol(x@inputcounts))
   }
   mapply(
     weightedVar,
@@ -640,10 +640,10 @@ setMethod("rowWeightedMeans", "Zi", function(x,
                                              na.rm = FALSE,
                                              useNames = TRUE) {
   if (is.null(rows)) {
-    rows <- c(1:nrow(t(x@inputcounts)))
+    rows <- seq_len(nrow(t(x@inputcounts)))
   }
   if (is.null(cols)) {
-    cols <- c(1:ncol(t(x@inputcounts)))
+    cols <- seq_len(ncol(t(x@inputcounts)))
   }
   mapply(
     weighted.mean,
@@ -669,10 +669,10 @@ setMethod("colWeightedMeans", "Zi", function(x,
                                              na.rm = FALSE,
                                              useNames = TRUE) {
   if (is.null(rows)) {
-    rows <-  c(1:nrow(x@inputcounts))
+    rows <-  seq_len(nrow(x@inputcounts))
   }
   if (is.null(cols)) {
-    cols <-  c(1:ncol(x@inputcounts))
+    cols <-  seq_len(ncol(x@inputcounts))
   }
   mapply(
     weighted.mean,
@@ -758,10 +758,10 @@ setMethod("rowWeightedSds", "Zi", function(x,
                                            na.rm = FALSE,
                                            useNames = TRUE) {
   if (is.null(rows)) {
-    rows <- c(1:nrow(t(x@inputcounts)))
+    rows <- seq_len(nrow(t(x@inputcounts)))
   }
   if (is.null(cols)) {
-    cols <- c(1:ncol(t(x@inputcounts)))
+    cols <- seq_len(ncol(t(x@inputcounts)))
   }
   mapply(
     matrixStats::weightedSd,
@@ -786,10 +786,10 @@ setMethod("colWeightedSds", "Zi", function(x,
                                            na.rm = FALSE,
                                            useNames = TRUE) {
   if (is.null(rows)) {
-    rows <-  c(1:nrow(x@inputcounts))
+    rows <-  seq_len(nrow(x@inputcounts))
   }
   if (is.null(cols)) {
-    cols <-  c(1:ncol(x@inputcounts))
+    cols <-  seq_len(ncol(x@inputcounts))
   }
   mapply(
     matrixStats::weightedSd,
@@ -872,10 +872,10 @@ setMethod("rowWeightedVars", "Zi", function(x,
                                             na.rm = FALSE,
                                             useNames = TRUE) {
   if (is.null(rows)) {
-    rows <- c(1:nrow(t(x@inputcounts)))
+    rows <- seq_len(nrow(t(x@inputcounts)))
   }
   if (is.null(cols)) {
-    cols <- c(1:ncol(t(x@inputcounts)))
+    cols <- seq_len(ncol(t(x@inputcounts)))
   }
   mapply(
     weightedVar,
@@ -901,10 +901,10 @@ setMethod("colWeightedVars", "Zi", function(x,
                                             na.rm = FALSE,
                                             useNames = TRUE) {
   if (is.null(rows)) {
-    rows <-  c(1:nrow(x@inputcounts))
+    rows <-  seq_len(nrow(x@inputcounts))
   }
   if (is.null(cols)) {
-    cols <-  c(1:ncol(x@inputcounts))
+    cols <-  seq_len(ncol(x@inputcounts))
   }
   mapply(
     weightedVar,

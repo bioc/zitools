@@ -125,8 +125,8 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
   }
   colnames <- colnames(cx)
   rownames <- colnames(y)
-  for (a in 1:ncol(cx)) {
-    for (b in 1:ncol(cx)) {
+  for (a in seq_len(ncol(cx))) {
+    for (b in seq_len(ncol(cx))) {{
       col_a <- cx[,a]
       col_b <- y[,b]
       weights_a <- wx[,a]

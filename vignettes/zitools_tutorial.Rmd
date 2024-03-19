@@ -56,7 +56,7 @@ In a first step, the dataset is loaded.
 ```{r Dataset}
 data("peerj32")
 phyloseq <- peerj32[["phyloseq"]]
-phyloseq@sam_data[["time"]] <- factor(phyloseq@sam_data[["time"]])
+sample_data(phyloseq)$time <- factor(sample_data(phyloseq)$time)
 ```
 
 ```{r, echo = FALSE}
