@@ -213,4 +213,3 @@ setMethod("cov", c("Zi","ANY"), function(x, y = NULL, use = "everything"){
 setMethod("plot", c("Zi","ANY"), function(x, y, ...) {
   plot(x@deinflatedcounts, y = NULL, ...)
 })
-
