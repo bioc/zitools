@@ -145,7 +145,7 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
   colnames(mtx) <- colnames
   rownames(mtx) <- rownames
   return(mtx)
-}
+})
 
 #'@name cov
 #'@aliases cov,Zi,ANY-method
