@@ -139,6 +139,7 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
         sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b)) / sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
       cor <- cov / sqrt(var_a * var_b)
       my_vector <- c(my_vector, cor)
+    }
   }
   mtx <- matrix(my_vector, ncol(cx))
   colnames(mtx) <- colnames
