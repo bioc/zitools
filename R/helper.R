@@ -487,7 +487,7 @@ resample_deinflatedcounts <- function(x) {
   list_deinflatedcounts <- list()
   for (i in seq_along(x@model))  {
     vec <- x@model[[i]][["model"]][, 3]
-    vec <- vec[seq_along(vec) / ncol(mtx_new))]
+    vec <- vec[seq_along(vec) / ncol(mtx_new)]
     count_sub <- mtx_new[vec, ]
     count_long <- reshape_zi(count_sub, feature = feature)
     new_deinflatedcounts <-
