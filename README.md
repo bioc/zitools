@@ -22,6 +22,12 @@ You can install the development version of zitools from [GitHub](https://github.
 # install.packages("devtools")
 devtools::install_github("kreutz-lab/zitools")
 ```
+``` r
+if(!requireNamespace("BiocManager")){
+  install.packages("BiocManager")
+}
+BiocManager::install("zitools")
+``` 
 
 ## Example
 
