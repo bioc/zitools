@@ -51,6 +51,7 @@ Collate:
     'inherited_functions.R'
     'plots.R'
     'utils.R'
+    'zitools-package.R'
 Depends: R (>= 4.3.0), 
           methods
 VignetteBuilder: knitr

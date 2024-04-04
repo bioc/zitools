@@ -11,7 +11,7 @@ NULL
 #'@description Replace the OTU table of a phyloseq object with the OTU table
 #'of zero de-inflated count data
 #'
-#'@returns a "phyloseq"-class object
+#'@returns a 'phyloseq'-class object
 #'
 #'@importFrom phyloseq otu_table
 #'@importFrom phyloseq otu_table<-
@@ -19,15 +19,15 @@ NULL
 #'@examples
 #'data(mtx)
 #'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
-#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
-#'                                       "Sample4", "Sample5", "Sample6",
-#'                                       "Sample7", "Sample8", "Sample9",
-#'                                       "Sample10"),
+#'sample_data <- data.frame(SampleID = c('Sample1', 'Sample2', 'Sample3',
+#'                                       'Sample4', 'Sample5', 'Sample6',
+#'                                       'Sample7', 'Sample8', 'Sample9',
+#'                                       'Sample10'),
 #'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
 #'SAM <- sample_data(sample_data)
-#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50),
-#'                                 rep("Firmicutes", times = 50)))
+#'tax_table <- data.frame(Kingdom = c(rep('Bacteria', times = 100)),
+#'                      Phylum = c(rep('Bacteroidetes', times = 50),
+#'                                 rep('Firmicutes', times = 50)))
 #'TAX <- tax_table(tax_table)
 #'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
 #'Zi <- ziMain(ps)
@@ -36,12 +36,9 @@ NULL
 #'
 #'@export
 
-zi2phyloseq <- function(ZiObject)
-{
-  ps <- ZiObject@inputdata
-  new_otu <-
-    otu_table(ZiObject@deinflatedcounts,
-              taxa_are_rows(ZiObject@inputdata))
+zi2phyloseq <- function(ZiObject) {
+  ps <- inputdata(ZiObject)
+  new_otu <- otu_table(deinflatedcounts(ZiObject), taxa_are_rows(inputdata(ZiObject)))
   otu_table(ps) <- new_otu
   return(ps)
 }
@@ -61,16 +58,14 @@ zi2phyloseq <- function(ZiObject)
 #'Zi <- ziMain(mtx)
 #'inputdata(Zi)
 
-setGeneric("inputdata", function(x)
-  standardGeneric("inputdata"))
+setGeneric("inputdata", function(x) standardGeneric("inputdata"))
 
 #'@name inputdata
 #'@aliases inputdata,Zi-method
 #'@export
 #'@rdname inputdata
 
-setMethod("inputdata", "Zi", function(x)
-  x@inputdata)
+setMethod("inputdata", "Zi", function(x) x@inputdata)
 
 #'@name inputdata<-
 #'
@@ -115,16 +110,14 @@ setMethod("inputdata<-", "Zi", function(x, value) {
 #'Zi <- ziMain(mtx)
 #'inputcounts(Zi)
 
-setGeneric("inputcounts", function(x)
-  standardGeneric("inputcounts"))
+setGeneric("inputcounts", function(x) standardGeneric("inputcounts"))
 
 #'@name inputcounts
 #'@aliases inputcounts,Zi-method
 #'@export
 #'@rdname inputcounts
 
-setMethod("inputcounts", "Zi", function(x)
-  x@inputcounts)
+setMethod("inputcounts", "Zi", function(x) x@inputcounts)
 
 #'@name inputcounts<-
 #'@rdname inputcounts
@@ -167,16 +160,14 @@ setMethod("inputcounts<-", "Zi", function(x, value) {
 #'Zi <- ziMain(mtx)
 #'model(Zi)
 
-setGeneric("model", function(x)
-  standardGeneric("model"))
+setGeneric("model", function(x) standardGeneric("model"))
 
 #'@name model
 #'@aliases model,Zi-method
 #'@export
 #'@rdname model
 
-setMethod("model", "Zi", function(x)
-  x@model)
+setMethod("model", "Zi", function(x) x@model)
 
 #'@name model<-
 #'@rdname model
@@ -221,8 +212,7 @@ setMethod("model<-", "Zi", function(x, value) {
 #'Zi <- ziMain(mtx)
 #'deinflatedcounts(Zi)
 
-setGeneric("deinflatedcounts", function(x)
-  standardGeneric("deinflatedcounts"))
+setGeneric("deinflatedcounts", function(x) standardGeneric("deinflatedcounts"))
 
 #'@name deinflatedcounts
 #'@aliases deinflatedcounts,Zi-method
@@ -230,8 +220,7 @@ setGeneric("deinflatedcounts", function(x)
 #'
 #'@rdname deinflatedcounts
 
-setMethod("deinflatedcounts", "Zi", function(x)
-  x@deinflatedcounts)
+setMethod("deinflatedcounts", "Zi", function(x) x@deinflatedcounts)
 
 #'@name deinflatedcounts<-
 #'@rdname deinflatedcounts
@@ -242,8 +231,7 @@ setMethod("deinflatedcounts", "Zi", function(x)
 #'@export
 #'
 #'
-setGeneric("deinflatedcounts<-", function(x, value) standardGeneric
-           ("deinflatedcounts<-"))
+setGeneric("deinflatedcounts<-", function(x, value) standardGeneric("deinflatedcounts<-"))
 
 #'@name deinflatedcounts<-
 #'@rdname deinflatedcounts
@@ -275,16 +263,14 @@ setMethod("deinflatedcounts<-", "Zi", function(x, value) {
 #'Zi <- ziMain(mtx)
 #'weights(Zi)
 
-setGeneric("weights", function(x)
-  standardGeneric("weights"))
+setGeneric("weights", function(x) standardGeneric("weights"))
 
 #'@name weights
 #'@aliases weights,Zi-method
 #'@export
 #'@rdname weights
 
-setMethod("weights", "Zi", function(x)
-  x@weights)
+setMethod("weights", "Zi", function(x) x@weights)
 
 #'@name weights<-
 #'@rdname weights
@@ -348,20 +334,18 @@ setMethod("weights<-", "Zi", function(x, value) {
 #'zi2deseq2(Zi, ~group, colData)
 
 zi2deseq2 <- function(ZiObject, design, colData, ...) {
-  if (is(ZiObject@inputdata, "phyloseq") == TRUE) {
-    dds <- phyloseq_to_deseq2(ZiObject@inputdata, design = design, ...)
+  if (is(inputdata(ZiObject), "phyloseq") == TRUE) {
+    dds <- phyloseq_to_deseq2(inputdata(ZiObject), design = design,
+                              ...)
   }
-  if (is(ZiObject@inputdata, "SummarizedExperiment") == TRUE) {
-    dds <- DESeqDataSet(ZiObject@inputdata, design = design, ...)
+  if (is(inputdata(ZiObject), "SummarizedExperiment") == TRUE) {
+    dds <- DESeqDataSet(inputdata(ZiObject), design = design, ...)
   }
-  if (is(ZiObject@inputdata, "matrix") == TRUE) {
-    dds <-
-      DESeqDataSetFromMatrix(ZiObject@inputcounts,
-                             colData = colData,
-                             design = design,
-                             ...)
+  if (is(inputdata(ZiObject), "matrix") == TRUE) {
+    dds <- DESeqDataSetFromMatrix(inputcounts(ZiObject), colData = colData,
+                                  design = design, ...)
   }
-  assays(dds)[["weights"]] <- ZiObject@weights
+  assays(dds)[["weights"]] <- weights(ZiObject)
   return(dds)
 }
 
@@ -383,47 +367,24 @@ zi2deseq2 <- function(ZiObject, design, colData, ...) {
 #'@importFrom phyloseq sample_data<-
 #'@importFrom SummarizedExperiment colData
 #'
-#'@examples
-#'data(mtx)
-#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
-#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
-#'                                       "Sample4", "Sample5", "Sample6",
-#'                                       "Sample7", "Sample8", "Sample9",
-#'                                       "Sample10"),
-#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
-#'SAM <- sample_data(sample_data)
-#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50),
-#'                                 rep("Firmicutes", times = 50)))
-#'TAX <- tax_table(tax_table)
-#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
-#'Zi <- ziMain(ps)
-#'subset_sample(Zi, SampleID == "Sample1")
-#'
 #'
 
 subset_sample <- function(Zi, ...) {
-  if (is(Zi@inputdata, "phyloseq") == TRUE) {
-    newDF <- subset(as(sample_data(Zi@inputdata), "data.frame"), ...)
+  if (is(inputdata(Zi), "phyloseq") == TRUE) {
+    newDF <- subset(as(sample_data(inputdata(Zi)), "data.frame"), ...)
     colnames <- rownames(newDF)
-    sample_data(Zi@inputdata) <- sample_data(newDF)
+    sample_data(inputdata(Zi)) <- sample_data(newDF)
   }
-  if (is(Zi@inputdata, "SummarizedExperiment") == TRUE) {
-    newDF <- subset(as(colData(Zi@inputdata), "DataFrame"), ...)
+  if (is(inputdata(Zi), "SummarizedExperiment") == TRUE) {
+    newDF <- subset(as(colData(inputdata(Zi)), "DataFrame"), ...)
     colnames <- rownames(newDF)
-    Zi@inputdata <- Zi@inputdata[, colnames]
+    inputdata(Zi) <- inputdata(Zi)[, colnames]
   }
-  inputcounts <- Zi@inputcounts[, colnames]
-  deinflatedcounts <- Zi@deinflatedcounts[, colnames]
-  weights <- Zi@weights[, colnames]
-  result <- new(
-    Class = "Zi",
-    inputdata = Zi@inputdata,
-    inputcounts = inputcounts,
-    model = Zi@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = weights
-  )
+  inputcounts <- inputcounts(Zi)[, colnames]
+  deinflatedcounts <- deinflatedcounts(Zi)[, colnames]
+  weights <- weights(Zi)[, colnames]
+  result <- new(Class = "Zi", inputdata = inputdata(Zi), inputcounts = inputcounts,
+                model = model(Zi), deinflatedcounts = deinflatedcounts, weights = weights)
   return(result)
 }
 
@@ -446,48 +407,26 @@ subset_sample <- function(Zi, ...) {
 #'@importFrom phyloseq tax_table
 #'@importFrom phyloseq tax_table<-
 #'@importFrom SummarizedExperiment rowData
-#'#'@examples
-#'data(mtx)
-#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
-#'sample_data <- data.frame(SampleID = c("Sample1", "Sample2", "Sample3",
-#'                                       "Sample4", "Sample5", "Sample6",
-#'                                       "Sample7", "Sample8", "Sample9",
-#'                                       "Sample10"),
-#'                      Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
-#'SAM <- sample_data(sample_data)
-#'tax_table <- data.frame(Kingdom = c(rep("Bacteria", times = 100)),
-#'                      Phylum = c(rep("Bacteroidetes", times = 50),
-#'                                 rep("Firmicutes", times = 50)))
-#'TAX <- tax_table(tax_table)
-#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
-#'Zi <- ziMain(ps)
-#'subset_feature(Zi, Phylum == "Bacteroidetes")
 
 
 subset_feature <- function(Zi, ...) {
-  if (is(Zi@inputdata, "phyloseq") == TRUE) {
-    mtx <- as(tax_table(Zi@inputdata), "matrix")
+  if (is(inputdata(Zi), "phyloseq") == TRUE) {
+    mtx <- as(tax_table(inputdata(Zi)), "matrix")
     newdf <- subset(data.frame(mtx), ...)
     newmtx <- as(newdf, "matrix")
     rownames <- rownames(newdf)
-    tax_table(Zi@inputdata) <- tax_table(newmtx)
+    tax_table(inputdata(Zi)) <- tax_table(newmtx)
   }
-  if (is(Zi@inputdata, "SummarizedExperiment") == TRUE) {
-    newDF <- subset(as(rowData(Zi@inputdata), "DataFrame"), ...)
+  if (is(inputdata(Zi), "SummarizedExperiment") == TRUE) {
+    newDF <- subset(as(rowData(inputdata(Zi)), "DataFrame"), ...)
     rownames <- rownames(newDF)
-    Zi@inputdata <- Zi@inputdata[rownames,]
+    Zi@inputdata <- inputdata(Zi)[rownames, ]
   }
-  inputcounts <- Zi@inputcounts[rownames,]
-  deinflatedcounts <- Zi@deinflatedcounts[rownames,]
-  weights <- Zi@weights[rownames,]
-  result <- new(
-    Class = "Zi",
-    inputdata = Zi@inputdata,
-    inputcounts = inputcounts,
-    model = Zi@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = weights
-  )
+  inputcounts <- inputcounts(Zi)[rownames, ]
+  deinflatedcounts <- deinflatedcounts(Zi)[rownames, ]
+  weights <- weights(Zi)[rownames, ]
+  result <- new(Class = "Zi", inputdata = inputdata(Zi), inputcounts = inputcounts,
+                model = model(Zi), deinflatedcounts = deinflatedcounts, weights = weights)
   return(result)
 }
 
@@ -512,19 +451,19 @@ subset_feature <- function(Zi, ...) {
 #'@export
 
 resample_deinflatedcounts <- function(x) {
-  mtx <- x@inputcounts
-  mtx_new <- mtx[rowSums(mtx[]) > 0,]
-  feature <- colnames(x@model[[1]][["model"]])[3]
+  mtx <- inputcounts(x)
+  mtx_new <- mtx[rowSums(mtx[]) > 0, ]
+  feature <- colnames(model(x)[[1]][["model"]])[3]
   rownames <- rownames(mtx)
   colnames <- colnames(mtx)
   list_deinflatedcounts <- list()
-  for (i in 1:length(x@model)) {
-    vec <- x@model[[i]][["model"]][, 3]
-    vec <- vec[1:(length(vec) / ncol(mtx_new))]
+  for (i in 1:length(model(x))) {
+    vec <- model(x)[[i]][["model"]][, 3]
+    vec <- vec[1:(length(vec)/ncol(mtx_new))]
     count_sub <- mtx_new[vec, ]
     count_long <- reshape_zi(count_sub, feature = feature)
-    new_deinflatedcounts <-
-      omit_str_zero(x@model[[i]], count_long, feature = feature)
+    new_deinflatedcounts <- omit_str_zero(model(x)[[i]], count_long,
+                                          feature = feature)
     new_deinflatedcounts <- new_deinflatedcounts %>%
       spread(key = "sample", value = "count") %>%
       column_to_rownames(var = feature) %>%
@@ -532,16 +471,10 @@ resample_deinflatedcounts <- function(x) {
     list_deinflatedcounts[[i]] <- new_deinflatedcounts
   }
   deinflatedcounts <- do.call(rbind, list_deinflatedcounts)
-  deinflatedcounts <-
-    rbind(deinflatedcounts, mtx[rowSums(mtx[]) == 0,])
+  deinflatedcounts <- rbind(deinflatedcounts, mtx[rowSums(mtx[]) == 0,
+  ])
   deinflatedcounts <- deinflatedcounts[rownames, colnames]
-  result <- new(
-    Class = "Zi",
-    inputdata = x@inputdata,
-    inputcounts = x@inputcounts,
-    model = x@model,
-    deinflatedcounts = deinflatedcounts,
-    weights = x@weights
-  )
+  result <- new(Class = "Zi", inputdata = inputdata(x), inputcounts = inputcounts(x),
+                model = model(x), deinflatedcounts = deinflatedcounts, weights = weights(x))
   return(result)
 }

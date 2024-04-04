@@ -15,15 +15,8 @@
 #'@exportClass Zi
 #'
 #'
-setClass(
-  Class = "Zi",
-  slots = list(
-    inputdata = "ANY",
-    inputcounts = "matrix",
-    model = "list",
-    deinflatedcounts = "matrix",
-    weights = "matrix")
-)
+setClass(Class = "Zi", slots = list(inputdata = "ANY", inputcounts = "matrix",
+                                    model = "list", deinflatedcounts = "matrix", weights = "matrix"))
 
 
 
@@ -34,16 +27,16 @@ setClass(
 #'weights for structural zeros
 #'@param inputdata phyloseq object, SummarizedExperiment object, or matrix (rows
 #'=features, columns=samples)
-#'@param feature "feature", "gene", "OTU", "phylum", etc. By default, rownames
+#'@param feature 'feature', 'gene', 'OTU', 'phylum', etc. By default, rownames
 #'are labelled as feature1, feature2, ...
 #'@param formula  formula to fit the zero inflated model
 #'y ~ x1 + x2 + ..., default = count ~ sample + feature.
 #'A different set of regressors can be specified using y ~ x1 +x2 + ...|z1 + z2
 #'+ ... where the first part describes the count data model and the second part
 #'describes the zero inflation model
-#'@param dist = distribution, either poisson ("poisson"), negative binomial
-#'("negbin")
-#'@param link = link function, either "logit", "probit", "cloglog", "cauchit"
+#'@param dist = distribution, either poisson ('poisson'), negative binomial
+#'('negbin')
+#'@param link = link function, either 'logit', 'probit', 'cloglog', 'cauchit'
 #'@param zeroRows.rm = logical, indicating whether rows that only contain zeros
 #'should be removed (\code{\link{TRUE}}) or not (\code{\link{FALSE}}) (they are
 #'removed to fit a zero inflated model and will be added afterwards count matrix
@@ -109,79 +102,57 @@ setClass(
 #'#ziMain(esophagus)
 #'#data(soilrep)
 
-setGeneric("ziMain", function(inputdata,
-                              feature = "feature",
-                              formula = count ~ sample + feature,
-                              dist = "negbin",
-                              link = "logit",
-                              zeroRows.rm = FALSE,
-                              ...)
-{
+setGeneric("ziMain", function(inputdata, feature = "feature", formula = count ~
+                                sample + feature, dist = "negbin", link = "logit", zeroRows.rm = FALSE,
+                              ...) {
 
   mtx <- as.matrix(inputdata)
 
-  if(is.null(rownames(mtx))) {
+  if (is.null(rownames(mtx))) {
     rownames(mtx) <- c(1:nrow(mtx))
   }
-  if(is.null(colnames(mtx))) {
+  if (is.null(colnames(mtx))) {
     colnames(mtx) <- c(1:ncol(mtx))
   }
   if (any(mtx == 0) == FALSE) {
-    result <- new(
-      Class = "Zi",
-      inputdata = inputdata,
-      inputcounts = mtx,
-      model = vector(mode = "list"),
-      deinflatedcounts = mtx,
-      weights = matrix(1, nrow = nrow(mtx), ncol = ncol(mtx)))
-  }
-  else{
+    result <- new(Class = "Zi", inputdata = inputdata, inputcounts = mtx,
+                  model = vector(mode = "list"), deinflatedcounts = mtx, weights = matrix(1,
+                                                                                          nrow = nrow(mtx), ncol = ncol(mtx)))
+  } else {
     rownames <- rownames(mtx)
     colnames <- colnames(mtx)
-    mtx_new <- mtx[rowSums(mtx[]) > 0,] #remove rows that contain only 0
+    mtx_new <- mtx[rowSums(mtx[]) > 0, ]  #remove rows that contain only 0
     mtx_random <- preprocess_mtx(mtx)
     list_subset <- subset_mtx(mtx_random)
     list_core <- list()
     for (i in 1:length(list_subset)) {
-      list_core[[i]] <-
-        zi_core(
-          list_subset[[i]],
-          feature = feature,
-          formula = formula,
-          dist = dist,
-          link = link,
-          ...
-        )
+      list_core[[i]] <- zi_core(list_subset[[i]], feature = feature,
+                                formula = formula, dist = dist, link = link, ...)
     }
-    ziInput <- do.call(rbind, lapply(list_core, '[[', "ziInput"))
-    model <- lapply(list_core, '[[', "model")
-    zideinflatedcounts <- do.call(rbind, lapply(list_core, '[[',
-                                                "zideinflatedcounts"))
-    weights <- do.call(rbind, lapply(list_core, '[[', "weights"))
+    ziInput <- do.call(rbind, lapply(list_core, "[[", "ziInput"))
+    model <- lapply(list_core, "[[", "model")
+    zideinflatedcounts <- do.call(rbind, lapply(list_core, "[[", "zideinflatedcounts"))
+    weights <- do.call(rbind, lapply(list_core, "[[", "weights"))
     if (zeroRows.rm == FALSE) {
       mtx_new <- mtx
-      zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx[]) == 0,])
-      zero_weights <- mtx[rowSums(mtx[]) == 0,]
+      zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx[]) ==
+                                                            0, ])
+      zero_weights <- mtx[rowSums(mtx[]) == 0, ]
       zero_weights[] <- 1
       weights <- rbind(weights, zero_weights)
     }
-    if(zeroRows.rm == TRUE) {
+    if (zeroRows.rm == TRUE) {
       rownames <- rownames(mtx_new)
       colnames <- colnames(mtx_new)
     }
-    mtx_new <- mtx_new[rownames,colnames]
+    mtx_new <- mtx_new[rownames, colnames]
     mode(mtx_new) <- "integer"
-    zideinflatedcounts <- zideinflatedcounts[rownames,colnames]
+    zideinflatedcounts <- zideinflatedcounts[rownames, colnames]
     mode(zideinflatedcounts) <- "integer"
-    weights <- weights[rownames,colnames]
-    result <- new(
-      Class = "Zi",
-      inputdata = inputdata,
-      inputcounts = mtx_new,
-      model = model,
-      deinflatedcounts = zideinflatedcounts,
-      weights = weights
-    )}
+    weights <- weights[rownames, colnames]
+    result <- new(Class = "Zi", inputdata = inputdata, inputcounts = mtx_new,
+                  model = model, deinflatedcounts = zideinflatedcounts, weights = weights)
+  }
   return(result)
 })
 
@@ -189,73 +160,28 @@ setGeneric("ziMain", function(inputdata,
 
 #'@importFrom phyloseq otu_table
 
-setMethod(
-  "ziMain",
-  signature = c("phyloseq"),
-  definition = function(inputdata,
-                        feature = "feature",
-                        formula = count ~ sample + feature,
-                        dist = "negbin",
-                        link = "logit",
-                        zeroRows.rm = FALSE,
-                        ...) {
-    matrix <- as.matrix(otu_table(inputdata))
-    suppressWarnings(class(matrix) <- "matrix")
-    zi_result <-
-      ziMain(
-        matrix,
-        feature = feature,
-        formula = formula,
-        dist = dist,
-        link = link,
-        zeroRows.rm = zeroRows.rm,
-        ...
-      )
-    result <- new(
-      Class = "Zi",
-      inputdata = inputdata,
-      inputcounts = zi_result@inputcounts,
-      model = zi_result@model,
-      deinflatedcounts = zi_result@deinflatedcounts,
-      weights = zi_result@weights
-    )
-    return(result)
-  }
-)
+setMethod("ziMain", signature = c("phyloseq"), definition = function(inputdata,
+                                                                     feature = "feature", formula = count ~ sample + feature, dist = "negbin",
+                                                                     link = "logit", zeroRows.rm = FALSE, ...) {
+  matrix <- as.matrix(otu_table(inputdata))
+  suppressWarnings(class(matrix) <- "matrix")
+  zi_result <- ziMain(matrix, feature = feature, formula = formula, dist = dist,
+                      link = link, zeroRows.rm = zeroRows.rm, ...)
+  result <- new(Class = "Zi", inputdata = inputdata, inputcounts = zi_result@inputcounts,
+                model = zi_result@model, deinflatedcounts = zi_result@deinflatedcounts,
+                weights = zi_result@weights)
+  return(result)
+})
 
 #'@importFrom SummarizedExperiment assays
-setMethod(
-  "ziMain",
-  signature = c("SummarizedExperiment"),
-  definition = function(inputdata,
-                        feature = "feature",
-                        formula = count ~ sample + feature,
-                        dist = "negbin",
-                        link = "logit",
-                        zeroRows.rm = FALSE,
-                        ...) {
-    matrix <- as.matrix(assays(inputdata)$counts)
-    zi_result <-
-      ziMain(
-        matrix,
-        feature = feature,
-        formula = formula,
-        dist = dist,
-        link = link,
-        zeroRows.rm = zeroRows.rm,
-        ...
-      )
-    result <- new(
-      Class = "Zi",
-      inputdata = inputdata,
-      inputcounts = zi_result@inputcounts,
-      model = zi_result@model,
-      deinflatedcounts = zi_result@deinflatedcounts,
-      weights = zi_result@weights
-    )
-    return(result)
-  }
-)
-
-
-
+setMethod("ziMain", signature = c("SummarizedExperiment"), definition = function(inputdata,
+                                                                                 feature = "feature", formula = count ~ sample + feature, dist = "negbin",
+                                                                                 link = "logit", zeroRows.rm = FALSE, ...) {
+  matrix <- as.matrix(assays(inputdata)$counts)
+  zi_result <- ziMain(matrix, feature = feature, formula = formula, dist = dist,
+                      link = link, zeroRows.rm = zeroRows.rm, ...)
+  result <- new(Class = "Zi", inputdata = inputdata, inputcounts = zi_result@inputcounts,
+                model = zi_result@model, deinflatedcounts = zi_result@deinflatedcounts,
+                weights = zi_result@weights)
+  return(result)
+})

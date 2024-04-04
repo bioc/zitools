@@ -11,7 +11,7 @@ NULL
 #'@param mtx count matrix
 #'@param feature character string characterizing the rows, e.g. gene, OTU
 #'
-#'@returns a dataframe (long format), 3 columns: count, sample, "feature"
+#'@returns a dataframe (long format), 3 columns: count, sample, 'feature'
 #'
 #'@importFrom tibble rownames_to_column
 #'@importFrom magrittr %>%
@@ -35,7 +35,7 @@ reshape_zi <- function(mtx, feature = "") {
 #'@param zi_input result of reshape_zi, count data in a long format
 #'@param feature character string characterizing the rows, e.g. gene, OTU, ...
 #'
-#'@returns a dataframe(long format), columns: count, sample, "feature",
+#'@returns a dataframe(long format), columns: count, sample, 'feature',
 #'
 #'@importFrom magrittr %>%
 #'@importFrom dplyr bind_cols
@@ -48,24 +48,17 @@ reshape_zi <- function(mtx, feature = "") {
 #'@noRd
 
 omit_str_zero <- function(zi, zi_input, feature = "") {
-  zi_prediction <-
-    data.frame(predicted_count = predict(zi, type = "count")) %>%
+  zi_prediction <- data.frame(predicted_count = predict(zi, type = "count")) %>%
     bind_cols(data.frame(p_str_zero = predict(zi, type = "zero"))) %>%
     bind_cols(zi_input, .)
-  str_zero <-
-    bind_cols(zi_prediction, predicted_zero = c(rbinom(
-      nrow(zi_prediction), 1, prob = zi_prediction$p_str_zero
-    )))
+  str_zero <- bind_cols(zi_prediction, predicted_zero = c(rbinom(nrow(zi_prediction),
+                                                                 1, prob = zi_prediction$p_str_zero)))
   repeat {
     str_zero <- str_zero %>%
-      mutate(predicted_zero = replace(predicted_zero, 1:nrow(str_zero), c(
-        rbinom(nrow(str_zero), 1, prob = str_zero$p_str_zero)
-      )))
-    str_zero$count <-
-      ifelse(str_zero$count == 0 &
-               str_zero$predicted_zero == 1,
-             NA,
-             str_zero$count)
+      mutate(predicted_zero = replace(predicted_zero, 1:nrow(str_zero),
+                                      c(rbinom(nrow(str_zero), 1, prob = str_zero$p_str_zero))))
+    str_zero$count <- ifelse(str_zero$count == 0 & str_zero$predicted_zero ==
+                               1, NA, str_zero$count)
     str_zero$na <- ifelse(is.na(str_zero$count), 1, 0)
     if (sum(str_zero$na) >= round(sum(str_zero$p_str_zero), digits = 0)) {
       break
@@ -73,21 +66,12 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
   }
   replaced_zero <- str_zero %>%
     filter(is.na(count)) %>%
-    sample_n(sum(str_zero$na) - round(sum(str_zero$p_str_zero)),
-             replace = FALSE) %>%
+    sample_n(sum(str_zero$na) - round(sum(str_zero$p_str_zero)), replace = FALSE) %>%
     replace_na(list(count = 0))
-  zi_replaced <-
-    merge(
-      str_zero,
-      replaced_zero,
-      by.x = 1:2,
-      by.y = 1:2,
-      all = TRUE
-    )
-  zi_replaced <-
-    cbind(zi_replaced[c(1, 2)], "count" = with(zi_replaced,
-                                               ifelse(is.na(count.y),
-                                                      count.x, count.y)))
+  zi_replaced <- merge(str_zero, replaced_zero, by.x = 1:2, by.y = 1:2,
+                       all = TRUE)
+  zi_replaced <- cbind(zi_replaced[c(1, 2)], count = with(zi_replaced,
+                                                          ifelse(is.na(count.y), count.x, count.y)))
 
   return(zi_replaced)
 }
@@ -119,57 +103,33 @@ omit_str_zero <- function(zi, zi_input, feature = "") {
 #'@importFrom magrittr %>%
 #'@noRd
 #'
-#function to calculate weights - formula: w=(1-pi)*fnb/fzinb
-calcWeights <-
-  function(zi_input,
-           zi,
-           feature,
-           dist) {
-    df <- data.frame(zi_input, pstr0 = predict(zi, type = "zero"))
-    df <- mutate(df, pstr0 = case_when(count != 0 ~ 0, TRUE ~ pstr0))
-    if (dist == "poisson") {
-      f <-
-        dpois(
-          x = zi_input$count,
-          lambda = predict(zi, type = "count"),
-          log = FALSE
-        )
-      f_zi <-
-        dzipois(
-          x = zi_input$count,
-          lambda = predict(zi, type = "count"),
-          pstr0 = df$pstr0,
-          log = FALSE
-        )
-    }
-    if (dist == "negbin") {
-      f <-
-        dnbinom(
-          x = zi_input$count,
-          size = zi[["theta"]],
-          mu = predict(zi, type = "count"),
-          log = FALSE
-        )
-      f_zi <-
-        dzinegbin(
-          x = zi_input$count,
-          size = zi[["theta"]],
-          munb = predict(zi, type = "count"),
-          pstr0 = df$pstr0,
-          log = FALSE
-        )
-    }
-    df$f <- f
-    df$f_zi <- f_zi
-    df$weights <- c(((1 - df$pstr0) * df$f) / df$f_zi)
-    df$"1-pi" <- c(1 - df$pstr0)
-    df_wide <- df %>%
-      select(c(feature, "sample", "weights")) %>%
-      spread(key = "sample", value = "weights") %>%
-      column_to_rownames(var = feature) %>%
-      as.matrix(.)
-    return(df_wide)
+# function to calculate weights - formula: w=(1-pi)*fnb/fzinb
+calcWeights <- function(zi_input, zi, feature, dist) {
+  df <- data.frame(zi_input, pstr0 = predict(zi, type = "zero"))
+  df <- mutate(df, pstr0 = case_when(count != 0 ~ 0, TRUE ~ pstr0))
+  if (dist == "poisson") {
+    f <- dpois(x = zi_input$count, lambda = predict(zi, type = "count"),
+               log = FALSE)
+    f_zi <- dzipois(x = zi_input$count, lambda = predict(zi, type = "count"),
+                    pstr0 = df$pstr0, log = FALSE)
   }
+  if (dist == "negbin") {
+    f <- dnbinom(x = zi_input$count, size = zi[["theta"]], mu = predict(zi,
+                                                                        type = "count"), log = FALSE)
+    f_zi <- dzinegbin(x = zi_input$count, size = zi[["theta"]], munb = predict(zi,
+                                                                               type = "count"), pstr0 = df$pstr0, log = FALSE)
+  }
+  df$f <- f
+  df$f_zi <- f_zi
+  df$weights <- c(((1 - df$pstr0) * df$f)/df$f_zi)
+  df$"1-pi" <- c(1 - df$pstr0)
+  df_wide <- df %>%
+    select(c(feature, "sample", "weights")) %>%
+    spread(key = "sample", value = "weights") %>%
+    column_to_rownames(var = feature) %>%
+    as.matrix(.)
+  return(df_wide)
+}
 
 
 #'@name preprocess_mtx
@@ -185,7 +145,7 @@ calcWeights <-
 #'@noRd
 preprocess_mtx <- function(mtx) {
   set.seed(123)
-  mtx <- mtx[rowSums(mtx[]) > 0,]
+  mtx <- mtx[rowSums(mtx[]) > 0, ]
   seed <- .Random.seed
   set.seed(seed)
   random_rows <- sample(nrow(mtx))
@@ -207,18 +167,20 @@ preprocess_mtx <- function(mtx) {
 #'
 #'@returns list containing the subsets
 #'@noRd
-subset_mtx <- function(mtx)
-{
-  n_blocks <- round(nrow(mtx)*ncol(mtx)/5000)
-  if (n_blocks == 0) {n_blocks <- 1}
+subset_mtx <- function(mtx) {
+  n_blocks <- round(nrow(mtx) * ncol(mtx)/5000)
+  if (n_blocks == 0) {
+    n_blocks <- 1
+  }
   n_rowsperblock <- ceiling(nrow(mtx)/n_blocks)
-  index <- rep(c(1:n_blocks),each=n_rowsperblock)
+  index <- rep(c(1:n_blocks), each = n_rowsperblock)
   index <- index[1:nrow(mtx)]
   df <- as.data.frame(mtx)
   df$index <- index
   list_subset <- split(df, index)
   list_subset <- lapply(list_subset, function(x) x[!(names(x) %in% c("index"))])
-  return(list_subset)}
+  return(list_subset)
+}
 
 #'@name zi_core
 #'
@@ -242,14 +204,10 @@ subset_mtx <- function(mtx)
 #'@importFrom magrittr %>%
 #'@noRd
 #'
-zi_core <- function(input, feature = "",  formula, dist, link, ...)
-{
+zi_core <- function(input, feature = "", formula, dist, link, ...) {
   matrix <- as.matrix(input)
   zi_input <- reshape_zi(input, feature)
-  zi <- pscl::zeroinfl(formula,
-                       data = zi_input,
-                       dist = dist,
-                       link = link,
+  zi <- pscl::zeroinfl(formula, data = zi_input, dist = dist, link = link,
                        ...)
   zi_prediction_long <- omit_str_zero(zi, zi_input, feature)
   zi_prediction_wide <- zi_prediction_long %>%
@@ -257,12 +215,7 @@ zi_core <- function(input, feature = "",  formula, dist, link, ...)
     column_to_rownames(var = feature) %>%
     as.matrix()
   weights <- calcWeights(zi_input, zi, feature, dist = dist)
-  result <-
-    list(
-      ziInput = matrix,
-      model = zi,
-      zideinflatedcounts = zi_prediction_wide,
-      weights = weights
-    )
+  result <- list(ziInput = matrix, model = zi, zideinflatedcounts = zi_prediction_wide,
+                 weights = weights)
   return(result)
 }
