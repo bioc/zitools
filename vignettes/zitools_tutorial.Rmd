@@ -52,11 +52,16 @@ library(microbiome)
 
 ## Example Dataset
 
-An example microbiome dataset from the R package microbiome is used to display the 'zitools' workflow. The data used here are described in [Lahti et. al.]{https://pubmed.ncbi.nlm.nih.gov/23638368/}.
+An example microbiome dataset from the R package microbiome is used to display 
+the 'zitools' workflow. The data used here are described in [Lahti et. al.]
+{https://pubmed.ncbi.nlm.nih.gov/23638368/}.
 
-The study, in which this dataset was generated, was conducted to investigate the 
-impact of probiotic intervention on the human intestinal microbiome. Therefore, the intestinal microbiota diversity was analysed by performing 16S rRNA sequencing obtained from fecal samples. The dataset
-comprises 22 subjects - 8 from the probiotic group and 14 from the placebo group, all samples were analysed before and after the intervention (44 samples in total).  
+The study, in which this dataset was generated, was conducted to investigate the
+impact of probiotic intervention on the human intestinal microbiome. Therefore, 
+the intestinal microbiota diversity was analysed by performing 16S rRNA 
+sequencing obtained from fecal samples. The datasetcomprises 22 subjects - 8 
+from the probiotic group and 14 from the placebo group, all samples were 
+analysed before and after the intervention (44 samples in total).  
 
 In a first step, the dataset is loaded. 
 
@@ -72,7 +77,8 @@ str(phyloseq, max.level = 3)
 
 ## Analysis using zitools 
 
-The zero inflation analysis steps are wrapped into a single function, called ziMain. 
+The zero inflation analysis steps are wrapped into a single function, called 
+ziMain. 
 It fits a zero-inflated mixture model to the data. Per default structural 
 zeros are estimated from counts using features (=rows) and samples (=columns) 
 as predictor variables when fitting a zero inflated negative binomial 
@@ -92,11 +98,11 @@ print(Zi)
 ## Basic Statistic Quantities
 
 Following the OOP concept of polymorphism, already implemented functions can be 
-called with an \texttt{Zi}-object without further arguments as demonstrated in the
-following examples. Please note, that the basic functionality was not reimplemented.
-Instead only a wrapper methods for Zi-class objects were written that pass the
-appropriate information to existing functions. This ensures that the full functionality
-coincides.
+called with an \texttt{Zi}-object without further arguments as demonstrated in 
+the following examples. Please note, that the basic functionality was not 
+reimplemented. Instead only a wrapper methods for Zi-class objects were written 
+that pass the appropriate information to existing functions. This ensures that 
+the full functionality coincides.
 
 ```{r}
 mean(Zi)
@@ -109,13 +115,15 @@ quantile(Zi)
 
 ## Boxplots
 
-Batch effects within the dataset can be visualized by plotting the data as boxplots
-over samples. The boxplot function is overloaded for the Zi-class and can be called
-without further arguments. 
+Batch effects within the dataset can be visualized by plotting the data as 
+boxplots over samples. The boxplot function is overloaded for the Zi-class and 
+can be called without further arguments. 
 
 ```{r boxplot, echo=TRUE}
-boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", main = "ZI considered")
-boxplot(log2p(inputcounts(Zi)), xlab = "samples", ylab = "log2(count+1)", main = "ZI not considered")
+boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", 
+        main = "ZI considered")
+boxplot(log2p(inputcounts(Zi)), xlab = "samples", ylab = "log2(count+1)", 
+        main = "ZI not considered")
 
 ```
 
@@ -123,15 +131,16 @@ Considering that the process of generating deinflatedcounts is based on a random
 drawings, resample_deinflatedcounts repeating the process of drawing structural
 zeros can be performed to evaluate influences of this random drawing process.
 Visualization based on resampled deinflatedcounts via boxplots shows only minor
-differences. Slight differences are highlighted by red circles. This suggests that
-the randomness inherent in the drawing process has only a small influence on the
-distributions and summary statistics within individual samples.
+differences. Slight differences are highlighted by red circles. This suggests 
+that the randomness inherent in the drawing process has only a small influence 
+on the distributions and summary statistics within individual samples.
 
 ```{r repeat plot}
 i <- 1
 repeat {
   Zi <- resample_deinflatedcounts(Zi)
-  boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", main = paste("Iteration", i))
+  boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", 
+          main = paste("Iteration", i))
   i = i+1
   if(i==6){
     break
@@ -144,18 +153,19 @@ repeat {
 
 To identify differentially abundant taxa between two groups of the dataset 
 (e.g. patients vs. controls), differential abundance analysis using the 
-[DESeq2]{https://bioconductor.org/packages/release/bioc/html/DESeq2.html} package
-can be performed. As a first step, the object of a Zi-class has to be transformed in a
-DESeqDataSet object using zi2deseq2. In this process, weights for down-weighting
-structural zeros are included in the DESeqDataSet. Therefore, when performing
-the actual differential abundance analysis weights are automatically incorporated in
-the calculation of differentially abundant taxa. Log2 fold changes are calculated by
-DESeq() and the Wald statistic is used to calculate p-values and to identify 
-differentially abundant taxa. In this example, only positive counts are used to 
-estimate the size factors required for normalization within DESeq2, i.e. zeros 
-do not contribute. For simplicity, the model used for the differential abundance 
-analysis is a simple model with only one factor (time), with the timepoints being 
-1, before intervention and 2, after intervention. 
+[DESeq2]{https://bioconductor.org/packages/release/bioc/html/DESeq2.html} 
+package can be performed. As a first step, the object of a Zi-class has to be 
+transformed in a DESeqDataSet object using zi2deseq2. In this process, weights 
+for down-weighting structural zeros are included in the DESeqDataSet. Therefore,
+when performing the actual differential abundance analysis weights are 
+automatically incorporated in the calculation of differentially abundant taxa. 
+Log2 fold changes are calculated by DESeq() and the Wald statistic is used to 
+calculate p-values and to identify  differentially abundant taxa. In this 
+example, only positive counts are used to estimate the size factors required for
+normalization within DESeq2, i.e. zeros do not contribute. For simplicity, the 
+model used for the differential abundance analysis is a simple model with only 
+one factor (time), with the timepoints being 1, before intervention and 2, after
+intervention. 
 
 ```{r DDS}
 DDS <- zi2deseq2(Zi, ~time)
@@ -171,30 +181,38 @@ result <- as.data.frame(result)
 ```
 
 ```{r df, echo=FALSE, eval=TRUE, warning = FALSE}
-result_df<- cbind(as(result, "data.frame"), as(tax_table(phyloseq)[rownames(result), ], "matrix"))
+result_df<- cbind(as(result, "data.frame"), 
+                  as(tax_table(phyloseq)[rownames(result), ], "matrix"))
 result_df <- result_df %>%
     rownames_to_column(var = "OTU") %>%
     arrange(padj)
 #drop the rows with NA
 result_df <- result_df[complete.cases(result_df), ]
 
-result_df$diffexpressed[result_df$log2FoldChange > 1 & result_df$pvalue < 0.05] <- result_df$Genus
-result_df$diffexpressed[result_df$log2FoldChange < -1 & result_df$pvalue < 0.05] <- result_df$Genus
+result_df$diffexpressed[result_df$log2FoldChange > 1 & 
+                          result_df$pvalue < 0.05] <- result_df$Genus
+result_df$diffexpressed[result_df$log2FoldChange < -1 & 
+                          result_df$pvalue < 0.05] <- result_df$Genus
 
-result_df <- data.frame("OTU" = result_df$OTU, "log2FoldChange" = result_df$log2FoldChange, "pvalue" = result_df$pvalue, "Genus" = result_df$diffexpressed)
+result_df <- data.frame("OTU" = result_df$OTU, 
+                        "log2FoldChange" = result_df$log2FoldChange, 
+                        "pvalue" = result_df$pvalue, 
+                        "Genus" = result_df$diffexpressed)
 
 ```
 
 ## Plot Differential Abundance Result
 
 The most common depiction of the magnitude of the differential abundances and
-their significance is a so-called Volcano plot with fold-changes on the horizontal axis
-and p-values on the negative log10-scale on the vertical axis.
+their significance is a so-called Volcano plot with fold-changes on the 
+horizontal axis and p-values on the negative log10-scale on the vertical axis.
 Volcano plot can be generated manually as demonstrated in the following.
 
 
 ```{r, echo = TRUE}
-suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, y=-log10(pvalue), color = Genus)) +
+suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, 
+                                                  y=-log10(pvalue), 
+                                                  color = Genus)) +
   geom_point()+
   theme_minimal()+
   xlim(-6,6)+
@@ -211,9 +229,9 @@ suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, y=-log10(pva
 
 Heatmaps allow for discovering patterns of variation in the data by identifying
 regions of high or low abundance. By plotting a MissingValueHeatmap the amount
-of predicted structural zeros can be visualized as they are represented by NA values
-of the deinflated count matrix. For demonstration purposes, all values > 500 are set
-to 500 for better color coding.
+of predicted structural zeros can be visualized as they are represented by NA 
+values of the deinflated count matrix. For demonstration purposes, all values > 
+500 are set to 500 for better color coding.
 
 ```{r, eval = TRUE, echo = FALSE}
 Zi2 <- Zi
@@ -228,12 +246,12 @@ MissingValueHeatmap(Zi2, xlab = "Sample")
 
 ## Principal Component Analysis
 
-There is no principal component analysis method that enables the direct consideration
-of individual weights for each data point. However, by splitting the calculations,
-visualization is feasible. First, weighted correlations are computed by taking into
-account the weights assigned to each data point. Then, principal components are
-calculated from these correlations and the weighted scaled data is projected to these
-principal components.
+There is no principal component analysis method that enables the direct 
+consideration of individual weights for each data point. However, by splitting 
+the calculations, visualization is feasible. First, weighted correlations are 
+computed by taking into account the weights assigned to each data point. Then, 
+principal components are calculated from these correlations and the weighted 
+scaled data is projected to these principal components.
 
 ```{r, results='hide'}
 PCA <- princomp(covmat = cor(t(Zi)), cor = FALSE)
@@ -242,7 +260,8 @@ loadings <- PCA$loadings
 scores <- centered_data %*% loadings
 PCA$scores <- scores
 
-df_PCA <- data.frame("PC1" = PCA[["scores"]][,1], "PC2" = PCA[["scores"]][,2], "group" = sample_data(Zi)$group)
+df_PCA <- data.frame("PC1" = PCA[["scores"]][,1], "PC2" = PCA[["scores"]][,2], 
+                     "group" = sample_data(Zi)$group)
 ```
 
 ```{r plot PCA, echo=FALSE}
@@ -258,8 +277,8 @@ suppressWarnings(print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = group))+
 
 To allow for an even wider range of analysis methods, the function zi2phyloseq()
 creates a phyloseq object where the otu_table is replaced with deinflatedcounts.
-Therefore, functions of the phyloseq package can be used while also accounting for
-the zero inflation weights calculated via our zitools package.
+Therefore, functions of the phyloseq package can be used while also accounting 
+for the zero inflation weights calculated via our zitools package.
 
 
 ```{r}
@@ -280,7 +299,8 @@ One option to estimate the alpha diversity is calculating the Chao1 index using
 plot_richness of the phyloseq package
 
 ```{r}  
-plot_richness(new_phyloseq, measures = c("Chao1"), color = sample_data(new_phyloseq)$group)+
+plot_richness(new_phyloseq, measures = c("Chao1"), 
+              color = sample_data(new_phyloseq)$group)+
   theme(axis.text.x = element_blank())
 ```
 
