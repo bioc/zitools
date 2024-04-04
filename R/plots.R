@@ -34,8 +34,9 @@ heatmap <- function(x, ...) {
 #'@title Draw a Heat Map
 #'@param x 'Zi'-class object
 #'@param ... see \link[stats]{heatmap}
-#'@description draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the deinflatedcounts
-#'matrix (drawn structural zeros) to produce a heatmap. NA values are white
+#'@description draw a heatmap of a given 'Zi'-class object, heatmap.Zi uses the
+#'deinflatedcounts matrix (drawn structural zeros) to produce a heatmap. NA
+#'values are white
 #'@returns heatmap
 #'@importFrom dplyr filter_all
 #'@importFrom stats heatmap
@@ -76,22 +77,28 @@ heatmap.Zi <- function(x, ...) {
 MissingValueHeatmap <- function(ZiObject,title = "", xlab = "", ylab = "") {
 
   mtx <- ZiObject@deinflatedcounts
-  mtx.heatmap.sorted <- data.frame(mtx[order(-rowSums(is.na(mtx)), rowMeans(mtx, na.rm = TRUE)),])
+  mtx.heatmap.sorted <- data.frame(mtx[order(-rowSums(is.na(mtx)),
+                                             rowMeans(mtx, na.rm = TRUE)),])
   mtx.heatmap.sorted$Feature <- row.names(mtx.heatmap.sorted)
   mtx.heatmap.sorted$FeatureIdx <- seq(1, nrow(mtx.heatmap.sorted))
 
   mtx.long <- reshape2::melt(mtx)
   colnames(mtx.long) <- c("Feature", "Sample", "value")
-  heatmap.df <-merge(mtx.long, mtx.heatmap.sorted[, c("Feature", "FeatureIdx")], by="Feature")
-  gg.heatmap <-   ggplot(data = heatmap.df, aes(x = Sample, y = FeatureIdx, fill = value))  +
+  heatmap.df <-merge(mtx.long, mtx.heatmap.sorted[, c("Feature", "FeatureIdx")],
+                     by="Feature")
+  gg.heatmap <-   ggplot(data = heatmap.df, aes(x = Sample, y = FeatureIdx,
+                                                fill = value))  +
     geom_tile() +
-    scale_fill_gradientn(colors = RColorBrewer::brewer.pal(n = 9, name = "Blues"), na.value = 'red') +
+    scale_fill_gradientn(colors = RColorBrewer::brewer.pal(n = 9,
+                                                           name = "Blues"),
+                         na.value = 'red') +
     labs(x = xlab, y = ylab) +
     ggtitle(title)
   return(gg.heatmap)}
 
 setGeneric("cor", function(x, y = NULL, use = "everything",
-                           method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
+                           method = c("pearson", "kendall", "spearman"))
+  standardGeneric("cor"))
 
 #'@name cor
 #'@aliases cor,Zi,ANY-method
@@ -110,7 +117,8 @@ setGeneric("cor", function(x, y = NULL, use = "everything",
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'cor(Zi)
-setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", method = "pearson"){
+setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything",
+                                          method = "pearson"){
   if(use!="everything")
     stop("zitools::cor only implemented so far for use=\"everything\"")
   if(method!="pearson")
@@ -136,7 +144,8 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
       var_a <- sum(weights_a*(col_a-mean_a)^2)/(sum(weights_a)-1)
       var_b <- sum(weights_b*(col_b-mean_b)^2)/(sum(weights_b)-1)
       cov <-
-        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b)) / sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
+        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b))/
+        sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
       cor <- cov / sqrt(var_a * var_b)
       my_vector <- c(my_vector, cor)
     }
@@ -151,7 +160,8 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
 #'@aliases cov,Zi,ANY-method
 #'@title Calculate weighted Covariance
 #'@description calculate the weighted covariance of the columns of the
-#'count matrix of an Zi object taking weights for possible structural zero counts into account
+#'count matrix of an Zi object taking weights for possible structural zero
+#'counts into account
 #'@param x    'Zi'-class object
 #'@param y    'Zi'-class object
 #'@param use "everything"
@@ -183,7 +193,8 @@ setMethod("cov", c("Zi","ANY"), function(x, y = NULL, use = "everything"){
       var_a <- sum(weights_a*(col_a-mean_a)^2)/(sum(weights_a)-1)
       var_b <- sum(weights_b*(col_b-mean_b)^2)/(sum(weights_b)-1)
       C[a,b] <-
-        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b)) / sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
+        sum(sqrt(weights_a)*(col_a - mean_a) * sqrt(weights_b)*(col_b - mean_b))/
+        sqrt( (sum(weights_a)-1) * (sum(weights_b)-1))
       C[b,a] <- C[a,b]
     }
   }
@@ -200,8 +211,8 @@ setMethod("cov", c("Zi","ANY"), function(x, y = NULL, use = "everything"){
 #'@title Plotting
 #'@description plot
 #'@param  x      \code{\linkS4class{Zi}}-class object
-#'@param y the y coordinates of points in the plot, optional if x is an appropriate
-#'structure
+#'@param y the y coordinates of points in the plot, optional if x is an
+#'appropriate structure
 #'@param ... Arguments to be passed to plot
 #'
 #'@returns returns plot object

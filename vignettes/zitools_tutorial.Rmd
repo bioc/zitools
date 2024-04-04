@@ -28,6 +28,13 @@ of downstream analyses for zero-inflated data in a less biased manner.
 
 # Installation
 
+```{r, eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("zitools")
+```
+
+
 Let's start with loading the 'zitools'-package:
 
 ```{r, message = FALSE}

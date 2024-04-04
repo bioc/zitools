@@ -16,8 +16,8 @@
 mean value
 }
 \description{
-Calculate the arithmetic mean of zero inflated data taking weights
-for structural zeros into account
+Calculate the arithmetic mean of zero inflated data taking
+weights for structural zeros into account
 }
 \examples{
 data(mtx)

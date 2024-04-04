@@ -10,8 +10,8 @@
 \arguments{
 \item{x}{\code{\linkS4class{Zi}}-class object}
 
-\item{y}{the y coordinates of points in the plot, optional if x is an appropriate
-structure}
+\item{y}{the y coordinates of points in the plot, optional if x is an
+appropriate structure}
 
 \item{...}{Arguments to be passed to plot}
 }

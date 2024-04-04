@@ -4,8 +4,8 @@
 \alias{ziMain}
 \alias{ziMain,SummarizedExperiment-method}
 \alias{ziMain,phyloseq-method}
-\title{ziMain - main function to fit a zero inflation model and calculate weights
-for structural zeros}
+\title{ziMain - main function to fit a zero inflation model and calculate
+weights for structural zeros}
 \usage{
 ziMain(
   inputdata,
@@ -26,19 +26,24 @@ are labelled as feature1, feature2, ...}
 
 \item{formula}{formula to fit the zero inflated model
 y ~ x1 + x2 + ..., default = count ~ sample + feature.
-A different set of regressors can be specified using y ~ x1 +x2 + ...|z1 + z2 + ...
-where the first part describes the count data model and the second part
-describes the zero inflation model}
+A different set of regressors can be specified using y ~ x1 +x2 + ...|z1 + z2
+\itemize{
+\item ... where the first part describes the count data model and the second part
+describes the zero inflation model
+}}
 
-\item{dist}{= distribution, either poisson ("poisson"), negative binomial ("negbin")}
+\item{dist}{= distribution, either poisson ("poisson"), negative binomial
+("negbin")}
 
 \item{link}{= link function, either "logit", "probit", "cloglog", "cauchit"}
 
-\item{zeroRows.rm}{= logical, indicating whether rows that only contain zeros should be removed (\code{\link{TRUE}})
-or not (\code{\link{FALSE}}) (they are removed to fit a zero inflated model and will be added afterwards
-count matrix per default = 0 and weights = 1)}
+\item{zeroRows.rm}{= logical, indicating whether rows that only contain zeros
+should be removed (\code{\link{TRUE}}) or not (\code{\link{FALSE}}) (they are
+removed to fit a zero inflated model and will be added afterwards count matrix
+per default = 0 and weights = 1)}
 
-\item{...}{additional parameters to describe the model, see \code{\link[pscl]{zeroinfl}}}
+\item{...}{additional parameters to describe the model, see
+\code{\link[pscl]{zeroinfl}}}
 }
 \value{
 \code{\linkS4class{Zi}}-class object
@@ -46,9 +51,9 @@ count matrix per default = 0 and weights = 1)}
 \description{
 This function fits a zero-inflated mixture model (either
 Poisson or negative binomial distribution) to count data and calculates
-weights for all zeros indicating whether a zero is a real count (weight close to 1)
-or whether it is a structural zero (weight close to 0). The default model is
-a zero inflated negative binomial model.
+weights for all zeros indicating whether a zero is a real count (weight close
+to 1) or whether it is a structural zero (weight close to 0). The default
+model is a zero inflated negative binomial model.
 
 The input inputdata of the ziMain function is either a phyloseq
 object, SummarizedExperiment object or count matrix.
@@ -58,34 +63,35 @@ blocks of around 5000 count values. Then, a zero inflation model (either
 Poisson or negative binomial distribution) is fitted to the data. The response
 variable count is estimated using the predictor variables sample(columns) and
 feature(rows). Using the fitted zero inflated model, probabilities given
-that a zero in the count matrix is a structural zero are predicted. Those probabilities are used in two ways:
-\enumerate{
-\item A zero-deinflated count matrix is generated where a appropriate proportion
-of zeros are randomly replaced by NA. This count matrix can be used for analysis
-methods which cannot deal with weights.
-\item Weights
-\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta \right) }{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
+that a zero in the count matrix is a structural zero are predicted. Those
+probabilities are used in two ways: 1) A zero-deinflated count matrix is
+generated where a appropriate proportion of zeros are randomly replaced by NA.
+This count matrix can be used for analysis methods which cannot deal with
+weights. 2) Weights
+\deqn{w = \frac{\left(1 - \pi\right) f_{\text{NB}}\left(y; \mu, \theta
+\right)}{f_{\text{ZINB}}\left(y;\mu, \theta, \pi\right)}.}
 (see Van den Berge, K., Perraudeau, F., Soneson, C. et al.)
 are calculated in order to down-weight structrual zeros in analyses
 which can account for weighting of individual data points.
-}
 
 all zero counts are calculated given the following formula:
 
-The result of the ziMain function can be used to analyze zero inflated count data.
+The result of the ziMain function can be used to analyze zero inflated count
+data.
 }
 \section{Slots}{
 
 \describe{
 \item{\code{inputdata}}{a matrix, phyloseq or SummarizedExperiment object.}
 
-\item{\code{inputcounts}}{matrix. The count matrix, features as rows, samples as columns}
+\item{\code{inputcounts}}{matrix. The count matrix, features as rows, samples as
+columns}
 
 \item{\code{model}}{list. The result of fitting a zero inflated model using
 \code{\link[pscl]{zeroinfl}}}
 
-\item{\code{deinflatedcounts}}{matrix. A matrix where zero counts are randomly replaced according
-to the estimated probability of being a structural zero}
+\item{\code{deinflatedcounts}}{matrix. A matrix where zero counts are randomly
+replaced according to the estimated probability of being a structural zero}
 
 \item{\code{weights}}{matrix. A matrix containing weights for zero counts}
 }}

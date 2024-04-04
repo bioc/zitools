@@ -181,7 +181,8 @@ quantile.Zi <-
 setMethod("rowQuantiles", "Zi", function(x,
                                          rows = NULL,
                                          cols = NULL,
-                                         probs = seq(from = 0, to = 1, by = 0.25),
+                                         probs = seq(from = 0, to = 1,
+                                                     by = 0.25),
                                          na.rm = TRUE,
                                          type = 7L,
                                          ...,
@@ -213,7 +214,8 @@ setMethod("rowQuantiles", "Zi", function(x,
 setMethod("colQuantiles", "Zi", function(x,
                                          rows = NULL,
                                          cols = NULL,
-                                         probs = seq(from = 0, to = 1, by = 0.25),
+                                         probs = seq(from = 0, to = 1,
+                                                     by = 0.25),
                                          na.rm = TRUE,
                                          type = 7L,
                                          ...,
@@ -240,8 +242,8 @@ setMethod("colQuantiles", "Zi", function(x,
 #'@param x A \code{\linkS4class{Zi}}-class object
 #'@param ... \link[base]{mean.default}
 #'
-#'@description  Calculate the arithmetic mean of zero inflated data taking weights
-#'for structural zeros into account
+#'@description  Calculate the arithmetic mean of zero inflated data taking
+#'weights for structural zeros into account
 #'
 #'@returns mean value
 #'
@@ -1094,7 +1096,7 @@ setMethod("+", signature = "Zi", definition = function(e1,e2){
     values2 <- e2@weights
   else
     values2 <- e2
-  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+  adweights <- pmin(values1,values2)
 
   result <- new(
     Class = "Zi",
@@ -1156,7 +1158,7 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
     values2 <- e2@weights
   else
     values2 <- e2
-  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+  adweights <- pmin(values1,values2)
 
   result <- new(
     Class = "Zi",
@@ -1189,46 +1191,46 @@ setMethod("-", signature = "Zi", definition = function(e1,e2){
 #'Zi*Zi
 #'Zi*2
 #'
- setMethod("*", signature = "Zi", definition = function(e1,e2){
-   if(is(e1, "Zi"))
-     values1 <- e1@inputcounts
-   else
-     values1 <- e1
-   if(is(e2, "Zi"))
-     values2 <- e2@inputcounts
-   else
-     values2 <- e2
-   adinputcounts <- values1*values2
+setMethod("*", signature = "Zi", definition = function(e1,e2){
+  if(is(e1, "Zi"))
+    values1 <- e1@inputcounts
+  else
+    values1 <- e1
+  if(is(e2, "Zi"))
+    values2 <- e2@inputcounts
+  else
+    values2 <- e2
+  adinputcounts <- values1*values2
 
-   if(is(e1, "Zi"))
-     values1 <- e1@deinflatedcounts
-   else
-     values1 <- e1
-   if(is(e2, "Zi"))
-     values2 <- e2@deinflatedcounts
-   else
-     values2 <- e2
-   addeinflatedcounts <- values1*values2
+  if(is(e1, "Zi"))
+    values1 <- e1@deinflatedcounts
+  else
+    values1 <- e1
+  if(is(e2, "Zi"))
+    values2 <- e2@deinflatedcounts
+  else
+    values2 <- e2
+  addeinflatedcounts <- values1*values2
 
-   if(is(e1, "Zi"))
-     values1 <- e1@weights
-   else
-     values1 <- e1
-   if(is(e2, "Zi"))
-     values2 <- e2@weights
-   else
-     values2 <- e2
-   adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+  if(is(e1, "Zi"))
+    values1 <- e1@weights
+  else
+    values1 <- e1
+  if(is(e2, "Zi"))
+    values2 <- e2@weights
+  else
+    values2 <- e2
+  adweights <- pmin(values1,values2)
 
-   result <- new(
-     Class = "Zi",
-     inputdata = e1@inputdata,
-     inputcounts = adinputcounts,
-     model = e1@model,
-     deinflatedcounts = addeinflatedcounts,
-     weights = adweights)
-   return(result)
- })
+  result <- new(
+    Class = "Zi",
+    inputdata = e1@inputdata,
+    inputcounts = adinputcounts,
+    model = e1@model,
+    deinflatedcounts = addeinflatedcounts,
+    weights = adweights)
+  return(result)
+})
 
 
 #'@name /
@@ -1284,7 +1286,7 @@ setMethod("/", signature = "Zi", definition = function(e1,e2){
     values2 <- e2@weights
   else
     values2 <- e2
-  adweights <- pmin(values1,values2) # currently the point-wise min is used, no error propagation
+  adweights <- pmin(values1,values2)
 
   result <- new(
     Class = "Zi",

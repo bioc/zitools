@@ -420,8 +420,8 @@ subset_sample <- function(Zi, ...) {
 #'object or on rowData of a SummarizedExperiment object
 #'
 #'@param Zi \code{\linkS4class{Zi}}-class object
-#'@param ... The subsetting expression that should be applied, see \link[base]{subset}
-#'for more details
+#'@param ... The subsetting expression that should be applied, see
+#'\link[base]{subset} for more details
 #'
 #'@returns a \code{\linkS4class{Zi}}-class object after subsetting is done
 #'

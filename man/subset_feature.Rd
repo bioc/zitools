@@ -9,8 +9,8 @@ subset_feature(Zi, ...)
 \arguments{
 \item{Zi}{\code{\linkS4class{Zi}}-class object}
 
-\item{...}{The subsetting expression that should be applied, see \link[base]{subset}
-for more details}
+\item{...}{The subsetting expression that should be applied, see
+\link[base]{subset} for more details}
 }
 \value{
 a \code{\linkS4class{Zi}}-class object after subsetting is done

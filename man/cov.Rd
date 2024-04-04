@@ -19,7 +19,8 @@ covariance matrix
 }
 \description{
 calculate the weighted covariance of the columns of the
-count matrix of an Zi object taking weights for possible structural zero counts into account
+count matrix of an Zi object taking weights for possible structural zero
+counts into account
 }
 \examples{
 data(mtx)
