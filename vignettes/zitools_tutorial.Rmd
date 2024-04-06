@@ -81,7 +81,8 @@ The zero inflation analysis steps are wrapped into a single function, called
 ziMain. 
 It fits a zero-inflated mixture model to the data. Per default structural 
 zeros are estimated from counts using features (=rows) and samples (=columns) 
-as predictor variables when fitting a zero inflated negative binomial model. Based on the fitted model, probabilities that count values are structural 
+as predictor variables when fitting a zero inflated negative binomial model. 
+Based on the fitted model, probabilities that count values are structural 
 zeros are calculated. Considering these probabilities, the function generates a 
 deinflated count matrix by replacing predicted structural zeros with NA and 
 simultaneously computes weights given that a zero count is a structural zero. 

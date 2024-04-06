@@ -462,7 +462,7 @@ resample_deinflatedcounts <- function(x) {
     rownames <- rownames(mtx)
     colnames <- colnames(mtx)
     list_deinflatedcounts <- list()
-        for (i in 1:length(model(x))) {
+        for (i in seq_along(model(x))) {
     vec <- model(x)[[i]][["model"]][, 3]
     vec <- vec[1:(length(vec)/ncol(mtx_new))]
     count_sub <- mtx_new[vec, ]

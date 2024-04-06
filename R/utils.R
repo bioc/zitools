@@ -18,11 +18,12 @@ NULL
 #'@importFrom tidyr gather
 #'@noRd
 reshape_zi <- function(mtx, feature = "") {
-    zi_long <- as.data.frame(mtx) %>%
-        rownames_to_column(var = feature) %>%
-        gather(key = "sample", value = "count", 1:ncol(mtx) + 1)
-    return(zi_long)
+  zi_long <- as.data.frame(mtx) %>%
+    rownames_to_column(var = feature) %>%
+    gather(key = "sample", value = "count", -1)
+  return(zi_long)
 }
+
 
 #'@name omit_str_zero
 #'@title Draw Structural Zeros

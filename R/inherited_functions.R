@@ -1165,39 +1165,6 @@ setMethod("otu_table", signature = "Zi", function(object) {
     return(otu_table)
 })
 
-#'@name phy_tree
-#'@aliases phy_tree,Zi-method
-#'@title Access the phylogenetic tree
-#'
-#'@param physeq \code{\linkS4class{Zi}}-class object
-#'@param errorIfNULL Logical. Should the accessor stop with an error if the slot
-#'is empty (NULL)? Default TRUE.
-#'
-#'@description access the \link[phyloseq]{phy_tree} of an
-#'\code{\linkS4class{Zi}}-class object if the inputdata slot is a phyloseq
-#'object
-#'
-#'@returns phy_tree
-#'@importFrom phyloseq phy_tree
-#'
-#'@export
-#'
-#'
-
-
-setMethod("phy_tree", signature = "Zi", function(physeq, errorIfNULL) {
-    if ("phyloseq" %in% class(inputdata(physeq))) {
-    phy_tree <- phy_tree(inputdata(physeq), errorIfNULL = errorIfNULL)
-    }
-    if ("matrix" %in% class(inputdata(physeq))) {
-    phy_tree <- NULL
-    }
-    if ("SummarizedExperiment" %in% class(inputdata(physeq))) {
-    phy_tree <- NULL
-    }
-    return(phy_tree)
-})
-
 #'@name rowData
 #'@aliases rowData,Zi-method
 #'@title Access the row data
