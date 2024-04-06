@@ -21,7 +21,7 @@ ziMain(
 \item{inputdata}{phyloseq object, SummarizedExperiment object, or matrix (rows
 =features, columns=samples)}
 
-\item{feature}{"feature", "gene", "OTU", "phylum", etc. By default, rownames
+\item{feature}{'feature', 'gene', 'OTU', 'phylum', etc. By default, rownames
 are labelled as feature1, feature2, ...}
 
 \item{formula}{formula to fit the zero inflated model
@@ -32,10 +32,10 @@ A different set of regressors can be specified using y ~ x1 +x2 + ...|z1 + z2
 describes the zero inflation model
 }}
 
-\item{dist}{= distribution, either poisson ("poisson"), negative binomial
-("negbin")}
+\item{dist}{= distribution, either poisson ('poisson'), negative binomial
+('negbin')}
 
-\item{link}{= link function, either "logit", "probit", "cloglog", "cauchit"}
+\item{link}{= link function, either 'logit', 'probit', 'cloglog', 'cauchit'}
 
 \item{zeroRows.rm}{= logical, indicating whether rows that only contain zeros
 should be removed (\code{\link{TRUE}}) or not (\code{\link{FALSE}}) (they are

@@ -12,9 +12,9 @@
 
 \item{y}{'Zi'-class object}
 
-\item{use}{"everything" see \link[stats]{cor}}
+\item{use}{'everything' see \link[stats]{cor}}
 
-\item{method}{default = "pearson", weighted correlation only implemented for
+\item{method}{default = 'pearson', weighted correlation only implemented for
 person correlation}
 }
 \value{

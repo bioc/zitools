@@ -21,12 +21,12 @@ NULL
 #'
 
 boxplot.Zi <- function(x, ...) {
-  boxplot(deinflatedcounts(x), ...)
+    boxplot(deinflatedcounts(x), ...)
 }
 #'@export
 #'@importFrom stats heatmap
 heatmap <- function(x, ...) {
-  UseMethod("heatmap")
+    UseMethod("heatmap")
 }
 
 #'@name heatmap
@@ -49,9 +49,9 @@ heatmap <- function(x, ...) {
 #'heatmap(Zi, Rowv=NA, Colv=NA) # no clustering of rows and cols
 #'
 heatmap.Zi <- function(x, ...) {
-  df <- as.data.frame(deinflatedcounts(x))
-  mtx <- as.matrix(df)
-  stats::heatmap(mtx, ...)
+    df <- as.data.frame(deinflatedcounts(x))
+    mtx <- as.matrix(df)
+    stats::heatmap(mtx, ...)
 }
 
 #'@name MissingValueHeatmap
@@ -75,24 +75,27 @@ heatmap.Zi <- function(x, ...) {
 
 MissingValueHeatmap <- function(ZiObject, title = "", xlab = "", ylab = "") {
 
-  mtx <- deinflatedcounts(ZiObject)
-  mtx.heatmap.sorted <- data.frame(mtx[order(-rowSums(is.na(mtx)), rowMeans(mtx,
-                                                                            na.rm = TRUE)), ])
-  mtx.heatmap.sorted$Feature <- row.names(mtx.heatmap.sorted)
-  mtx.heatmap.sorted$FeatureIdx <- seq(1, nrow(mtx.heatmap.sorted))
+    mtx <- deinflatedcounts(ZiObject)
+    mtx.heatmap.sorted <- data.frame(mtx[order(-rowSums(is.na(mtx)),
+        rowMeans(mtx, na.rm = TRUE)), ])
+    mtx.heatmap.sorted$Feature <- row.names(mtx.heatmap.sorted)
+    mtx.heatmap.sorted$FeatureIdx <- seq(1, nrow(mtx.heatmap.sorted))
 
-  mtx.long <- reshape2::melt(mtx)
-  colnames(mtx.long) <- c("Feature", "Sample", "value")
-  heatmap.df <- merge(mtx.long, mtx.heatmap.sorted[, c("Feature", "FeatureIdx")],
-                      by = "Feature")
-  gg.heatmap <- ggplot(data = heatmap.df, aes(x = Sample, y = FeatureIdx, fill = value)) +
-    geom_tile() + scale_fill_gradientn(colors = RColorBrewer::brewer.pal(n = 9,
-                                                                         name = "Blues"), na.value = "red") + labs(x = xlab, y = ylab) + ggtitle(title)
-  return(gg.heatmap)
+    mtx.long <- reshape2::melt(mtx)
+    colnames(mtx.long) <- c("Feature", "Sample", "value")
+    heatmap.df <- merge(mtx.long,
+        mtx.heatmap.sorted[, c("Feature", "FeatureIdx")], by = "Feature")
+    gg.heatmap <- ggplot(data = heatmap.df, aes(x = Sample, y = FeatureIdx,
+        fill = value)) +
+        geom_tile() +
+        scale_fill_gradientn(colors = RColorBrewer::brewer.pal(n = 9,
+            name = "Blues"), na.value = "red") +
+        labs(x = xlab, y = ylab) + ggtitle(title)
+    return(gg.heatmap)
 }
 
-setGeneric("cor", function(x, y = NULL, use = "everything", method = c("pearson",
-                                                                       "kendall", "spearman")) standardGeneric("cor"))
+setGeneric("cor", function(x, y = NULL, use = "everything",
+    method = c("pearson", "kendall", "spearman")) standardGeneric("cor"))
 
 #'@name cor
 #'@aliases cor,Zi,ANY-method
@@ -111,41 +114,42 @@ setGeneric("cor", function(x, y = NULL, use = "everything", method = c("pearson"
 #'data(mtx)
 #'Zi <- ziMain(mtx)
 #'cor(Zi)
-setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", method = "pearson") {
-  if (use != "everything")
+setMethod("cor", c("Zi", "ANY"), function(x, y = NULL,
+    use = "everything", method = "pearson") {
+    if (use != "everything")
     stop("zitools::cor only implemented so far for use=\"everything\"")
-  if (method != "pearson")
+    if (method != "pearson")
     stop("zitools::cor only implemented so far for Pearson Correlation.")
 
-  my_vector <- numeric()
-  wx <- weights(x)
-  cx <- inputcounts(x)
-  if (is.null(y)) {
+    my_vector <- numeric()
+    wx <- weights(x)
+    cx <- inputcounts(x)
+    if (is.null(y)) {
     y <- cx
     wy <- wx
-  }
-  colnames <- colnames(cx)
-  rownames <- colnames(y)
-  for (a in seq_len(ncol(cx))) {
-    for (b in seq_len(ncol(cx))) {
-      col_a <- cx[, a]
-      col_b <- y[, b]
-      weights_a <- wx[, a]
-      weights_b <- wy[, b]
-      mean_a <- sum(weights_a * col_a)/(sum(weights_a))
-      mean_b <- sum(weights_b * col_b)/(sum(weights_b))
-      var_a <- sum(weights_a * (col_a - mean_a)^2)/(sum(weights_a) - 1)
-      var_b <- sum(weights_b * (col_b - mean_b)^2)/(sum(weights_b) - 1)
-      cov <- sum(sqrt(weights_a) * (col_a - mean_a) * sqrt(weights_b) * (col_b -
-                                                                           mean_b))/sqrt((sum(weights_a) - 1) * (sum(weights_b) - 1))
-      cor <- cov/sqrt(var_a * var_b)
-      my_vector <- c(my_vector, cor)
     }
-  }
-  mtx <- matrix(my_vector, ncol(cx))
-  colnames(mtx) <- colnames
-  rownames(mtx) <- rownames
-  return(mtx)
+    colnames <- colnames(cx)
+    rownames <- colnames(y)
+    for (a in seq_len(ncol(cx))) {
+        for (b in seq_len(ncol(cx))) {
+        col_a <- cx[, a]
+        col_b <- y[, b]
+        weights_a <- wx[, a]
+        weights_b <- wy[, b]
+        mean_a <- sum(weights_a * col_a)/(sum(weights_a))
+        mean_b <- sum(weights_b * col_b)/(sum(weights_b))
+        var_a <- sum(weights_a * (col_a - mean_a)^2)/(sum(weights_a) - 1)
+        var_b <- sum(weights_b * (col_b - mean_b)^2)/(sum(weights_b) - 1)
+        cov <- sum(sqrt(weights_a) * (col_a - mean_a) * sqrt(weights_b) *
+            (col_b - mean_b))/sqrt((sum(weights_a) - 1) * (sum(weights_b) - 1))
+        cor <- cov/sqrt(var_a * var_b)
+        my_vector <- c(my_vector, cor)
+        }
+    }
+    mtx <- matrix(my_vector, ncol(cx))
+    colnames(mtx) <- colnames
+    rownames(mtx) <- rownames
+    return(mtx)
 })
 
 #'@name cov
@@ -165,34 +169,34 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL, use = "everything", metho
 #'Zi <- ziMain(mtx)
 #'cov(Zi)
 setMethod("cov", c("Zi", "ANY"), function(x, y = NULL, use = "everything") {
-  if (use != "everything")
+    if (use != "everything")
     stop("zitools::cor only implemented so far for use=\"everything\"")
-  my_vector <- numeric()
-  wx <- weights(x)
-  cx <- inputcounts(x)
-  nc <- ncol(cx)
-  C <- matrix(nrow = nc, ncol = nc)  # empty matrix, correct size
+    my_vector <- numeric()
+    wx <- weights(x)
+    cx <- inputcounts(x)
+    nc <- ncol(cx)
+    C <- matrix(nrow = nc, ncol = nc)  # empty matrix, correct size
 
-  for (a in (1:(nc - 1))) {
+    for (a in (1:(nc - 1))) {
     C[a, a] <- 1
-    for (b in ((a + 1):nc)) {
-      col_a <- cx[, a]
-      col_b <- cx[, b]
-      weights_a <- wx[, a]
-      weights_b <- wx[, b]
-      mean_a <- sum(weights_a * col_a)/(sum(weights_a))
-      mean_b <- sum(weights_b * col_b)/(sum(weights_b))
-      var_a <- sum(weights_a * (col_a - mean_a)^2)/(sum(weights_a) - 1)
-      var_b <- sum(weights_b * (col_b - mean_b)^2)/(sum(weights_b) - 1)
-      C[a, b] <- sum(sqrt(weights_a) * (col_a - mean_a) * sqrt(weights_b) *
-                       (col_b - mean_b))/sqrt((sum(weights_a) - 1) * (sum(weights_b) - 1))
-      C[b, a] <- C[a, b]
+        for (b in ((a + 1):nc)) {
+        col_a <- cx[, a]
+        col_b <- cx[, b]
+        weights_a <- wx[, a]
+        weights_b <- wx[, b]
+        mean_a <- sum(weights_a * col_a)/(sum(weights_a))
+        mean_b <- sum(weights_b * col_b)/(sum(weights_b))
+        var_a <- sum(weights_a * (col_a - mean_a)^2)/(sum(weights_a) - 1)
+        var_b <- sum(weights_b * (col_b - mean_b)^2)/(sum(weights_b) - 1)
+        C[a, b] <- sum(sqrt(weights_a) * (col_a - mean_a) * sqrt(weights_b) *
+            (col_b - mean_b))/sqrt((sum(weights_a) - 1) * (sum(weights_b) - 1))
+        C[b, a] <- C[a, b]
+        }
     }
-  }
-  C[nc, nc] <- 1
-  colnames(C) <- colnames(cx)
-  rownames(C) <- colnames(cx)
-  return(C)
+    C[nc, nc] <- 1
+    colnames(C) <- colnames(cx)
+    rownames(C) <- colnames(cx)
+    return(C)
 })
 
 
@@ -213,5 +217,5 @@ setMethod("cov", c("Zi", "ANY"), function(x, y = NULL, use = "everything") {
 #'plot(Zi)
 #'
 setMethod("plot", c("Zi", "ANY"), function(x, y, ...) {
-  plot(deinflatedcounts(x), y = NULL, ...)
+    plot(deinflatedcounts(x), y = NULL, ...)
 })

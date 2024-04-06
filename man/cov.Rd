@@ -12,7 +12,7 @@
 
 \item{y}{'Zi'-class object}
 
-\item{use}{"everything"}
+\item{use}{'everything'}
 }
 \value{
 covariance matrix

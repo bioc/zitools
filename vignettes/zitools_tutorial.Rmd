@@ -9,15 +9,15 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.width = 6,
-  fig.height = 4.5
+    collapse = TRUE,
+    comment = "#>",
+    fig.width = 6,
+    fig.height = 4.5
 )
 ```
 # Introduction
 
-This vignette provides an introductory example on how to work with the 'zitools' 
+This vignette provides an introductory example on how to work with the 'zitools'
 package, which implements a weighting strategy based on a fitted zero inflated 
 mixture model. 'zitools' allows for zero inflated count data analysis by either 
 using down-weighting of excess zeros or by replacing an appropriate proportion 
@@ -81,8 +81,7 @@ The zero inflation analysis steps are wrapped into a single function, called
 ziMain. 
 It fits a zero-inflated mixture model to the data. Per default structural 
 zeros are estimated from counts using features (=rows) and samples (=columns) 
-as predictor variables when fitting a zero inflated negative binomial 
-model. Based on the fitted model, probabilities that count values are structural 
+as predictor variables when fitting a zero inflated negative binomial model. Based on the fitted model, probabilities that count values are structural 
 zeros are calculated. Considering these probabilities, the function generates a 
 deinflated count matrix by replacing predicted structural zeros with NA and 
 simultaneously computes weights given that a zero count is a structural zero. 
@@ -138,11 +137,11 @@ on the distributions and summary statistics within individual samples.
 ```{r repeat plot}
 i <- 1
 repeat {
-  Zi <- resample_deinflatedcounts(Zi)
-  boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", 
-          main = paste("Iteration", i))
-  i = i+1
-  if(i==6){
+    Zi <- resample_deinflatedcounts(Zi)
+    boxplot(log2p(Zi), xlab = "samples", ylab = "log2(count+1)", 
+        main = paste("Iteration", i))
+    i = i+1
+    if(i==6){
     break
   }
 } 
@@ -182,7 +181,7 @@ result <- as.data.frame(result)
 
 ```{r df, echo=FALSE, eval=TRUE, warning = FALSE}
 result_df<- cbind(as(result, "data.frame"), 
-                  as(tax_table(phyloseq)[rownames(result), ], "matrix"))
+    as(tax_table(phyloseq)[rownames(result), ], "matrix"))
 result_df <- result_df %>%
     rownames_to_column(var = "OTU") %>%
     arrange(padj)
@@ -190,14 +189,14 @@ result_df <- result_df %>%
 result_df <- result_df[complete.cases(result_df), ]
 
 result_df$diffexpressed[result_df$log2FoldChange > 1 & 
-                          result_df$pvalue < 0.05] <- result_df$Genus
+    result_df$pvalue < 0.05] <- result_df$Genus
 result_df$diffexpressed[result_df$log2FoldChange < -1 & 
-                          result_df$pvalue < 0.05] <- result_df$Genus
+    result_df$pvalue < 0.05] <- result_df$Genus
 
 result_df <- data.frame("OTU" = result_df$OTU, 
-                        "log2FoldChange" = result_df$log2FoldChange, 
-                        "pvalue" = result_df$pvalue, 
-                        "Genus" = result_df$diffexpressed)
+    "log2FoldChange" = result_df$log2FoldChange, 
+    "pvalue" = result_df$pvalue, 
+    "Genus" = result_df$diffexpressed)
 
 ```
 
@@ -209,20 +208,20 @@ horizontal axis and p-values on the negative log10-scale on the vertical axis.
 Volcano plot can be generated manually as demonstrated in the following.
 
 
-```{r, echo = TRUE}
-suppressWarnings(print(ggplot(data=result_df, aes(x=log2FoldChange, 
-                                                  y=-log10(pvalue), 
-                                                  color = Genus)) +
-  geom_point()+
-  theme_minimal()+
-  xlim(-6,6)+
-  ylim(-0.5,4)+
-  ylab("-log10(pvalue)\n")+
-  xlab("\nLog2FoldChange")+
-  geom_vline(xintercept=c(-1, 1), col="black") +
-  geom_hline(yintercept=-log10(0.05), col="black")+
-  theme(text = element_text(size = 20))+
-  theme(panel.spacing.x = unit(2, "lines"))))
+```{r, echo = TRUE, warning = FALSE, fig.width=10}
+print(ggplot(data=result_df, aes(x=log2FoldChange, 
+    y=-log10(pvalue), 
+    color = Genus)) +
+    geom_point()+
+    theme_minimal()+
+    xlim(-6,6)+
+    ylim(-0.5,4)+
+    ylab("-log10(pvalue)\n")+
+    xlab("\nLog2FoldChange")+
+    geom_vline(xintercept=c(-1, 1), col="black") +
+    geom_hline(yintercept=-log10(0.05), col="black")+
+    theme(text = element_text(size = 20))+
+    theme(panel.spacing.x = unit(2, "lines")))
 ```
 
 ## Missing Value Heatmap
@@ -261,16 +260,16 @@ scores <- centered_data %*% loadings
 PCA$scores <- scores
 
 df_PCA <- data.frame("PC1" = PCA[["scores"]][,1], "PC2" = PCA[["scores"]][,2], 
-                     "group" = sample_data(Zi)$group)
+    "group" = sample_data(Zi)$group)
 ```
 
 ```{r plot PCA, echo=FALSE}
-suppressWarnings(print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = group))+
-  geom_point()+
-  xlim(-200,100)+
-  ylim(-250,260)+
-  xlab("PC1 14.6%")+
-  ylab("PC2 9.9%")))
+print(ggplot(df_PCA, aes(x = PC1, y = PC2, color = group))+
+    geom_point()+
+    xlim(-200,100)+
+    ylim(-250,260)+
+    xlab("PC1 14.6%")+
+    ylab("PC2 9.9%"))
 ```
 
 ## Interaction with the phyloseq package
@@ -300,7 +299,7 @@ plot_richness of the phyloseq package
 
 ```{r}  
 plot_richness(new_phyloseq, measures = c("Chao1"), 
-              color = sample_data(new_phyloseq)$group)+
+    color = sample_data(new_phyloseq)$group)+
   theme(axis.text.x = element_blank())
 ```
 
