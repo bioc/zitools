@@ -52,7 +52,7 @@ Collate:
     'plots.R'
     'utils.R'
     'zitools-package.R'
-Depends: R (>= 4.3.0), 
+Depends: R (>= 4.4.0), 
           methods
 VignetteBuilder: knitr
 biocViews: Software, StatisticalMethod, Microbiome
