@@ -171,33 +171,34 @@ setMethod("cor", c("Zi", "ANY"), function(x, y = NULL,
 setMethod("cov", c("Zi", "ANY"), function(x, y = NULL, use = "everything") {
     if (use != "everything")
     stop("zitools::cor only implemented so far for use=\"everything\"")
-    my_vector <- numeric()
+
     wx <- weights(x)
     cx <- inputcounts(x)
     nc <- ncol(cx)
-    C <- matrix(nrow = nc, ncol = nc)  # empty matrix, correct size
+    C <- matrix(nrow = nc, ncol = nc)
 
-    for (a in (1:(nc - 1))) {
+    for (a in seq_len(nc - 1)) {
     C[a, a] <- 1
-        for (b in ((a + 1):nc)) {
+    for (b in seq(from = a + 1, to = nc)) {
         col_a <- cx[, a]
         col_b <- cx[, b]
         weights_a <- wx[, a]
         weights_b <- wx[, b]
-        mean_a <- sum(weights_a * col_a)/(sum(weights_a))
-        mean_b <- sum(weights_b * col_b)/(sum(weights_b))
-        var_a <- sum(weights_a * (col_a - mean_a)^2)/(sum(weights_a) - 1)
-        var_b <- sum(weights_b * (col_b - mean_b)^2)/(sum(weights_b) - 1)
+        mean_a <- sum(weights_a * col_a) / (sum(weights_a))
+        mean_b <- sum(weights_b * col_b) / (sum(weights_b))
         C[a, b] <- sum(sqrt(weights_a) * (col_a - mean_a) * sqrt(weights_b) *
-            (col_b - mean_b))/sqrt((sum(weights_a) - 1) * (sum(weights_b) - 1))
+        (col_b - mean_b)) / sqrt((sum(weights_a) - 1) * (sum(weights_b) - 1))
         C[b, a] <- C[a, b]
         }
     }
+    if (nc > 0) {
     C[nc, nc] <- 1
+    }
     colnames(C) <- colnames(cx)
     rownames(C) <- colnames(cx)
     return(C)
 })
+
 
 
 #'@export

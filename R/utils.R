@@ -18,10 +18,9 @@ NULL
 #'@importFrom tidyr gather
 #'@noRd
 reshape_zi <- function(mtx, feature = "") {
-  zi_long <- as.data.frame(mtx) %>%
+    zi_long <- as.data.frame(mtx) %>%
     rownames_to_column(var = feature) %>%
     gather(key = "sample", value = "count", -1)
-  return(zi_long)
 }
 
 
@@ -51,27 +50,31 @@ reshape_zi <- function(mtx, feature = "") {
 omit_str_zero <- function(zi, zi_input, feature = "") {
     zi_prediction <- data.frame(predicted_count =
         predict(zi, type = "count")) %>%
-        bind_cols(data.frame(p_str_zero = predict(zi, type = "zero"))) %>%
-        bind_cols(zi_input, .)
+    bind_cols(data.frame(p_str_zero = predict(zi, type = "zero"))) %>%
+    bind_cols(zi_input, .)
     str_zero <- bind_cols(zi_prediction, predicted_zero =
         c(rbinom(nrow(zi_prediction), 1, prob = zi_prediction$p_str_zero)))
+
     repeat {
-        str_zero <- str_zero %>%
-        mutate(predicted_zero = replace(predicted_zero, 1:nrow(str_zero),
-            c(rbinom(nrow(str_zero), 1, prob = str_zero$p_str_zero))))
-        str_zero$count <- ifelse(str_zero$count == 0 &
-            str_zero$predicted_zero == 1, NA, str_zero$count)
-        str_zero$na <- ifelse(is.na(str_zero$count), 1, 0)
+    str_zero <- str_zero %>%
+    mutate(predicted_zero = replace(predicted_zero, seq_len(nrow(str_zero)),
+        c(rbinom(nrow(str_zero), 1, prob = str_zero$p_str_zero))))
+    str_zero$count <- ifelse(str_zero$count == 0 &
+        str_zero$predicted_zero == 1, NA, str_zero$count)
+    str_zero$na <- ifelse(is.na(str_zero$count), 1, 0)
+
     if (sum(str_zero$na) >= round(sum(str_zero$p_str_zero), digits = 0)) {
-        break
-        }
+    break
     }
+    }
+
     replaced_zero <- str_zero %>%
-        filter(is.na(count)) %>%
-        sample_n(sum(str_zero$na) - round(sum(str_zero$p_str_zero)),
-            replace = FALSE) %>%
-        replace_na(list(count = 0))
-    zi_replaced <- merge(str_zero, replaced_zero, by.x = 1:2, by.y = 1:2,
+    filter(is.na(count)) %>%
+    sample_n(sum(str_zero$na) - round(sum(str_zero$p_str_zero)),
+        replace = FALSE) %>%
+    replace_na(list(count = 0))
+
+    zi_replaced <- merge(str_zero, replaced_zero, by.x = c(1,2), by.y = c(1,2),
         all = TRUE)
     zi_replaced <- cbind(zi_replaced[c(1, 2)], count = with(zi_replaced,
         ifelse(is.na(count.y), count.x, count.y)))
@@ -171,18 +174,18 @@ preprocess_mtx <- function(mtx) {
 #'@returns list containing the subsets
 #'@noRd
 subset_mtx <- function(mtx) {
-    n_blocks <- round(nrow(mtx) * ncol(mtx)/5000)
+    n_blocks <- round(nrow(mtx) * ncol(mtx) / 5000)
     if (n_blocks == 0) {
     n_blocks <- 1
     }
-    n_rowsperblock <- ceiling(nrow(mtx)/n_blocks)
-    index <- rep(c(1:n_blocks), each = n_rowsperblock)
-    index <- index[1:nrow(mtx)]
+    n_rowsperblock <- ceiling(nrow(mtx) / n_blocks)
+    index <- rep(seq_len(n_blocks), each = n_rowsperblock)
+    index <- index[seq_len(nrow(mtx))]
     df <- as.data.frame(mtx)
     df$index <- index
     list_subset <- split(df, index)
     list_subset <- lapply(list_subset, function(x) x[!(names(x) %in%
-        c("index"))])
+    c("index"))])
     return(list_subset)
 }
 

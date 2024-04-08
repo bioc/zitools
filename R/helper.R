@@ -367,9 +367,27 @@ zi2deseq2 <- function(ZiObject, design, colData, ...) {
 #'@importFrom phyloseq sample_data<-
 #'@importFrom SummarizedExperiment colData
 #'
+#'@examples
+#'data(mtx)
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c('Sample1', 'Sample2', 'Sample3',
+#'     'Sample4', 'Sample5', 'Sample6', 'Sample7', 'Sample8', 'Sample9',
+#'     'Sample10'),
+#'     Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
+#'tax_table <- data.frame(Kingdom = c(rep('Bacteria', times = 100)),
+#'     Phylum = c(rep('Bacteroidetes', times = 50),
+#'     rep('Firmicutes', times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
+#'Zi <- ziMain(ps)
+#' subset_Zi <- subset_sample(Zi, SampleID %in% c('Sample1','Sample2'))
+#'
+#'
 #'
 
 subset_sample <- function(Zi, ...) {
+    colnames <- NULL
     if (is(inputdata(Zi), "phyloseq") == TRUE) {
         newDF <- subset(as(sample_data(inputdata(Zi)), "data.frame"), ...)
         colnames <- rownames(newDF)
@@ -380,6 +398,7 @@ subset_sample <- function(Zi, ...) {
         colnames <- rownames(newDF)
         inputdata(Zi) <- inputdata(Zi)[, colnames]
     }
+
     inputcounts <- inputcounts(Zi)[, colnames]
     deinflatedcounts <- deinflatedcounts(Zi)[, colnames]
     weights <- weights(Zi)[, colnames]
@@ -410,6 +429,23 @@ subset_sample <- function(Zi, ...) {
 #'@importFrom phyloseq tax_table
 #'@importFrom phyloseq tax_table<-
 #'@importFrom SummarizedExperiment rowData
+#'
+#'@examples
+#'data(mtx)
+#'OTU <- otu_table(mtx, taxa_are_rows = TRUE)
+#'sample_data <- data.frame(SampleID = c('Sample1', 'Sample2', 'Sample3',
+#'     'Sample4', 'Sample5', 'Sample6', 'Sample7', 'Sample8', 'Sample9',
+#'     'Sample10'),
+#'     Group = factor(x = c(1,1,1,1,1,2,2,2,2,2)))
+#'SAM <- sample_data(sample_data)
+#'tax_table <- data.frame(Kingdom = c(rep('Bacteria', times = 100)),
+#'     Phylum = c(rep('Bacteroidetes', times = 50),
+#'     rep('Firmicutes', times = 50)))
+#'TAX <- tax_table(tax_table)
+#'ps <- phyloseq::phyloseq(OTU, TAX, SAM)
+#'Zi <- ziMain(ps)
+#'subset_Zi_phylo <- subset_feature(Zi, ta2 == 'Bacteroidetes')
+
 
 
 subset_feature <- function(Zi, ...) {
@@ -464,7 +500,7 @@ resample_deinflatedcounts <- function(x) {
     list_deinflatedcounts <- list()
         for (i in seq_along(model(x))) {
     vec <- model(x)[[i]][["model"]][, 3]
-    vec <- vec[1:(length(vec)/ncol(mtx_new))]
+    vec <- vec[seq_len(length(vec) / ncol(mtx_new))]
     count_sub <- mtx_new[vec, ]
     count_long <- reshape_zi(count_sub, feature = feature)
     new_deinflatedcounts <- omit_str_zero(model(x)[[i]], count_long,

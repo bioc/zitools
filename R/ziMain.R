@@ -109,10 +109,10 @@ setGeneric("ziMain", function(inputdata, feature = "feature",
     mtx <- as.matrix(inputdata)
 
     if (is.null(rownames(mtx))) {
-    rownames(mtx) <- c(1:nrow(mtx))
+        rownames(mtx) <- as.character(seq_len(nrow(mtx)))
     }
     if (is.null(colnames(mtx))) {
-    colnames(mtx) <- c(1:ncol(mtx))
+        colnames(mtx) <- as.character(seq_len(ncol(mtx)))
     }
     if (any(mtx == 0) == FALSE) {
     result <- new(Class = "Zi", inputdata = inputdata, inputcounts = mtx,
@@ -121,13 +121,13 @@ setGeneric("ziMain", function(inputdata, feature = "feature",
     } else {
     rownames <- rownames(mtx)
     colnames <- colnames(mtx)
-    mtx_new <- mtx[rowSums(mtx[]) > 0, ]  #remove rows that contain only 0
+    mtx_new <- mtx[rowSums(mtx) > 0, ]
     mtx_random <- preprocess_mtx(mtx)
     list_subset <- subset_mtx(mtx_random)
     list_core <- list()
-    for (i in 1:length(list_subset)) {
-        list_core[[i]] <- zi_core(list_subset[[i]], feature = feature,
-            formula = formula, dist = dist, link = link, ...)
+    for (i in seq_len(length(list_subset))) {
+    list_core[[i]] <- zi_core(list_subset[[i]], feature = feature,
+    formula = formula, dist = dist, link = link, ...)
     }
     ziInput <- do.call(rbind, lapply(list_core, "[[", "ziInput"))
     model <- lapply(list_core, "[[", "model")
@@ -136,9 +136,9 @@ setGeneric("ziMain", function(inputdata, feature = "feature",
     weights <- do.call(rbind, lapply(list_core, "[[", "weights"))
     if (zeroRows.rm == FALSE) {
         mtx_new <- mtx
-        zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx[]) ==
+        zideinflatedcounts <- rbind(zideinflatedcounts, mtx[rowSums(mtx) ==
             0, ])
-        zero_weights <- mtx[rowSums(mtx[]) == 0, ]
+        zero_weights <- mtx[rowSums(mtx) == 0, ]
         zero_weights[] <- 1
         weights <- rbind(weights, zero_weights)
     }
@@ -156,6 +156,8 @@ setGeneric("ziMain", function(inputdata, feature = "feature",
     }
     return(result)
 })
+
+
 
 
 
