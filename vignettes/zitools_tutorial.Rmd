@@ -1,6 +1,6 @@
 ---
 title: "An Introduction to zitools"
-output: BiocStyle::html_document
+output: BiocStyle::pdf_document
 vignette: >
   %\VignetteIndexEntry{An Introduction to zitools}
   %\VignetteEngine{knitr::rmarkdown}
