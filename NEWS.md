@@ -1,9 +1,12 @@
 # zitools
 
-Version: 0.99.0
-Date: 2024-04-04
-Text: Submitted to Bioconductor
+------------------------------------------------------------------------
+## Changes in version 0.99.1 (2024-04-24)
 
-Version: 0.99.1
-Date: 2024-04-24
-Text: Addressed the Bioconductor Review Comments
+The package zitools was updated to address the Bioconductor Review Comments. 
+
+------------------------------------------------------------------------
+## Changes in version 0.99.0 (2024-04-04)
+
+The package zitools was submitted to Bioconductor.
+
