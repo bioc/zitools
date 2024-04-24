@@ -1,7 +1,12 @@
 # zitools
 
+## Changes in version 0.99.2 (2024-04-23)
 ------------------------------------------------------------------------
-## Changes in version 0.99.1 (2024-04-24)
+
+Addressed further coding style comments.
+
+------------------------------------------------------------------------
+## Changes in version 0.99.1 (2024-04-23)
 
 The package zitools was updated to address the Bioconductor Review Comments. 
 
