@@ -35,7 +35,8 @@ Imports: phyloseq,
           magrittr, 
           BiocGenerics,
           graphics,
-          utils
+          utils,
+          microbiome
 Suggests: 
     knitr,
     rmarkdown,
