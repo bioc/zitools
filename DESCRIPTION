@@ -1,6 +1,6 @@
 Package: zitools
 Title: Analysis of zero-inflated count data 
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: 
     person("Carlotta", "Meyring", , "carlotta.meyring@uniklinik-freiburg.de", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0000-6201-7615"))
@@ -35,14 +35,14 @@ Imports: phyloseq,
           magrittr, 
           BiocGenerics,
           graphics,
-          utils,
-          microbiome
+          utils
 Suggests: 
     knitr,
     rmarkdown,
     BiocStyle,
     testthat (>= 3.0.0), 
-    tidyverse
+    tidyverse, 
+    microbiome
 Config/testthat/edition: 3
 Collate: 
     'data.R'
